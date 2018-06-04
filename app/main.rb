@@ -50,6 +50,10 @@ def mk_reply(msg)
       rep_text = anime_filter($all_animes, wdays[d])
     when '明日のアニメ', '明日', 'tomorrow'
       rep_text = anime_filter($all_animes, wdays[(d + 1) % 7])
+    when '今日の天気'
+      rep_text = mk_weather(0)
+    when '明日の天気'
+      rep_text = mk_weather(1)
     when '死ね', '殺す'
       rep_text = $deads.sample
     when 'たけのこ'
