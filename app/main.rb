@@ -1,9 +1,16 @@
 # coding: utf-8
+#require 'sinatra'
+#require 'line/bot'
 require 'date'
-require 'sinatra'
-require 'line/bot'
 require './src/day.rb'
 require './src/weather.rb'
+
+
+$all_animes = File.open('./docs/18spring.yaml', 'r').read
+$omikuji = File.open('./docs/omikuji', 'r').read.split("\n")
+$gokabou = File.open('./docs/gokabou_tweets', 'r').read.split("\n")
+$deads = ['いや、死なないよ。', '死ぬ〜〜〜〜〜ｗ', '死んだｗ', 'おいおい…', '死んダダダダダダーン', '人に死ねなんて言葉使うな😡', '死ぬまで死なないよ', '死ねのバーゲンセールかよ', 'きみ、死ねしか言えないの？', 'そっちからリプ送ってきて死ねっつうな！死ね！しねしねこうせん！💨', 'いやでｗｗｗいやでござるｗｗｗ']
+
 
 # Test for connecting.
 get '/' do
@@ -17,11 +24,6 @@ def client
     config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
   }
 end
-
-
-$all_animes = File.open('./docs/18spring.yaml', 'r').read
-
-$deads = ['いや、死なないよ。', '死ぬ〜〜〜〜〜ｗ', '死んだｗ', 'おいおい…', '死んダダダダダダーン', '人に死ねなんて言葉使うな😡', '死ぬまで死なないよ', '死ねのバーゲンセールかよ', 'きみ、死ねしか言えないの？', 'そっちからリプ送ってきて死ねっつうな！死ね！しねしねこうせん！💨', 'いやでｗｗｗいやでござるｗｗｗ']
 
 
 # Make reply for each case.
@@ -43,8 +45,10 @@ def mk_reply(msg)
     rep_text = '俺もイク！ｗ'
   else
     case msg
-    when 'ごかぼっと', 'ごかぼう', 'gokabot', 'gokabou', 'ヒゲ', 'ひげ'
+    when 'ごかぼっと', 'gokabot'
       rep_text = 'なんですか？'
+    when 'ごかぼう', 'gokabou', 'ヒゲ', 'ひげ'
+      rep_text = $gokabou.sample
     when '昨日のアニメ', '昨日', 'yesterday'
       rep_text = anime_filter($all_animes, wdays[d - 1])
     when '今日のアニメ', '今日', 'today'
@@ -55,6 +59,8 @@ def mk_reply(msg)
       rep_text = mk_weather(0)
     when '明日の天気'
       rep_text = mk_weather(1)
+    when 'おみくじ'
+      rep_text = $omikuji.sample
     when '死ね', '殺す'
       rep_text = $deads.sample
     when 'たけのこ'

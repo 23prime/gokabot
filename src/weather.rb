@@ -16,11 +16,12 @@ def mk_weather(num)
   day = day_weather['dateLabel']
   telop = day_weather['telop']
 
-  if num == 0
+  case num
+  when 0
     maxc = day_weather['temperature']['max']['celsius']
     minc = day_weather['temperature']['min']['celsius']
     return '> ' + city + 'の' + day + "の天気 <\n" + telop + "\n最高気温：" + maxc + "℃\n最低気温：" + minc + '℃'
-  else
+  when 1
     return '> ' + city + 'の' + day + "の天気 <\n" + telop
   end
 end
