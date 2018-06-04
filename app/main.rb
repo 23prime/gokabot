@@ -3,6 +3,7 @@ require 'date'
 require 'sinatra'
 require 'line/bot'
 require './src/day.rb'
+require './src/weather.rb'
 
 # Test for connecting.
 get '/' do
