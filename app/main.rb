@@ -1,6 +1,6 @@
 # coding: utf-8
-#require 'sinatra'
-#require 'line/bot'
+require 'sinatra'
+require 'line/bot'
 require 'date'
 require './src/day.rb'
 require './src/weather.rb'
