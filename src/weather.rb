@@ -11,21 +11,25 @@ $city_all = JSON.parse(weather_json)
 
 
 def mk_weather(num)
-  city = 'つくば市'
-  day_weather = $city_all['forecasts'][num]
-  day = day_weather['dateLabel']
-  telop = day_weather['telop']
-
   case num
-  when 0
-    maxc = day_weather['temperature']['max']['celsius']
-    minc = day_weather['temperature']['min']['celsius']
-    if maxc == nil && minc == nil
+  when 0, 1
+    city = 'つくば市'
+    day_weather = $city_all['forecasts'][num]
+    day = day_weather['dateLabel']
+    telop = day_weather['telop']
+    maxp = day_weather['temperature']['max']
+    minp = day_weather['temperature']['min']
+
+    if maxp == nil && minp == nil
       return '> ' + city + 'の' + day + "の天気 <\n" + telop
     else
-      return '> ' + city + 'の' + day + "の天気 <\n" + telop + "\n最高気温：" + maxc + "℃\n最低気温：" + minc + '℃'
+      maxc = maxp['celsius']
+      minc = minp['celsius']
+      saikou = '最高気温：'
+      saitei = '最低気温：'
+      saikou = '予想' + saikou if num == 1
+      saitei = '予想' + saitei if num == 1
+      return '> ' + city + 'の' + day + "の天気 <\n" + telop + "\n" + saikou + maxc + "℃\n" + saitei + minc + '℃'
     end
-  when 1
-    return '> ' + city + 'の' + day + "の天気 <\n" + telop
   end
 end
