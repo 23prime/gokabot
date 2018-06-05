@@ -20,7 +20,11 @@ def mk_weather(num)
   when 0
     maxc = day_weather['temperature']['max']['celsius']
     minc = day_weather['temperature']['min']['celsius']
-    return '> ' + city + 'の' + day + "の天気 <\n" + telop + "\n最高気温：" + maxc + "℃\n最低気温：" + minc + '℃'
+    if maxc == nil && minc == nil
+      return '> ' + city + 'の' + day + "の天気 <\n" + telop
+    else
+      return '> ' + city + 'の' + day + "の天気 <\n" + telop + "\n最高気温：" + maxc + "℃\n最低気温：" + minc + '℃'
+    end
   when 1
     return '> ' + city + 'の' + day + "の天気 <\n" + telop
   end
