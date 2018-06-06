@@ -32,7 +32,7 @@ end
 def mk_reply(msg) 
   rep_text  = ''
   msg       = convert_wday(msg)
-  msg_split = msg.split
+  msg_split = msg.split(/[[:blank:]]/)
   wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
   d         = Date.today.wday
 
