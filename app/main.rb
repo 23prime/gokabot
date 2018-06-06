@@ -49,6 +49,8 @@ def mk_reply(msg)
       rep_text = 'なんですか？'
     when 'ごかぼう', 'gokabou', 'ヒゲ', 'ひげ'
       rep_text = $gokabou.sample
+    when '今期のアニメ', '今期', 'all'
+      rep_text = $all_animes
     when '昨日のアニメ', '昨日', 'yesterday'
       rep_text = anime_filter($all_animes, wdays[d - 1])
     when '今日のアニメ', '今日', 'today'
@@ -65,6 +67,8 @@ def mk_reply(msg)
       rep_text = $deads.sample
     when 'たけのこ'
       rep_text = 'たけのこ君ｐｒｐｒ'
+    when 'ね'
+      rep_text = 'そ'
     end
   end
 
