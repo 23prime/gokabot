@@ -14,12 +14,6 @@ $gokabou = File.open('./docs/gokabou_tweets', 'r').read.split("\n")
 $deads = ['いや、死なないよ。', '死ぬ〜〜〜〜〜ｗ', '死んだｗ', 'おいおい…', '死んダダダダダダーン', '人に死ねなんて言葉使うな😡', '死ぬまで死なないよ', '死ねのバーゲンセールかよ', 'きみ、死ねしか言えないの？', 'そっちからリプ送ってきて死ねっつうな！死ね！しねしねこうせん！💨', 'いやでｗｗｗいやでござるｗｗｗ']
 
 
-# Test for connecting.
-get '/' do
-  "Hello world"
-end
-
-
 def client
   @client ||= Line::Bot::Client.new { |config|
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
@@ -44,12 +38,19 @@ def mk_reply(msg)
 
   if ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)
     rep_text = anime_filter($all_animes, msg)
-  elsif msg.indlude?('死ね') || msg.indlude?('死んで')
+  elsif msg.include?('死ね') || msg.include?('死んで')
     rep_text = $deads.sample
   elsif msg.include?('行く')
     rep_text = '俺もイク！ｗ'
-  elsif  msg_split[0] == '天気'
-    rep_text = mk_weather(0 msg_split[1])
+  elsif
+    case msg_split[0]
+    when '今日の天気', '天気'
+      rep_text = mk_weather(0, msg_split[1]) if msg_split[1] != nil
+      rep_text = mk_weather(0, 'つくば') if msg_split[1] == nil
+    when '明日の天気'
+      rep_text = mk_weather(1, msg_split[1]) if msg_split[1] != nil
+      rep_text = mk_weather(1, 'つくば') if msg_split[1] == nil
+    end
   else
     case msg
     when 'gokabot -v', 'gokabot --version'
@@ -66,10 +67,6 @@ def mk_reply(msg)
       rep_text = anime_filter($all_animes, wdays[d])
     when '明日のアニメ', '明日', 'tomorrow'
       rep_text = anime_filter($all_animes, wdays[(d + 1) % 7])
-    when '今日の天気', '天気'
-      rep_text = mk_weather(0, 'つくば')
-    when '明日の天気'
-      rep_text = mk_weather(1, 'つくば')
     when 'おみくじ'
       rep_text = $omikuji.sample
     when 'たけのこ'
