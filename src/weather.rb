@@ -11,7 +11,7 @@ def mk_weather(num, city)
   jcity = json[city]
 
   if jcity == nil
-    return ''
+    return '分かりませ〜んｗ'
   else
     # Get weather info.
     city_id = jcity['id']
