@@ -6,14 +6,15 @@ require 'json'
 
 def mk_weather(num, city)
   # Get city ID.
-  file = File.open('./docs/city_id.json', 'r').read
-  json = JSON.parse(file)
-  city_id = json[city]['id']
+  file  = File.open('./docs/city_id.json', 'r').read
+  json  = JSON.parse(file)
+  jcity = json[city]
 
-  if city_id == nil
+  if jcity == nil
     return ''
   else
     # Get weather info.
+    city_id = jcity['id']
     uri = URI.parse('http://weather.livedoor.com/forecast/webservice/json/v1?city=' + city_id)
     weather_json = Net::HTTP.get(uri)
     city_all = JSON.parse(weather_json)
