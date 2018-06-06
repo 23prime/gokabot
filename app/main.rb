@@ -6,6 +6,8 @@ require './src/day.rb'
 require './src/weather.rb'
 
 
+$version = '1.0.0'
+$help = File.open('./docs/help', 'r').read
 $all_animes = File.open('./docs/18spring.yaml', 'r').read
 $omikuji = File.open('./docs/omikuji', 'r').read.split("\n")
 $gokabou = File.open('./docs/gokabou_tweets', 'r').read.split("\n")
@@ -34,17 +36,26 @@ end
 
 
 def mk_reply(msg) 
-  rep_text = ''
-  msg      = convert_wday(msg)
-  wdays    = %w[Sun Mon Tue Wed Thu Fri Sat]
-  d        = Date.today.wday
+  rep_text  = ''
+  msg       = convert_wday(msg)
+  msg_split = msg.split
+  wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
+  d         = Date.today.wday
 
   if ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)
     rep_text = anime_filter($all_animes, msg)
+  elsif msg.indlude?('死ね') || msg.indlude?('死んで')
+    rep_text = $deads.sample
   elsif msg.include?('行く')
     rep_text = '俺もイク！ｗ'
+  elsif  msg_split[0] == '天気'
+    rep_text = mk_weather(0 msg_split[1])
   else
     case msg
+    when 'gokabot -v', 'gokabot --version'
+      rep_text = $version
+    when 'gokabot -h', 'gokabot --help'
+      rep_text = $version
     when 'ごかぼっと', 'gokabot'
       rep_text = 'なんですか？'
     when 'ごかぼう', 'gokabou', 'ヒゲ', 'ひげ'
@@ -55,16 +66,16 @@ def mk_reply(msg)
       rep_text = anime_filter($all_animes, wdays[d])
     when '明日のアニメ', '明日', 'tomorrow'
       rep_text = anime_filter($all_animes, wdays[(d + 1) % 7])
-    when '今日の天気'
-      rep_text = mk_weather(0)
+    when '今日の天気', '天気'
+      rep_text = mk_weather(0, 'つくば')
     when '明日の天気'
-      rep_text = mk_weather(1)
+      rep_text = mk_weather(1, 'つくば')
     when 'おみくじ'
       rep_text = $omikuji.sample
-    when '死ね', '殺す'
-      rep_text = $deads.sample
     when 'たけのこ'
       rep_text = 'たけのこ君ｐｒｐｒ'
+    when 'ぬるぽ'
+      rep_text = 'ｶﾞｯ'
     when 'ね'
       rep_text = 'そ'
     end
