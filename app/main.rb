@@ -32,15 +32,15 @@ end
 def mk_reply(msg) 
   rep_text  = ''
   msg       = convert_wday(msg)
-  msg_split = msg.split(/[[:blank:]]/)
+  msg_split = msg.split(/[[:blank:]]+/)
   wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
   d         = Date.today.wday
 
   if ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)
     rep_text = anime_filter($all_animes, msg)
-  elsif msg.include?('死ね') || msg.include?('死んで')
+  elsif msg =~ /死ね|死んで/
     rep_text = $deads.sample
-  elsif msg.include?('行く')
+  elsif msg =~ /行く/
     rep_text = '俺もイク！ｗ'
   elsif
     case msg_split[0]
