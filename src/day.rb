@@ -28,9 +28,8 @@ end
 
 
 def anime_filter(str, day)
-  day = convert_wday(day)
   case day
-  when 'All', '今期'
+  when 'All'
     str
   when 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
     animes = YAML.load(str)
