@@ -13,4 +13,5 @@ def nyokki(msg,rep_text)
   else 
     rep_text = "負けｗ"
     $nyokki_stat = 0
+  end
 end
