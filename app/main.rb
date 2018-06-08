@@ -37,7 +37,7 @@ def mk_reply(msg)
   d         = Date.today.wday
 
   if $nyokki_stat > 0 || msg=~/(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
-    nyokki(msg,rep_text)
+    rep_text = nyokki(msg)
   elsif /(?<query>[^。、]+)(とは|って)(なに|何|(なん|何)(なの|なん|だよ|だょ|ですか))?([\.．？\?]|$)/ =~ msg
     article = Wikipedia::browse(query)
     rep_text = article unless article.nil?
