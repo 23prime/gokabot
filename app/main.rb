@@ -2,7 +2,7 @@
 require 'sinatra'
 require 'line/bot'
 require 'date'
-require './main/imports.rb'
+require './app/imports.rb'
 
 
 $version = '1.0.0'
