@@ -2,8 +2,7 @@
 require 'sinatra'
 require 'line/bot'
 require 'date'
-require './src/day.rb'
-require './src/weather.rb'
+require './main/imports.rb'
 
 
 $version = '1.0.0'
@@ -36,6 +35,7 @@ def mk_reply(msg)
   msg_split = msg.split(/[[:blank:]]+/)
   wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
   d         = Date.today.wday
+
   if $nyokki_stat > 0 || msg=~/(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     nyokki(msg,rep_text)
   elsif ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)

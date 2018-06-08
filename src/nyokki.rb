@@ -1,6 +1,6 @@
 # coding:  utf-8
 
-def nyokki(msg,rep_text)
+def nyokki(msg, rep_text)
   $nyokki_stat += 1
   if msg =~ /(ニョッキ|にょっき|ﾆｮｯｷ)/
     msg.tr!("０-９", "0-9").delete!("^0-9")
