@@ -37,7 +37,7 @@ def mk_reply(msg)
   d         = Date.today.wday
 
   if $nyokki_stat > 0 || msg=~/(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
-    nyokki(msg,rep_text)
+    rep_text = nyokki(msg)
   elsif ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)
     rep_text = anime_filter($all_animes, msg)
   elsif msg =~ /死ね|死んで/
