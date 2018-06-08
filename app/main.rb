@@ -12,6 +12,7 @@ $all_animes = File.open('./docs/18spring.yaml', 'r').read
 $omikuji = File.open('./docs/omikuji', 'r').read.split("\n")
 $gokabou = File.open('./docs/gokabou_tweets', 'r').read.split("\n")
 $deads = ['いや、死なないよ。', '死ぬ〜〜〜〜〜ｗ', '死んだｗ', 'おいおい…', '死んダダダダダダーン', '人に死ねなんて言葉使うな😡', '死ぬまで死なないよ', '死ねのバーゲンセールかよ', 'きみ、死ねしか言えないの？', 'そっちからリプ送ってきて死ねっつうな！死ね！しねしねこうせん！💨', 'いやでｗｗｗいやでござるｗｗｗ']
+$nyokki_stat=0
 
 
 def client
@@ -35,8 +36,9 @@ def mk_reply(msg)
   msg_split = msg.split(/[[:blank:]]+/)
   wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
   d         = Date.today.wday
-
-  if ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)
+  if $nyokki_stat > 0 || msg=~/(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
+    nyokki(msg,rep_text)
+  elsif ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)
     rep_text = anime_filter($all_animes, msg)
   elsif msg =~ /死ね|死んで/
     rep_text = $deads.sample
