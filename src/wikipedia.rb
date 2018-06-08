@@ -12,6 +12,8 @@ module Wikipedia
       return nil
     end
 
+    MIN_NUM_CHARACTERS = 20
+
     private
 
     def extract_abstract(page)
@@ -20,7 +22,8 @@ module Wikipedia
       remove_cites(e)
       abst = e.text
       e = e.next
-      while !e.nil? && ["p", "ul", "text"].include?(e.name)
+      while abst.length < MIN_NUM_CHARACTERS &&
+          !e.nil? && ["p", "ul", "text"].include?(e.name)
         remove_cites(e)
         abst << e.text
         e = e.next
