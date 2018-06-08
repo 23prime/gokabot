@@ -50,18 +50,18 @@ def mk_reply(msg)
   elsif
     case msg_split[0]
     when '今日の天気', '天気'
-      rep_text = mk_weather(0, msg_split[1]) if msg_split[1] != nil
-      rep_text = mk_weather(0, 'つくば') if msg_split[1] == nil
+      rep_text = mk_weather(0, msg_split[1]) unless msg_split[1].nil?
+      rep_text = mk_weather(0, 'つくば') if msg_split[1].nil?
     when '明日の天気'
-      rep_text = mk_weather(1, msg_split[1]) if msg_split[1] != nil
-      rep_text = mk_weather(1, 'つくば') if msg_split[1] == nil
+      rep_text = mk_weather(1, msg_split[1]) unless msg_split[1].nil?
+      rep_text = mk_weather(1, 'つくば') if msg_split[1].nil?
     end
   else
     case msg
     when 'gokabot -v', 'gokabot --version'
       rep_text = $version
     when 'gokabot -h', 'gokabot --help'
-      rep_text = $version
+      rep_text = $help
     when 'ごかぼっと', 'gokabot'
       rep_text = 'なんですか？'
     when 'ごかぼう', 'gokabou', 'ヒゲ', 'ひげ'
