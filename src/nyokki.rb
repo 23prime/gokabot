@@ -1,17 +1,18 @@
 # coding:  utf-8
 
-def nyokki(msg, rep_text)
+def nyokki(msg)
   $nyokki_stat += 1
   if msg =~ /(ニョッキ|にょっき|ﾆｮｯｷ)/
-    msg.tr!("０-９", "0-9").delete!("^0-9")
+    msg.tr!("０-９", "0-9")
+    msg.delete!("^0-9")
     if msg.to_i == $nyokki_stat
       return
     else
-      rep_text = "負けｗｗｗ"
       $nyokki_stat = 0
+      "負けｗｗｗ"
     end
   else 
-    rep_text = "負けｗ"
     $nyokki_stat = 0
+     "負けｗ"
   end
 end
