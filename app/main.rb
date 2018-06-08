@@ -38,9 +38,13 @@ def mk_reply(msg)
 
   if $nyokki_stat > 0 || msg=~/(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     rep_text = nyokki(msg)
-  elsif /(?<query>[^。、]+)(とは|って)(なに|何|(なん|何)(なの|なん|だよ|だょ|ですか))?([\.．？\?]|$)/ =~ msg
+  elsif /(?<query>[^\.,，．、。]+)(とは|って)(なに|何|(なん|何)(なの|なん|だよ|だょ|ですか))?([\.,，．、。？\?]|$)/ =~ msg
     article = Wikipedia::browse(query)
-    rep_text = article unless article.nil?
+    if article.nil?
+      rep_text = "知りませ〜んｗｗｗｗｗ"
+    else 
+      rep_text = article
+    end
   elsif ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)
     rep_text = anime_filter($all_animes, msg)
   elsif msg =~ /死ね|死んで/
