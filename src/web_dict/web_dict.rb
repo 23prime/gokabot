@@ -4,16 +4,18 @@ require "timeout"
 require "logger"
 
 module WebDict
+  POSSIBLE_RESPONSES = ["400", "404", "410", "413", "414"]
+
   class WebDict
     def browse(keyword)
       query = URI::escape(keyword.strip)
       page = @mechanize.get("#{uri}#{query}")
       return extract_abstract(page)
     rescue Timeout::Error => e
-      log_error(e)
+      log_warn(e)
       return nil
     rescue Mechanize::ResponseCodeError => e
-      log_error(e) unless e.response_code == "404"
+      log_warn(e) unless POSSIBLE_RESPONSES.include?(e.response_code)
       return nil
     rescue Mechanize::Error => e
       log_error(e)
@@ -29,6 +31,14 @@ module WebDict
     end
 
     private
+
+    def log_warn(error, message = nil)
+      if message.nil?
+        @logger.warn("#{error.to_s} in #{self.class}")
+      else
+        @logger.warn("#{error.to_s}: #{message} in #{self.class}")
+      end
+    end
 
     def log_error(error, message = nil)
       if message.nil?
