@@ -10,8 +10,20 @@ $help = File.open('./docs/help', 'r').read
 $all_animes = File.open('./docs/18spring.yaml', 'r').read
 $omikuji = File.open('./docs/omikuji', 'r').read.split("\n")
 $gokabou = File.open('./docs/gokabou_tweets', 'r').read.split("\n")
-$deads = ['いや、死なないよ。', '死ぬ〜〜〜〜〜ｗ', '死んだｗ', 'おいおい…', '死んダダダダダダーン', '人に死ねなんて言葉使うな😡', '死ぬまで死なないよ', '死ねのバーゲンセールかよ', 'きみ、死ねしか言えないの？', 'そっちからリプ送ってきて死ねっつうな！死ね！しねしねこうせん！💨', 'いやでｗｗｗいやでござるｗｗｗ']
-$nyokki_stat=0
+$deads = [
+  'いや、死なないよ。',
+  '死ぬ〜〜〜〜〜ｗ', 
+  '死んだｗ',
+  'おいおい…',
+  '死んダダダダダダーン',
+  '人に死ねなんて言葉使うな😡',
+  '死ぬまで死なないよ',
+  '死ねのバーゲンセールかよ',
+  'きみ、死ねしか言えないの？',
+  'そっちからリプ送ってきて死ねっつうな！死ね！しねしねこうせん！💨',
+  'いやでｗｗｗいやでござるｗｗｗ'
+]
+$nyokki_stat = 0
 
 
 def client
@@ -33,10 +45,11 @@ def mk_reply(msg)
   rep_text  = ''
   msg       = convert_wday(msg)
   msg_split = msg.split(/[[:blank:]]+/)
+  msg0      = msg_split[0]
   wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
   d         = Date.today.wday
 
-  if $nyokki_stat > 0 || msg=~/(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
+  if $nyokki_stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     rep_text = nyokki(msg)
   elsif /(?<query>[^\.,，．、。]+)(とは|って)(なに|何|誰|だれ|どこ(なん|何|誰|だれ|どこ)(なの|なん|だよ|だょ|ですか|のこ))?([\.,，．、。？\?]|$)/ =~ msg
     rep_text = WebDict::Answerer::answer(query)
@@ -47,13 +60,9 @@ def mk_reply(msg)
   elsif msg =~ /行く/
     rep_text = '俺もイク！ｗ'
   elsif
-    case msg_split[0]
-    when '今日の天気', '天気'
-      rep_text = mk_weather(0, msg_split[1]) unless msg_split[1].nil?
-      rep_text = mk_weather(0, 'つくば') if msg_split[1].nil?
-    when '明日の天気'
-      rep_text = mk_weather(1, msg_split[1]) unless msg_split[1].nil?
-      rep_text = mk_weather(1, 'つくば') if msg_split[1].nil?
+    case msg0
+    when '天気', '今日の天気', '明日の天気'
+      rep_text = Weather.weather(msg0, msg_split[1])
     end
   else
     case msg
