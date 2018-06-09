@@ -11,7 +11,8 @@ module WebDict
     def first_elem_selector
       return 'div.mw-parser-output > p,' + 
         'div.mw-parser-output > ul,' + 
-        'div.mw-parser-output > dl'
+        'div.mw-parser-output > dl' +
+        'div.mw-parser-output > ol'
     end
 
     def change_elem(elem, count)
@@ -20,7 +21,7 @@ module WebDict
     end
 
     def read_further?(elem, count)
-      return ["p", "ul", "dl", "text"].include?(elem.name)
+      return ["p", "ul", "dl", "ol", "text"].include?(elem.name)
     end
 
     def remove_cites(elem)

@@ -71,7 +71,7 @@ module WebDict
     end
 
     def min_num_characters
-      return 20
+      return 40
     end
 
     def first_elem_selector
