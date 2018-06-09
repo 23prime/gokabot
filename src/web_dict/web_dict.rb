@@ -1,18 +1,43 @@
 require "mechanize"
 require "uri"
+require "timeout"
+require "logger"
 
 module WebDict
   class WebDict
     def browse(keyword)
-      agent = Mechanize.new
       query = URI::escape(keyword.strip)
-      page = agent.get("#{uri}#{query}")
+      page = @mechanize.get("#{uri}#{query}")
       return extract_abstract(page)
+    rescue Timeout::Error => e
+      log_error(e)
+      return nil
+    rescue Mechanize::ResponseCodeError => e
+      log_error(e) unless e.response_code == "404"
+      return nil
     rescue Mechanize::Error => e
+      log_error(e)
       return nil
     end
 
+    def initialize
+      @mechanize = Mechanize.new()
+      @mechanize.open_timeout = 2
+      @mechanize.read_timeout = 2
+      @mechanize.idle_timeout = 2
+      @logger = Logger.new(STDERR)
+    end
+
     private
+
+    def log_error(error, message = nil)
+      if message.nil?
+        @logger.error("#{error.to_s} in #{self.class}")
+      else
+        @logger.error("#{error.to_s}: #{message} in #{self.class}")
+      end
+      @logger.error(error)
+    end
 
     def extract_abstract(page)
       elem = page.search(first_elem_selector).first
