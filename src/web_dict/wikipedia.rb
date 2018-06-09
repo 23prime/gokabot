@@ -14,9 +14,9 @@ module WebDict
         'div.mw-parser-output > dl'
     end
 
-    def filter_elem(elem, count)
+    def change_elem(elem, count)
       remove_cites(elem)
-      return super(elem)
+      return super(elem, count)
     end
 
     def read_further?(elem, count)
