@@ -24,6 +24,8 @@ $deads = [
   'いやでｗｗｗいやでござるｗｗｗ'
 ]
 $nyokki_stat = 0
+$web_dict = WebDict::Answerer.new()
+$prev_msg = ""
 
 
 def client
@@ -37,7 +39,9 @@ end
 # Make reply for each case.
 def reply(event)
   msg = event.message['text']
-  mk_reply(msg)
+  reply = mk_reply(msg)
+  $prev_msg = msg
+  return reply
 end
 
 
@@ -51,8 +55,8 @@ def mk_reply(msg)
 
   if $nyokki_stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     rep_text = nyokki(msg)
-  elsif /(?<query>[^\.,，．、。\n\r\f]+)(とは|って)(なに|何|誰|だれ|どこ(なん|何|誰|だれ|どこ)(なの|なん|だよ|だょ|ですか|のこ))?([\.,，．、。？\?]|$)/ =~ msg
-    rep_text = WebDict::Answerer::answer(query)
+  elsif $web_dict.reacts?(msg, prev_msg)
+    rep_text = $web_dict.answer()
   elsif ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)
     rep_text = anime_filter($all_animes, msg)
   elsif msg =~ /死ね|死んで/
