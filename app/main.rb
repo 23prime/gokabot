@@ -51,7 +51,7 @@ def mk_reply(msg)
 
   if $nyokki_stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     rep_text = nyokki(msg)
-  elsif /(?<query>[^\.,，．、。]+)(とは|って)(なに|何|誰|だれ|どこ(なん|何|誰|だれ|どこ)(なの|なん|だよ|だょ|ですか|のこ))?([\.,，．、。？\?]|$)/ =~ msg
+  elsif /(?<query>[^\.,，．、。\n\r\f]+)(とは|って)(なに|何|誰|だれ|どこ(なん|何|誰|だれ|どこ)(なの|なん|だよ|だょ|ですか|のこ))?([\.,，．、。？\?]|$)/ =~ msg
     rep_text = WebDict::Answerer::answer(query)
   elsif ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)
     rep_text = anime_filter($all_animes, msg)
