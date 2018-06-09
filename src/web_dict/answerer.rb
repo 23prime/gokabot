@@ -22,12 +22,9 @@ module WebDict
     NORMAL_QUESTION_REG = /(?<query>#{WORD_REG})#{INTERROG_REG}/
     PREV_QUESTION_REG = /^#{INTERROG_REG}/
 
-    def reacts?(msg, prev_msg)
+    def reacts?(msg)
       if NORMAL_QUESTION_REG =~ msg
         @query = $~[:query]
-        return true
-      elsif PREV_QUESTION_REG =~ msg && !prev_msg.nil? && !prev_msg.empty?
-        @query = prev_msg
         return true
       end
       return false
