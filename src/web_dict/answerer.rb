@@ -5,9 +5,9 @@ require_relative 'niconico'
 module WebDict
   class Answerer
     WEB_DICTS = [
-      Wikipedia.new(),
       Pixiv.new(),
       Niconico.new(),
+      Wikipedia.new(),
     ]
 
     NOT_FOUND_MESSAGES = [
