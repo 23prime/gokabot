@@ -5,8 +5,8 @@ require_relative 'niconico'
 module WebDict
   module Answerer
     WEB_DICTS = [
-      Pixiv.new(),
       Niconico.new(),
+      Pixiv.new(),
       Wikipedia.new(),
       WikipediaEN.new(),
     ]
@@ -31,7 +31,7 @@ module WebDict
 
     def self.search(keyword)
       threads = []
-      WEB_DICTS.each do |web_dict|
+      WEB_DICTS.shuffle.each do |web_dict|
         threads << Thread.start(keyword) do |keyword|
           next web_dict.browse(keyword)
         end

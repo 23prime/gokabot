@@ -8,7 +8,7 @@ module WebDict
 
   class WebDict
     def browse(keyword)
-      query = URI::escape(keyword.strip)
+      query = URI::escape(keyword.strip())
       page = @mechanize.get("#{uri}#{query}")
       return extract_abstract(page)
     rescue Timeout::Error => e
@@ -27,6 +27,7 @@ module WebDict
       @mechanize.open_timeout = 2
       @mechanize.read_timeout = 2
       @mechanize.idle_timeout = 2
+      @mechanize.follow_meta_refresh = true
       @logger = Logger.new(STDERR)
     end
 
@@ -58,11 +59,13 @@ module WebDict
           !elem.nil? && read_further?(elem, index)
         unless skip_elem?(elem, index)
           elem = change_elem(elem, index)
-          result << elem.text
+          result << elem_to_str(elem, index)
         end
         index += 1
         elem = elem.next
       end
+      result = result.strip()
+      return nil if result == ""
       return result
     end
 
@@ -96,8 +99,61 @@ module WebDict
     end
 
     def change_elem(elem, index)
-      elem.content = elem.content.strip
       return elem
+    end
+
+    def elem_to_str(elem, index)
+      @li_count = 0
+      result = show_elem(elem)
+      result = remove_blank_lines(result).strip()
+      result += "\n" unless result == ""
+      return result
+    end
+
+    def show_elem(elem, parent_elem = nil)
+      case elem.name
+      when "ul", "ol"
+        show_list(elem)
+      when "li"
+        show_list_item(elem, parent_elem)
+      else
+        return elem.text
+      end
+    end
+
+    def show_list(elem)
+      @li_count = 0
+      result = elem.children
+        .map { |e| next show_elem(e, elem).strip() }
+        .select { |s| s != "" }
+        .join("\n")
+      return "\n" + result + "\n"
+    end
+
+    def show_list_item(elem, parent_elem)
+      mark = "• "
+      if !parent_elem.nil? && parent_elem.name == "ol"
+        @li_count += 1
+        mark = "#{@li_count}. "
+      end
+      children_result = elem.children
+        .map { |e| next show_elem(e, elem) }
+        .join()
+      return add_list_mark(children_result.strip(), mark)
+    end
+
+    def remove_blank_lines(str)
+      return str.gsub(/[[:space:]]*\R/, "\n")
+    end
+
+    INDENT_STR = "  "
+
+    def add_list_mark(str, mark)
+      s = str.split("\n").map.with_index do |l, i|
+        next mark + l if i == 0
+        next INDENT_STR + l
+      end
+      return s.join("\n")
     end
   end
 end
