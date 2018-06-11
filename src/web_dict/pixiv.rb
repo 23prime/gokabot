@@ -12,6 +12,10 @@ module WebDict
       return 'div.summary'
     end
 
+    def skip_elem?(elem, index)
+      return false
+    end
+
     def read_further?(elem, count)
       return count <= 0
     end
