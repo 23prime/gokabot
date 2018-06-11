@@ -8,7 +8,7 @@ module WebDict
 
   class WebDict
     def browse(keyword)
-      query = URI::escape(keyword.strip())
+      query = URI::escape(strip(keyword))
       page = @mechanize.get("#{uri}#{query}")
       return extract_abstract(page)
     rescue Timeout::Error => e
@@ -64,7 +64,6 @@ module WebDict
         index += 1
         elem = elem.next
       end
-      result = result.strip()
       return nil if result == ""
       return result
     end
@@ -105,7 +104,7 @@ module WebDict
     def elem_to_str(elem, index)
       @li_count = 0
       result = show_elem(elem)
-      result = remove_blank_lines(result).strip()
+      result = strip(remove_blank_lines(result))
       result += "\n" unless result == ""
       return result
     end
@@ -124,7 +123,7 @@ module WebDict
     def show_list(elem)
       @li_count = 0
       result = elem.children
-        .map { |e| next show_elem(e, elem).strip() }
+        .map { |e| next strip(show_elem(e, elem)) }
         .select { |s| s != "" }
         .join("\n")
       return "\n" + result + "\n"
@@ -139,11 +138,15 @@ module WebDict
       children_result = elem.children
         .map { |e| next show_elem(e, elem) }
         .join()
-      return add_list_mark(children_result.strip(), mark)
+      return add_list_mark(strip(children_result), mark)
     end
 
     def remove_blank_lines(str)
       return str.gsub(/[[:space:]]*\R/, "\n")
+    end
+
+    def strip(str)
+      return str.gsub(/(\A[[:space:]]+)|([[:space:]]+\z)/, "")
     end
 
     INDENT_STR = "  "
