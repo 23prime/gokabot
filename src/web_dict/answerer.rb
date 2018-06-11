@@ -5,8 +5,8 @@ require_relative 'niconico'
 module WebDict
   module Answerer
     WEB_DICTS = [
-      Pixiv.new(),
       Niconico.new(),
+      Pixiv.new(),
       Wikipedia.new(),
       WikipediaEN.new(),
     ]
