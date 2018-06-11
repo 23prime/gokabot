@@ -8,7 +8,7 @@ module WebDict
       Pixiv.new(),
       Niconico.new(),
       Wikipedia.new(),
-      Wikipedia_en.new(),
+      WikipediaEN.new(),
     ]
 
     NOT_FOUND_MESSAGES = [
