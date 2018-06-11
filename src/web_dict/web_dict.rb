@@ -53,40 +53,49 @@ module WebDict
       elem = page.search(first_elem_selector).first
       return nil if elem.nil?
       result = ""
-      count = 0
+      index = 0
       while result.length < min_num_characters &&
-          !elem.nil? && read_further?(elem, count)
-        unless skip_elem?(elem, count)
-          elem = change_elem(elem, count)
+          !elem.nil? && read_further?(elem, index)
+        unless skip_elem?(elem, index)
+          elem = change_elem(elem, index)
           result << elem.text
         end
-        count += 1
+        index += 1
         elem = elem.next
       end
       return result
     end
+
+    SKIPPED_TAGS = [
+      "h1", "h2", "h3", "h4", "h5", 
+      "hr", "div", "img"
+    ]
+
+    EXPECTED_TAGS = [
+      "p", "ul", "dl", "ol", "text",
+    ] + SKIPPED_TAGS
 
     def uri
       raise NotImplementedError
     end
 
     def min_num_characters
-      return 40
+      return 50
     end
 
     def first_elem_selector
       return 'p'
     end
 
-    def skip_elem?(elem, count)
-      return false
+    def skip_elem?(elem, index)
+      return SKIPPED_TAGS.include?(elem.name)
     end
 
-    def read_further?(elem, count)
-      return true
+    def read_further?(elem, index)
+      return EXPECTED_TAGS.include?(elem.name)
     end
 
-    def change_elem(elem, count)
+    def change_elem(elem, index)
       elem.content = elem.content.strip
       return elem
     end

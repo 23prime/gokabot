@@ -24,7 +24,6 @@ $deads = [
   'いやでｗｗｗいやでござるｗｗｗ'
 ]
 $nyokki_stat = 0
-$web_dict = WebDict::Answerer.new()
 
 
 def client
@@ -52,8 +51,8 @@ def mk_reply(msg)
 
   if $nyokki_stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     rep_text = nyokki(msg)
-  elsif $web_dict.reacts?(msg)
-    rep_text = $web_dict.answer()
+  elsif ans = WebDict::Answerer::answer(msg)
+    rep_text = ans
   elsif ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)
     rep_text = anime_filter($all_animes, msg)
   elsif msg =~ /死ね|死んで/
