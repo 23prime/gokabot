@@ -71,7 +71,7 @@ module WebDict
 
     SKIPPED_TAGS = [
       "h1", "h2", "h3", "h4", "h5", 
-      "hr", "div", "img"
+      "hr", "div", "img", "table"
     ]
 
     EXPECTED_TAGS = [
