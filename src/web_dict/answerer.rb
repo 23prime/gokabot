@@ -3,7 +3,7 @@ require_relative 'pixiv'
 require_relative 'niconico'
 
 module WebDict
-  module Answerer
+  class Answerer
     WEB_DICTS = [
       Niconico.new(),
       Pixiv.new(),
@@ -22,28 +22,39 @@ module WebDict
     WORD_REG = /(([^\n\r\f\.,．。，、]+#{DELIM_REG}*)|#{DELIM_REG}+)/
     NORMAL_QUESTION_REG = /(?<query>#{WORD_REG})#{INTERROG_REG}/
 
-    def self.extract_keyword(msg)
+    def extract_keyword(msg)
       if NORMAL_QUESTION_REG =~ msg
         return $~[:query]
       end
       return nil
     end
 
-    def self.search(keyword)
+    def initialize()
+      @next_dicts = WEB_DICTS.shuffle
+    end
+
+    def search(keyword)
       threads = []
-      WEB_DICTS.shuffle.each do |web_dict|
+      @next_dicts = WEB_DICTS.shuffle if keyword != @prev_keyword
+      @prev_keyword = keyword
+      @next_dicts.each do |web_dict|
         threads << Thread.start(keyword) do |keyword|
           next web_dict.browse(keyword)
         end
       end
-      threads.each do |thread|
+      threads.each_with_index do |thread, i|
         result = thread.value()
-        return result unless result.nil?
+        unless result.nil?
+          @next_dicts.delete_at(i)
+          @next_dicts = WEB_DICTS.shuffle if @next_dicts.empty?
+          return result 
+        end
       end
+      @next_dicts = WEB_DICTS.shuffle
       return nil
     end
 
-    def self.answer(msg)
+    def answer(msg)
       keyword = extract_keyword(msg)
       return nil if keyword.nil?
       result = search(keyword)
