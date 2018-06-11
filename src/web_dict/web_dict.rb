@@ -102,38 +102,50 @@ module WebDict
     end
 
     def elem_to_str(elem, index)
-      @li_count = 0
       result = show_elem(elem)
       result = strip(remove_blank_lines(result))
       result += "\n" unless result == ""
       return result
     end
 
-    def show_elem(elem, parent_elem = nil)
+    class Counter
+      def initialize
+        @counter = 0
+      end
+
+      def increment
+        @counter += 1
+      end
+
+      attr_reader :counter
+    end
+    private_constant :Counter
+
+    def show_elem(elem, parent_elem = nil, list_counter = Counter.new)
       case elem.name
       when "ul", "ol"
         show_list(elem)
       when "li"
-        show_list_item(elem, parent_elem)
+        show_list_item(elem, parent_elem, list_counter)
       else
         return elem.text
       end
     end
 
     def show_list(elem)
-      @li_count = 0
+      counter = Counter.new
       result = elem.children
-        .map { |e| next strip(show_elem(e, elem)) }
+        .map { |e| next strip(show_elem(e, elem, counter)) }
         .select { |s| s != "" }
         .join("\n")
       return "\n" + result + "\n"
     end
 
-    def show_list_item(elem, parent_elem)
+    def show_list_item(elem, parent_elem, list_counter)
       mark = "• "
       if !parent_elem.nil? && parent_elem.name == "ol"
-        @li_count += 1
-        mark = "#{@li_count}. "
+        list_counter.increment
+        mark = "#{list_counter.counter}. "
       end
       children_result = elem.children
         .map { |e| next show_elem(e, elem) }
