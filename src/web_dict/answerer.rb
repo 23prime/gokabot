@@ -30,8 +30,14 @@ module WebDict
     end
 
     def self.search(keyword)
+      threads = []
       WEB_DICTS.each do |web_dict|
-        result = web_dict.browse(keyword)
+        threads << Thread.start(keyword) do |keyword|
+          next web_dict.browse(keyword)
+        end
+      end
+      threads.each do |thread|
+        result = thread.value()
         return result unless result.nil?
       end
       return nil
