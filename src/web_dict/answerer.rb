@@ -3,7 +3,7 @@ require_relative 'pixiv'
 require_relative 'niconico'
 
 module WebDict
-  class Answerer
+  module Answerer
     WEB_DICTS = [
       Pixiv.new(),
       Niconico.new(),
@@ -21,19 +21,15 @@ module WebDict
     DELIM_REG = /[\.,．。，、]/
     WORD_REG = /(([^\n\r\f\.,．。，、]+#{DELIM_REG}*)|#{DELIM_REG}+)/
     NORMAL_QUESTION_REG = /(?<query>#{WORD_REG})#{INTERROG_REG}/
-    PREV_QUESTION_REG = /^#{INTERROG_REG}/
 
-    def reacts?(msg)
+    def self.extract_keyword(msg)
       if NORMAL_QUESTION_REG =~ msg
-        @query = $~[:query]
-        return true
+        return $~[:query]
       end
-      return false
+      return nil
     end
 
-    attr_reader :query
-
-    def search(keyword)
+    def self.search(keyword)
       WEB_DICTS.each do |web_dict|
         result = web_dict.browse(keyword)
         return result unless result.nil?
@@ -41,12 +37,11 @@ module WebDict
       return nil
     end
 
-    def answer(keyword = nil)
-      keyword = query if keyword.nil?
-      return NOT_FOUND_MESSAGES.sample() if keyword.nil?
+    def self.answer(msg)
+      keyword = extract_keyword(msg)
+      return nil if keyword.nil?
       result = search(keyword)
       return NOT_FOUND_MESSAGES.sample() if result.nil?
-      @query = nil
       return result
     end
   end

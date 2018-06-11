@@ -30,6 +30,7 @@ module WebDict
       end
     end
   end
+
   class Wikipedia_en < Wikipedia
     def uri
       return "https://en.wikipedia.org/wiki/"
