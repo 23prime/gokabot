@@ -17,7 +17,7 @@ module WebDict
 
     def change_elem(elem, count)
       remove_cites(elem)
-      return super(elem, count)
+      return elem
     end
 
     def remove_cites(elem)
