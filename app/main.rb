@@ -23,7 +23,6 @@ $deads = [
   'そっちからリプ送ってきて死ねっつうな！死ね！しねしねこうせん！💨',
   'いやでｗｗｗいやでござるｗｗｗ'
 ]
-$nyokki_stat = 0
 
 
 def client
@@ -49,8 +48,8 @@ def mk_reply(msg)
   wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
   d         = Date.today.wday
 
-  if $nyokki_stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
-    rep_text = nyokki(msg)
+  if Nyokki.stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
+    rep_text = Nyokki.nyokki(msg)
   elsif ans = WebDict::Answerer::answer(msg)
     rep_text = ans
   elsif ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)
@@ -59,6 +58,8 @@ def mk_reply(msg)
     rep_text = $deads.sample
   elsif msg =~ /行く/
     rep_text = '俺もイク！ｗ'
+  elsif msg =~/^.$/
+    rep_text = Denippi.monyo_chk(msg)
   elsif
     case msg0
     when '天気', '今日の天気', '明日の天気'
@@ -86,8 +87,6 @@ def mk_reply(msg)
       rep_text = 'たけのこ君ｐｒｐｒ'
     when 'ぬるぽ'
       rep_text = 'ｶﾞｯ'
-    when 'ね'
-      rep_text = 'そ'
     end
   end
 
