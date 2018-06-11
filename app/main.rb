@@ -26,6 +26,7 @@ $deads = [
 $web_dict = WebDict::Answerer.new()
 
 
+
 def client
   @client ||= Line::Bot::Client.new { |config|
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
@@ -48,11 +49,10 @@ def mk_reply(msg)
   msg0      = msg_split[0]
   wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
   d         = Date.today.wday
-
   if Nyokki.stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     rep_text = Nyokki.nyokki(msg)
-  elsif $web_dict.reacts?(msg)
-    rep_text = $web_dict.answer()
+  elsif ans = WebDict::Answerer::answer(msg)
+    rep_text = ans
   elsif ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)
     rep_text = anime_filter($all_animes, msg)
   elsif msg =~ /死ね|死んで/
