@@ -64,6 +64,7 @@ module WebDict
         index += 1
         elem = elem.next
       end
+      result = strip(result)
       return nil if result == ""
       return result
     end
