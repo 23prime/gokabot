@@ -15,11 +15,11 @@ module Weather
     if city_id.nil?
       return "分かりませ〜んｗ"
     else
-      # Get weather info.
+      # Get weather info in 'city'.
       uri = URI.parse("http://weather.livedoor.com/forecast/webservice/json/v1?city=#{city_id}")
       weather_json = Net::HTTP.get(uri)
       city_all = JSON.parse(weather_json)
-
+      
       case num
       # 0 -> today, 1 -> tomorrow.
       # So, forecasts[0] -> today weather, forecasts[0] -> tomorrow weather.
