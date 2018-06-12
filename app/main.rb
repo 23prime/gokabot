@@ -43,7 +43,7 @@ end
 
 def mk_reply(msg) 
   rep_text  = ''
-  msg       = convert_wday(msg)
+  msg       = Anime.convert(msg)
   msg_split = msg.split(/[[:blank:]]+/)
   msg0      = msg_split[0]
   wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
@@ -54,7 +54,7 @@ def mk_reply(msg)
   elsif ans = $web_dict.answer(msg)
     rep_text = ans
   elsif ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)
-    rep_text = anime_filter($all_animes, msg)
+    rep_text = Anime.filter($all_animes, msg)
   elsif msg =~ /死ね|死んで/
     rep_text = $deads.sample
   elsif msg =~ /行く/
@@ -77,11 +77,11 @@ def mk_reply(msg)
     when 'ごかぼう', 'gokabou', 'ヒゲ', 'ひげ'
       rep_text = $gokabou.sample
     when '昨日のアニメ', '昨日', 'yesterday'
-      rep_text = anime_filter($all_animes, wdays[d - 1])
+      rep_text = Anime.filter($all_animes, wdays[d - 1])
     when '今日のアニメ', '今日', 'today'
-      rep_text = anime_filter($all_animes, wdays[d])
+      rep_text = Anime.filter($all_animes, wdays[d])
     when '明日のアニメ', '明日', 'tomorrow'
-      rep_text = anime_filter($all_animes, wdays[(d + 1) % 7])
+      rep_text = Anime.filter($all_animes, wdays[(d + 1) % 7])
     when 'おみくじ'
       rep_text = $omikuji.sample
     when 'たけのこ'

@@ -1,4 +1,4 @@
-require './src/day.rb'
+require './src/anime.rb'
 require './src/weather.rb'
 require './src/nyokki.rb'
 require './src/denippi.rb'
