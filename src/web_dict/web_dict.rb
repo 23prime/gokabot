@@ -95,7 +95,8 @@ module WebDict
     end
 
     def read_further?(elem, index)
-      return EXPECTED_TAGS.include?(elem.name)
+      footer_heading = elem.name == "h2" && elem.text =~ /関連|脚注|出典|参考文献|注/
+      return EXPECTED_TAGS.include?(elem.name) && !footer_heading
     end
 
     def change_elem(elem, index)
@@ -148,10 +149,23 @@ module WebDict
         list_counter.increment
         mark = "#{list_counter.counter}. "
       end
-      children_result = elem.children
-        .map { |e| next show_elem(e, elem) }
-        .join()
-      return add_list_mark(strip(children_result), mark)
+      return add_list_mark(strip(show_children(elem)), mark)
+    end
+
+    def show_children(elem)
+      result = ""
+      normal_str = ""
+      elem.children.each do |e|
+        if ["ul", "ol", "li"].include?(e.name)
+          result << strip_all_lines(normal_str)
+          normal_str = ""
+          result << show_elem(e, elem)
+        else
+          normal_str << show_elem(e, elem)
+        end
+      end
+      result << strip_all_lines(normal_str)
+      return result
     end
 
     def remove_blank_lines(str)
@@ -160,6 +174,10 @@ module WebDict
 
     def strip(str)
       return str.gsub(/(\A[[:space:]]+)|([[:space:]]+\z)/, "")
+    end
+
+    def strip_all_lines(str)
+      return str.gsub(/(^[[:space:]]+)|([[:space:]]+$)/, "")
     end
 
     INDENT_STR = "  "
