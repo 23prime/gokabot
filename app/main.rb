@@ -7,7 +7,7 @@ require './app/imports.rb'
 
 $version = '1.0.0'
 $help = File.open('./docs/help', 'r').read
-$all_animes = File.open('./docs/18spring.yaml', 'r').read
+$all_animes = File.open('./docs/18summer.yaml', 'r').read
 $omikuji = File.open('./docs/omikuji', 'r').read.split("\n")
 $gokabou = File.open('./docs/gokabou_tweets', 'r').read.split("\n")
 $deads = [
