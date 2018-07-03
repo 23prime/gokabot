@@ -25,12 +25,12 @@ module Anime
     end
   end
 
-  def self.filter(str, day)
+  def self.filter(animes, day)
     case day
     when 'All'
-      str
+      animes
     when 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
-      animes = YAML.load(str)
+      animes = YAML.load(animes)
       animes[day].join("\n")
     end
   end
