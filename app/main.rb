@@ -1,7 +1,6 @@
 # coding: utf-8
 require 'sinatra'
 require 'line/bot'
-require 'date'
 require './app/imports.rb'
 
 
@@ -47,7 +46,7 @@ def mk_reply(msg)
   msg_split = msg.split(/[[:blank:]]+/)
   msg0      = msg_split[0]
   wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
-  d         = Date.today.wday
+  d         = Time.now.wday
 
   if Nyokki.stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     rep_text = Nyokki.nyokki(msg)
