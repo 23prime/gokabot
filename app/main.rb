@@ -46,7 +46,8 @@ def mk_reply(msg)
   msg_split = msg.split(/[[:blank:]]+/)
   msg0      = msg_split[0]
   wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
-  d         = Time.now.wday
+  d         = Time.now.localtime("+05:00").wday
+
 
   if Nyokki.stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     rep_text = Nyokki.nyokki(msg)
