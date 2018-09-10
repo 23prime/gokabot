@@ -60,6 +60,8 @@ def mk_reply(msg)
     rep_text = '俺もイク！ｗ'
   elsif msg =~/^.$/
     rep_text = Denippi.monyo_chk(msg)
+  elsif msg =~/鳩|ゆかり/
+    rep_text = Pigeons.mail
   elsif
     case msg0
     when '天気', '今日の天気', '明日の天気'
@@ -87,8 +89,6 @@ def mk_reply(msg)
       rep_text = 'たけのこ君ｐｒｐｒ'
     when 'ぬるぽ'
       rep_text = 'ｶﾞｯ'
-    when 'はと','鳩','ゆかりん','田村ゆかりさん','田村ゆかり'
-      rep_text = Pigeons.mail
     end
   end
 
