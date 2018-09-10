@@ -87,6 +87,8 @@ def mk_reply(msg)
       rep_text = 'たけのこ君ｐｒｐｒ'
     when 'ぬるぽ'
       rep_text = 'ｶﾞｯ'
+    when 'はと','鳩','ゆかりん','田村ゆかりさん','田村ゆかり'
+      rep_text = Pigeons.mail
     end
   end
 
