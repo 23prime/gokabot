@@ -48,7 +48,6 @@ def mk_reply(msg)
   wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
   d         = Time.now.localtime("+05:00").wday
 
-
   if Nyokki.stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     rep_text = Nyokki.nyokki(msg)
   elsif ans = $web_dict.answer(msg)
@@ -88,6 +87,8 @@ def mk_reply(msg)
       rep_text = 'たけのこ君ｐｒｐｒ'
     when 'ぬるぽ'
       rep_text = 'ｶﾞｯ'
+    when 'はと','鳩','ゆかりん','田村ゆかりさん','田村ゆかり'
+      rep_text = Pigeons.mail
     end
   end
 
