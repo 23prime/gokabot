@@ -4,21 +4,21 @@ require 'yaml'
 module Anime
   def self.convert(day)
     case day
-    when 'All', 'all', '今期', '今期のアニメ'
+    when /^all|今期(のアニメ|)$/i
       'All'
-    when 'Sun', 'Sunday', '日曜', '日曜日', '日曜のアニメ', '日曜日のアニメ'
+    when /^sun(day|)$|^日曜(日|)(のアニメ|)$/i
       'Sun'
-    when 'Mon', 'Monday', '月曜', '月曜日', '月曜のアニメ', '月曜日のアニメ'
+    when /^mon(day|)$|^月曜(日|)(のアニメ|)$/i
       'Mon'
-    when 'Tue', 'Tueday', '火曜', '火曜日', '火曜のアニメ', '火曜日のアニメ'
+    when /^tue(sday|)$|^火曜(日|)(のアニメ|)$/i
       'Tue'
-    when 'Wed', 'Wedday', '水曜', '水曜日', '水曜のアニメ', '水曜日のアニメ'
+    when /^wed(nesday|)$|^水曜(日|)(のアニメ|)$/i
       'Wed'
-    when 'Thu', 'Thuday', '木曜', '木曜日', '木曜のアニメ', '木曜日のアニメ'
+    when /^thu(rsday|)$|^木曜(日|)(のアニメ|)$/i
       'Thu'
-    when 'Fri', 'Friday', '金曜', '金曜日', '金曜のアニメ', '金曜日のアニメ'
+    when /^fri(day|)$|^金曜(日|)(のアニメ|)$/i
       'Fri'
-    when 'Sat', 'Satday', '土曜', '土曜日', '土曜のアニメ', '土曜日のアニメ'
+    when /^sat(day|)$|^土曜(日|)(のアニメ|)$/i
       'Sat'
     else
       day
