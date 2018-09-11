@@ -58,9 +58,9 @@ def mk_reply(msg)
     rep_text = $deads.sample
   elsif msg =~ /行く/
     rep_text = '俺もイク！ｗ'
-  elsif msg =~/^.$/
+  elsif msg =~ /^([ぁ-ん]|[ァ-ン])$/
     rep_text = Denippi.monyo_chk(msg)
-  elsif msg =~/鳩|ゆかり/
+  elsif msg =~ /鳩|ゆかり|はと/
     rep_text = Pigeons.mail
   elsif
     case msg0
