@@ -52,7 +52,7 @@ def mk_reply(msg)
     rep_text = Nyokki.nyokki(msg)
   elsif ans = $web_dict.answer(msg)
     rep_text = ans
-  elsif ['All', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].include?(msg)
+  elsif msg =~ /^All$|^Sun$|^Mon$|^Tue$|^Wed$|^Thu$|^Fri$|^Sat$/
     rep_text = Anime.filter($all_animes, msg)
   elsif msg =~ /死ね|死んで/
     rep_text = $deads.sample
