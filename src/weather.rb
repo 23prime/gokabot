@@ -54,7 +54,7 @@ module Weather
 
   def self.weather(date, city)
     case date
-    when '今日の天気', '天気'
+    when /^(今日の|)天気$/
       num = 0
     when '明日の天気'
       num = 1
