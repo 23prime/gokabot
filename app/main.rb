@@ -64,7 +64,7 @@ def mk_reply(msg)
     rep_text = Pigeons.mail
   elsif
     case msg0
-    when '天気', '今日の天気', '明日の天気'
+    when /^((今|明)日の|)天気$/
       rep_text = Weather.weather(msg0, msg_split[1])
     end
   else
