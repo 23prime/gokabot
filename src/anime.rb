@@ -2,23 +2,29 @@
 require 'yaml'
 
 module Anime
+
+  ANIME_OF = /(のアニメ|)$/
+  DAY_ANIME_OF = /曜(日|)#{ANIME_OF}/
+  DAY = /(day|)$/i
+  WEEK = /^Sun$|^Mon$|^Tue$|^Wed$|^Thu$|^Fri$|^Sat$/i
+
   def self.convert(day)
     case day
-    when /^all|今期(のアニメ|)$/i
+    when /^all|今期#{ANIME_OF}/i
       'All'
-    when /^sun(day|)$|^日曜(日|)(のアニメ|)$/i
+    when /^sun#{DAY}|^日#{DAY_ANIME_OF}/i
       'Sun'
-    when /^mon(day|)$|^月曜(日|)(のアニメ|)$/i
+    when /^mon#{DAY}|^月#{DAY_ANIME_OF}/i
       'Mon'
-    when /^tue(sday|)$|^火曜(日|)(のアニメ|)$/i
+    when /^tue(sday|)$|^火#{DAY_ANIME_OF}/i
       'Tue'
-    when /^wed(nesday|)$|^水曜(日|)(のアニメ|)$/i
+    when /^wed(nesday|)$|^水#{DAY_ANIME_OF}/i
       'Wed'
-    when /^thu(rsday|)$|^木曜(日|)(のアニメ|)$/i
+    when /^thu(rsday|)$|^木#{DAY_ANIME_OF}/i
       'Thu'
-    when /^fri(day|)$|^金曜(日|)(のアニメ|)$/i
+    when /^fri#{DAY}|^金#{DAY_ANIME_OF}/i
       'Fri'
-    when /^sat(day|)$|^土曜(日|)(のアニメ|)$/i
+    when /^sat#{DAY}|^土#{DAY_ANIME_OF}/i
       'Sat'
     else
       day
@@ -29,7 +35,7 @@ module Anime
     case day
     when 'All'
       animes
-    when 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
+    when WEEK
       animes = YAML.load(animes)
       animes[day].join("\n")
     end
