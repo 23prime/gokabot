@@ -56,7 +56,7 @@ def mk_reply(msg)
       rep_text = Weather.weather(msg0, msg_split[1])
   else
     case msg
-    when  /^All$|^Sun$|^Mon$|^Tue$|^Wed$|^Thu$|^Fri$|^Sat$/
+    when /^All$|#{Anime::WEEK}/i
       rep_text = Anime.filter($all_animes, msg)
     when /死ね|死んで/
       rep_text = $deads.sample
