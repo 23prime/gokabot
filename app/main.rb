@@ -52,42 +52,39 @@ def mk_reply(msg)
     rep_text = Nyokki.nyokki(msg)
   elsif ans = $web_dict.answer(msg)
     rep_text = ans
-  elsif msg =~ /^All$|^Sun$|^Mon$|^Tue$|^Wed$|^Thu$|^Fri$|^Sat$/
-    rep_text = Anime.filter($all_animes, msg)
-  elsif msg =~ /死ね|死んで/
-    rep_text = $deads.sample
-  elsif msg =~ /行く/
-    rep_text = '俺もイク！ｗ'
-  elsif msg =~ /^([ぁ-ん]|[ァ-ン])$/
-    rep_text = Denippi.monyo_chk(msg)
-  elsif msg =~ /鳩|ゆかり|はと/
-    rep_text = Pigeons.mail
-  elsif
-    case msg0
-    when /^((今|明)日の|)天気$/
+  elsif msg0 =~ /^((今|明)日の|)天気$/
       rep_text = Weather.weather(msg0, msg_split[1])
-    end
   else
     case msg
-    when 'gokabot -v', 'gokabot --version'
+    when  /^All$|^Sun$|^Mon$|^Tue$|^Wed$|^Thu$|^Fri$|^Sat$/
+      rep_text = Anime.filter($all_animes, msg)
+    when /死ね|死んで/
+      rep_text = $deads.sample
+    when /行く/
+      rep_text = '俺もイク！ｗ'
+    when /^([ぁ-ん]|[ァ-ン])$/
+      rep_text = Denippi.monyo_chk(msg)
+    when /鳩|ゆかり|はと/
+      rep_text = Pigeons.mail
+    when /^gokabot[[:blank:]]+(-v|--version)$/
       rep_text = $version
-    when 'gokabot -h', 'gokabot --help'
+    when /^gokabot[[:blank:]]+(-h|--help)$/
       rep_text = $help
-    when 'ごかぼっと', 'gokabot'
+    when /^ごかぼっと$|^gokabot$/
       rep_text = 'なんですか？'
-    when 'ごかぼう', 'gokabou', 'ヒゲ', 'ひげ'
+    when /^ごかぼう$|^gokabou$|^ヒゲ$|^ひげ$/
       rep_text = $gokabou.sample
-    when '昨日のアニメ', '昨日', 'yesterday'
+    when /^昨日(のアニメ|)$|^yesterday$/i
       rep_text = Anime.filter($all_animes, wdays[d - 1])
-    when '今日のアニメ', '今日', 'today'
+    when /^今日(のアニメ|)$|^today$/i
       rep_text = Anime.filter($all_animes, wdays[d])
-    when '明日のアニメ', '明日', 'tomorrow'
+    when /^明日(のアニメ|)$|^tomorrow$/i
       rep_text = Anime.filter($all_animes, wdays[(d + 1) % 7])
-    when 'おみくじ'
+    when /^おみくじ$/
       rep_text = $omikuji.sample
-    when 'たけのこ'
+    when /^たけのこ(君|くん|さん|)$/
       rep_text = 'たけのこ君ｐｒｐｒ'
-    when 'ぬるぽ'
+    when /^ぬるぽ$/
       rep_text = 'ｶﾞｯ'
     end
   end
