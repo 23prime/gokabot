@@ -44,8 +44,6 @@ end
 def mk_reply(msg) 
   rep_text  = ''
   msg       = Anime.convert(msg)
-  msg_split = msg.split(/[[:blank:]]+/)
-  msg0      = msg_split[0]
   wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
   d         = Time.now.localtime("+05:00").wday
 
