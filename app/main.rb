@@ -53,8 +53,6 @@ def mk_reply(msg)
     rep_text = Nyokki.nyokki(msg)
   elsif ans = $web_dict.answer(msg)
     rep_text = ans
-  # elsif msg0 =~ /^((今|明)日の|)天気$/
-  # elsif ans = Weather.weather(msg0, msg_split[1])
   elsif ans = $tenki.weather(msg)
     rep_text = ans
   else
