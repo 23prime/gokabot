@@ -4,11 +4,11 @@ require 'uri'
 require 'json'
 
 
-module Weather
+class Weather
   @@file  = File.open('./docs/city_id.json', 'r').read
   @@json  = JSON.parse(@@file)
 
-  def self.get_weather(num, city)
+  def get_weather(date, city)
     # Get city ID.
     city_id = @@json[city]
 
@@ -20,11 +20,11 @@ module Weather
       weather_json = Net::HTTP.get(uri)
       city_all = JSON.parse(weather_json)
       
-      case num
+      case date
       # 0 -> today, 1 -> tomorrow.
-      # So, forecasts[0] -> today weather, forecasts[0] -> tomorrow weather.
+      # So, forecasts[0] -> today weather, forecasts[1] -> tomorrow weather.
       when 0, 1
-        day_weather = city_all["forecasts"][num]
+        day_weather = city_all["forecasts"][date]
 
         day   = day_weather["dateLabel"]  # 今日 or 明日
         date  = day_weather["date"][8, 9] # yyyy-mm-dd -> dd
@@ -37,32 +37,41 @@ module Weather
 
         unless min_temp.nil?
           min_celsius = "最低気温：#{min_temp["celsius"]}℃"
-          min_celsius = "予想#{min_celsius}" if num == 1
+          min_celsius = "予想#{min_celsius}" if date == 1
           min_celsius = "\n#{min_celsius}"
         end
 
         unless max_temp.nil?
           max_celsius = "最高気温：#{max_temp["celsius"]}℃"
-          max_celsius = "予想#{max_celsius}" if num == 1
+          max_celsius = "予想#{max_celsius}" if date == 1
           max_celsius = "\n#{max_celsius}"
         end
 
         return "> #{city}の#{day}（#{date}日）の天気 <\n#{telop}#{max_celsius}#{min_celsius}"
+
+      else
+        return nil
       end
     end
   end
+  
+  def weather(msg)
+    msg_split = msg.split(/[[:blank:]]+/)
+    msg0      = msg_split[0]
+    msg1      = msg_split[1]
+    default   = 'つくば'
 
-  def self.weather(date, city)
-    case date
+    case msg0
     when /^(今日の|)天気$/
-      num = 0
-    when '明日の天気'
-      num = 1
-    end
-    if city.nil?
-      return get_weather(num, 'つくば') 
+      date = 0
+    when /^明日の天気$/
+      date = 1
     else
-      return get_weather(num, city)
+      return nil
     end
+    
+    return get_weather(date, default) if msg1.nil?
+    city = msg1.chomp
+    return get_weather(date, city)
   end
 end

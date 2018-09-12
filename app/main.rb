@@ -22,6 +22,7 @@ $deads = [
   'そっちからリプ送ってきて死ねっつうな！死ね！しねしねこうせん！💨',
   'いやでｗｗｗいやでござるｗｗｗ'
 ]
+$tenki = Weather.new()
 $web_dict = WebDict::Answerer.new()
 
 
@@ -52,8 +53,10 @@ def mk_reply(msg)
     rep_text = Nyokki.nyokki(msg)
   elsif ans = $web_dict.answer(msg)
     rep_text = ans
-  elsif msg0 =~ /^((今|明)日の|)天気$/
-      rep_text = Weather.weather(msg0, msg_split[1])
+  # elsif msg0 =~ /^((今|明)日の|)天気$/
+  # elsif ans = Weather.weather(msg0, msg_split[1])
+  elsif ans = $tenki.weather(msg)
+    rep_text = ans
   else
     case msg
     when /^All$|#{Anime::WEEK}/i
