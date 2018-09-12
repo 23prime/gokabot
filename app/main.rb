@@ -6,7 +6,6 @@ require './app/imports.rb'
 
 $version = '1.0.0'
 $help = File.open('./docs/help', 'r').read
-$all_animes = File.open('./docs/18summer.yaml', 'r').read
 $omikuji = File.open('./docs/omikuji', 'r').read.split("\n")
 $gokabou = File.open('./docs/gokabou_tweets', 'r').read.split("\n")
 $deads = [
@@ -22,6 +21,7 @@ $deads = [
   'そっちからリプ送ってきて死ねっつうな！死ね！しねしねこうせん！💨',
   'いやでｗｗｗいやでござるｗｗｗ'
 ]
+$anime = Anime.new()
 $tenki = Weather.new()
 $web_dict = WebDict::Answerer.new()
 
@@ -43,9 +43,6 @@ end
 
 def mk_reply(msg) 
   rep_text  = ''
-  msg       = Anime.convert(msg)
-  wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
-  d         = Time.now.localtime("+05:00").wday
 
   if Nyokki.stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     rep_text = Nyokki.nyokki(msg)
@@ -53,10 +50,10 @@ def mk_reply(msg)
     rep_text = ans
   elsif ans = $tenki.weather(msg)
     rep_text = ans
+  elsif ans = $anime.filter(msg)
+    rep_text = ans
   else
     case msg
-    when /^All$|#{Anime::WEEK}/i
-      rep_text = Anime.filter($all_animes, msg)
     when /死ね|死んで/
       rep_text = $deads.sample
     when /行く/
@@ -73,12 +70,6 @@ def mk_reply(msg)
       rep_text = 'なんですか？'
     when /^ごかぼう$|^gokabou$|^ヒゲ$|^ひげ$/
       rep_text = $gokabou.sample
-    when /^昨日(のアニメ|)$|^yesterday$/i
-      rep_text = Anime.filter($all_animes, wdays[d - 1])
-    when /^今日(のアニメ|)$|^today$/i
-      rep_text = Anime.filter($all_animes, wdays[d])
-    when /^明日(のアニメ|)$|^tomorrow$/i
-      rep_text = Anime.filter($all_animes, wdays[(d + 1) % 7])
     when /^おみくじ$/
       rep_text = $omikuji.sample
     when /^たけのこ(君|くん|さん|)$/
