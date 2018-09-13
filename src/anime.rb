@@ -51,8 +51,8 @@ class Anime
     when /^All$/
       return $animes
     when WEEK
-      $animes = YAML.load($animes)
-      return $animes[day].join("\n")
+      animes = YAML.load($animes)
+      return animes[day].join("\n")
     else
       return nil
     end
