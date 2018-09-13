@@ -3,11 +3,12 @@ require 'sinatra'
 require 'line/bot'
 require './app/imports.rb'
 
-$gokabou = Gokabou.new()
-$anime = Anime.new()
-$tenki = Weather.new()
-$web_dict = WebDict::Answerer.new()
-
+$OBJS = [
+  Gokabou.new(),
+  Anime.new(),
+  Weather.new(),
+  WebDict::Answerer.new()
+]
 
 def client
   @client ||= Line::Bot::Client.new { |config|
@@ -26,19 +27,14 @@ end
 
 def mk_reply(msg) 
   rep_text  = ''
-  objs = [
-    $web_dict,
-    $tenki,
-    $anime,
-    $gokabou
-  ]
 
   if Nyokki.stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     rep_text = Nyokki.nyokki(msg)
   else
-    for obj in objs do
+    for obj in $OBJS do
       if ans = obj.answer(msg)
         rep_text = ans
+        break
       end
     end
 
