@@ -31,7 +31,7 @@ def mk_reply(msg)
   if Nyokki.stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     rep_text = Nyokki.nyokki(msg)
   else
-    for obj in $OBJS do
+    $OBJS.each do |obj|
       if ans = obj.answer(msg)
         rep_text = ans
         break
