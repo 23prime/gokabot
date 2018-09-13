@@ -55,7 +55,7 @@ class Weather
     end
   end
   
-  def weather(msg)
+  def answer(msg)
     msg_split = msg.split(/[[:blank:]]+/)
     msg0      = msg_split[0]
     msg1      = msg_split[1]
