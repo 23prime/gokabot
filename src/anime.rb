@@ -1,6 +1,9 @@
 # coding: utf-8
 require 'yaml'
 
+$animes = File.open('./docs/18summer.yaml', 'r').read
+
+
 class Anime
 
   ANIME_OF = /(のアニメ|)$/
@@ -9,8 +12,8 @@ class Anime
   WEEK = /^Sun$|^Mon$|^Tue$|^Wed$|^Thu$|^Fri$|^Sat$/i
 
   def convert(msg)
-    wdays     = %w[Sun Mon Tue Wed Thu Fri Sat]
-    d         = Time.now.localtime("+05:00").wday
+    wdays = %w[Sun Mon Tue Wed Thu Fri Sat]
+    today = Time.now.localtime("+05:00").wday
 
     case msg
     when /^all|今期#{ANIME_OF}/i
@@ -30,11 +33,11 @@ class Anime
     when /^sat#{DAY}|^土#{DAY_ANIME_OF}/i
       'Sat'
     when /^今日#{ANIME_OF}|^today$/i
-      wdays[d]
+      wdays[today]
     when /^昨日#{ANIME_OF}|^yesterday$/i
-      wdays[(d + 1) % 7]
+      wdays[(today + 1) % 7]
     when /^明日#{ANIME_OF}|^tomorrow$/i
-      wdays[d - 1]
+      wdays[today - 1]
     else
       msg
     end
@@ -43,14 +46,13 @@ class Anime
 
   def answer(msg)
     day = convert(msg)
-    animes = File.open('./docs/18summer.yaml', 'r').read
 
     case day
     when /^All$/
-      return animes
+      return $animes
     when WEEK
-      animes = YAML.load(animes)
-      return animes[day].join("\n")
+      $animes = YAML.load($animes)
+      return $animes[day].join("\n")
     else
       return nil
     end
