@@ -26,18 +26,18 @@ end
 
 def mk_reply(msg) 
   rep_text  = ''
-  funcs = [
-    $web_dict.answer(msg),
-    $tenki.weather(msg), 
-    $anime.filter(msg),
-    $gokabou.hige(msg)
+  objs = [
+    $web_dict,
+    $tenki,
+    $anime,
+    $gokabou
   ]
 
   if Nyokki.stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     rep_text = Nyokki.nyokki(msg)
   else
-    for func in funcs do
-      if ans = func
+    for obj in objs do
+      if ans = obj.answer(msg)
         rep_text = ans
       end
     end
