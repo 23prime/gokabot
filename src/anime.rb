@@ -41,7 +41,7 @@ class Anime
   end
 
 
-  def filter(msg)
+  def answer(msg)
     day = convert(msg)
     animes = File.open('./docs/18summer.yaml', 'r').read
 

@@ -17,7 +17,7 @@ class Gokabou
     'いやでｗｗｗいやでござるｗｗｗ'
   ]
   
-  def hige(msg)
+  def answer(msg)
     case msg
     when /死ね|死んで/
       return @@deads.sample
