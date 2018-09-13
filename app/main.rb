@@ -3,28 +3,12 @@ require 'sinatra'
 require 'line/bot'
 require './app/imports.rb'
 
-
-$version = '1.0.0'
-$help = File.open('./docs/help', 'r').read
-$omikuji = File.open('./docs/omikuji', 'r').read.split("\n")
-$gokabou = File.open('./docs/gokabou_tweets', 'r').read.split("\n")
-$deads = [
-  'いや、死なないよ。',
-  '死ぬ〜〜〜〜〜ｗ', 
-  '死んだｗ',
-  'おいおい…',
-  '死んダダダダダダーン',
-  '人に死ねなんて言葉使うな😡',
-  '死ぬまで死なないよ',
-  '死ねのバーゲンセールかよ',
-  'きみ、死ねしか言えないの？',
-  'そっちからリプ送ってきて死ねっつうな！死ね！しねしねこうせん！💨',
-  'いやでｗｗｗいやでござるｗｗｗ'
+$OBJS = [
+  Gokabou.new(),
+  Anime.new(),
+  Weather.new(),
+  WebDict::Answerer.new()
 ]
-$anime = Anime.new()
-$tenki = Weather.new()
-$web_dict = WebDict::Answerer.new()
-
 
 def client
   @client ||= Line::Bot::Client.new { |config|
@@ -46,36 +30,19 @@ def mk_reply(msg)
 
   if Nyokki.stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
     rep_text = Nyokki.nyokki(msg)
-  elsif ans = $web_dict.answer(msg)
-    rep_text = ans
-  elsif ans = $tenki.weather(msg)
-    rep_text = ans
-  elsif ans = $anime.filter(msg)
-    rep_text = ans
   else
+    for obj in $OBJS do
+      if ans = obj.answer(msg)
+        rep_text = ans
+        break
+      end
+    end
+
     case msg
-    when /死ね|死んで/
-      rep_text = $deads.sample
-    when /行く/
-      rep_text = '俺もイク！ｗ'
     when /^([ぁ-ん]|[ァ-ン])$/
       rep_text = Denippi.monyo_chk(msg)
     when /鳩|ゆかり|はと/
       rep_text = Pigeons.mail
-    when /^gokabot[[:blank:]]+(-v|--version)$/
-      rep_text = $version
-    when /^gokabot[[:blank:]]+(-h|--help)$/
-      rep_text = $help
-    when /^ごかぼっと$|^gokabot$/
-      rep_text = 'なんですか？'
-    when /^ごかぼう$|^gokabou$|^ヒゲ$|^ひげ$/
-      rep_text = $gokabou.sample
-    when /^おみくじ$/
-      rep_text = $omikuji.sample
-    when /^たけのこ(君|くん|さん|)$/
-      rep_text = 'たけのこ君ｐｒｐｒ'
-    when /^ぬるぽ$/
-      rep_text = 'ｶﾞｯ'
     end
   end
 

@@ -3,14 +3,13 @@ require 'net/http'
 require 'uri'
 require 'json'
 
+$CITY_IDS  = JSON.parse(File.open('./docs/city_id.json', 'r').read)
 
 class Weather
-  @@file  = File.open('./docs/city_id.json', 'r').read
-  @@json  = JSON.parse(@@file)
 
   def get_weather(date, city)
     # Get city ID.
-    city_id = @@json[city]
+    city_id = $CITY_IDS[city]
 
     if city_id.nil?
       return "分かりませ〜んｗ"
@@ -55,7 +54,7 @@ class Weather
     end
   end
   
-  def weather(msg)
+  def answer(msg)
     msg_split = msg.split(/[[:blank:]]+/)
     msg0      = msg_split[0]
     msg1      = msg_split[1]
