@@ -4,7 +4,7 @@ require 'csv'
 class Pigeons
 
   def pick_mail()
-    mails = CSV.read('../docs/yukarinmails.csv')
+    mails = CSV.read('./docs/yukarinmails.csv')
     mail = mails.sample
     sub = mail[1]
     body = mail[2]
