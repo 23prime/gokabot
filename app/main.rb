@@ -4,10 +4,13 @@ require 'line/bot'
 require './app/imports.rb'
 
 $OBJS = [
+  Nyokki.new(),
   Gokabou.new(),
   Anime.new(),
   Weather.new(),
-  WebDict::Answerer.new()
+  WebDict::Answerer.new(),
+  Denippi.new(),
+  Pigeons.new()
 ]
 
 def client
@@ -28,21 +31,10 @@ end
 def mk_reply(msg) 
   rep_text  = ''
 
-  if Nyokki.stat > 0 || msg =~ /(1|１)(ニョッキ|にょっき|ﾆｮｯｷ)/
-    rep_text = Nyokki.nyokki(msg)
-  else
-    $OBJS.each do |obj|
-      if ans = obj.answer(msg)
-        rep_text = ans
-        break
-      end
-    end
-
-    case msg
-    when /^([ぁ-ん]|[ァ-ン])$/
-      rep_text = Denippi.monyo_chk(msg)
-    when /鳩|ゆかり|はと/
-      rep_text = Pigeons.mail
+  $OBJS.each do |obj|
+    if ans = obj.answer(msg)
+      rep_text = ans
+      break
     end
   end
 
