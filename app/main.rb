@@ -30,6 +30,7 @@ end
 
 def mk_reply(msg) 
   rep_text  = ''
+  $reply_type = 'text'
 
   $OBJS.each do |obj|
     begin
@@ -43,10 +44,20 @@ def mk_reply(msg)
     end
   end
 
-  reply = {
-    type: 'text',
-    text: rep_text
-  }
+  case $reply_type
+  when 'text'
+    reply = {
+      type: 'text',
+      text: rep_text
+    }
+  when 'image'
+    reply = {
+      type: 'image',
+      originalContentUrl: rep_text,
+      previewImageUrl: rep_text
+    }
+  end
+
   return reply
 end
 
