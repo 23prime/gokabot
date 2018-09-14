@@ -2,7 +2,7 @@ require "cgi"
 
 class Tex
 
-  BASE_URI = "https://chart.googleapis.com/chart?cht=tx&chl="
+  BASE_URI = "https://chart.googleapis.com/chart?cht=tx&chs=50&chl="
   TEX_ID = /^tex /i
 
   def request(text)
@@ -15,6 +15,8 @@ class Tex
       msg.slice!(TEX_ID)
       $reply_type = 'image'
       request(msg)
+    else
+      nil
     end
   end
 
