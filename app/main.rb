@@ -10,6 +10,7 @@ $OBJS = [
   Weather.new(),
   WebDict::Answerer.new(),
   Denippi.new(),
+  Tex.new(),
   Pigeons.new()
 ]
 
@@ -30,6 +31,7 @@ end
 
 def mk_reply(msg) 
   rep_text  = ''
+  $reply_type = 'text'
 
   $OBJS.each do |obj|
     begin
@@ -43,10 +45,20 @@ def mk_reply(msg)
     end
   end
 
-  reply = {
-    type: 'text',
-    text: rep_text
-  }
+  case $reply_type
+  when 'text'
+    reply = {
+      type: 'text',
+      text: rep_text
+    }
+  when 'image'
+    reply = {
+      type: 'image',
+      originalContentUrl: rep_text,
+      previewImageUrl: rep_text
+    }
+  end
+
   return reply
 end
 
@@ -66,7 +78,12 @@ post '/callback' do
     when Line::Bot::Event::Message
       case event.type
       when Line::Bot::Event::MessageType::Text
-        client.reply_message(event['replyToken'], reply(event))
+        begin
+          client.reply_message(event['replyToken'], reply(event))
+        rescue => exception
+          exception.message
+          rep_text = "うｐはよｗｗｗｗｗｗ\n\n> #{exception}"
+        end
       when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
         response = client.get_message_content(event.message['id'])
         tf = Tempfile.open('content')
