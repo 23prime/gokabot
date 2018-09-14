@@ -24,7 +24,7 @@ end
 # Make reply for each case.
 def reply(event)
   msg = event.message['text']
-  mk_reply(msg)
+  return mk_reply(msg)
 end
 
 
@@ -32,9 +32,14 @@ def mk_reply(msg)
   rep_text  = ''
 
   $OBJS.each do |obj|
-    if ans = obj.answer(msg)
-      rep_text = ans
-      break
+    begin
+      if ans = obj.answer(msg)
+        rep_text = ans
+        break
+      end
+    rescue => exception
+      exception.message
+      rep_text = "エラーおつｗｗｗｗｗｗ\n\n> #{exception}"
     end
   end
 
