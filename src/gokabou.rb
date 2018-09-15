@@ -24,19 +24,19 @@ class Gokabou
       return $DEADS.sample
     when /行く/
       return '俺もイク！ｗ'
-    when /^gokabot[[:blank:]]+(-v|--version)$/
+    when /\Agokabot[[:blank:]]+(-v|--version)\Z/
       return $VERSION
-    when /^gokabot[[:blank:]]+(-h|--help)$/
+    when /\Agokabot[[:blank:]]+(-h|--help)\Z/
       return $HELP
     when /ごかぼっと|gokabot/
       return 'なんですか？'
-    when /ごかぼう|gokabou|^ヒゲ$|^ひげ$/
+    when /ごかぼう|gokabou|\Aヒゲ\Z|\Aひげ\Z/
       return $TWEETS.sample
-    when /^おみくじ$/
+    when /\Aおみくじ\Z/
       return $OMIKUJI.sample
     when /たけのこ(君|くん|さん|ちゃん|)/
       return 'たけのこ君ｐｒｐｒ'
-    when /^ぬるぽ$/
+    when /\Aぬるぽ\Z/
       return 'ｶﾞｯ'
     else
       return nil
