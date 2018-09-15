@@ -2,7 +2,7 @@ require "cgi"
 
 class Tex
 
-  BASE_URI = "https://chart.googleapis.com/chart?cht=tx&chs=50&chl="
+  BASE_URI = "https://chart.googleapis.com/chart?cht=tx&chs=200&chl="
   TEX_ID = /^tex /i
 
   def request(text)
