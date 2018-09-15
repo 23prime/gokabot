@@ -10,7 +10,7 @@ class Tex
   end
 
   def answer(msg)
-    if msg =~ /\A\$.+\$\Z/ 
+    if msg =~ /\A\$.+\$\Z/m 
       return "日本語禁止" if msg =~/[^\x01-\x7E]/
       msg.chop!.slice!(0)
       return "長すぎだよ" if msg.length>=200
