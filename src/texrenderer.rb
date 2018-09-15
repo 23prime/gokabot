@@ -10,11 +10,12 @@ class Tex
   end
 
   def answer(msg)
-    if msg.gsub!("\n") =~ /^\$.+\$$/ 
+    if msg =~ /\A\$.+\$\Z/ 
       return "日本語禁止" if msg =~/[^\x01-\x7E]/
       msg.chop!.slice!(0)
       return "長すぎだよ" if msg.length>=200
       $reply_type = 'image'
+      msg.gsub!('\n','')
       request(msg)
     else
       nil
