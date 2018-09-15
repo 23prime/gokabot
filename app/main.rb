@@ -30,18 +30,18 @@ end
 
 
 def mk_reply(msg) 
-  rep_text  = ''
+  reply_text  = ''
   $reply_type = 'text'
 
   $OBJS.each do |obj|
     begin
       if ans = obj.answer(msg)
-        rep_text = ans
+        reply_text = ans
         break
       end
     rescue => exception
       exception.message
-      rep_text = "エラーおつｗｗｗｗｗｗ\n\n> #{exception}"
+      reply_text = "エラーおつｗｗｗｗｗｗ\n\n> #{exception}"
     end
   end
 
@@ -49,13 +49,13 @@ def mk_reply(msg)
   when 'text'
     reply = {
       type: 'text',
-      text: rep_text
+      text: reply_text
     }
   when 'image'
     reply = {
       type: 'image',
-      originalContentUrl: rep_text,
-      previewImageUrl: rep_text
+      originalContentUrl: reply_text,
+      previewImageUrl: reply_text
     }
   end
 
