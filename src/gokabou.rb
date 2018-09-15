@@ -28,13 +28,13 @@ class Gokabou
       return $VERSION
     when /^gokabot[[:blank:]]+(-h|--help)$/
       return $HELP
-    when /^ごかぼっと$|^gokabot$/
+    when /ごかぼっと|gokabot/
       return 'なんですか？'
-    when /^ごかぼう$|^gokabou$|^ヒゲ$|^ひげ$/
+    when /ごかぼう|gokabou|^ヒゲ$|^ひげ$/
       return $TWEETS.sample
     when /^おみくじ$/
       return $OMIKUJI.sample
-    when /^たけのこ(君|くん|さん|)$/
+    when /たけのこ(君|くん|さん|ちゃん|)/
       return 'たけのこ君ｐｒｐｒ'
     when /^ぬるぽ$/
       return 'ｶﾞｯ'
