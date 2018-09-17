@@ -15,7 +15,6 @@ class Dfl_search
     url=BASE_URI+doll_name
     begin
       doc = Nokogiri::HTML.parse(open(url),nil,"utf-8")
-p '//img [contains(@src, "plugin") and contains(@src, "'+damage+'")] /@src'
       pic_dir = doc.xpath('//img [contains(@src, "plugin") and contains(@src, "'+damage+'")] /@src')[0].inner_text
     rescue
       return "該当するドールが見つかりません"
