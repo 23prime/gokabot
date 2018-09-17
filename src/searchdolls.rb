@@ -13,8 +13,9 @@ class Dfl_search
     begin
       doc = Nokogiri::HTML.parse(open(url),nil,"utf-8")
       pic_dir = doc.xpath('//img [contains (@src, "plugin")] /@src')[0].inner_text
-    rescue 
-      return "該当するドールが見つかりません"
+    rescue => exception 
+      exception.message
+      return "該当するドールが見つかりません\n\n #{exception}"
     end
     $reply_type = 'image'
     (BASE_URI << pic_dir).sub(/&rev=.+/,"")
