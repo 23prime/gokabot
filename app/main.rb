@@ -11,7 +11,8 @@ $OBJS = [
   WebDict::Answerer.new(),
   Denippi.new(),
   Tex.new(),
-  Pigeons.new()
+  Pigeons.new(),
+  Dfl_search.new()
 ]
 
 def client
@@ -57,6 +58,7 @@ def mk_reply(msg)
       originalContentUrl: reply_text,
       previewImageUrl: reply_text
     }
+    puts (rep_text)
   end
 
   return reply
