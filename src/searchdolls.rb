@@ -8,8 +8,9 @@ class Dfl_search
 
   def get_doll_pict(doll_name)
     charset = nil
-    url = BASE_URI << CGI.escape(doll_name)
+    url = BASE_URI + CGI.escape(doll_name)
     url.gsub!('+','%20')
+    return url
     begin
       doc = Nokogiri::HTML.parse(open(url),nil,"utf-8")
       pic_dir = doc.xpath('//img [contains (@src, "plugin")] /@src')[0].inner_text
@@ -17,8 +18,8 @@ class Dfl_search
       exception.message
       return "該当するドールが見つかりません\n\n #{exception}"
     end
-    $reply_type = 'image'
-    (BASE_URI << pic_dir).sub(/&rev=.+/,"")
+    $reply_type = 'text'
+    (BASE_URI + pic_dir).sub(/&rev=.+/,"")
   end
 
 
