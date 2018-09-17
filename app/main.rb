@@ -58,7 +58,6 @@ def mk_reply(msg)
       originalContentUrl: reply_text,
       previewImageUrl: reply_text
     }
-    puts (rep_text)
   end
 
   return reply
