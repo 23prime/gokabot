@@ -51,9 +51,9 @@ class Anime
     when /^今日#{ANIME_OF}|^today$/i
       wdays[today]
     when /^昨日#{ANIME_OF}|^yesterday$/i
-      wdays[(today + 1) % 7]
-    when /^明日#{ANIME_OF}|^tomorrow$/i
       wdays[today - 1]
+    when /^明日#{ANIME_OF}|^tomorrow$/i
+      wdays[(today + 1) % 7]
     else
       msg
     end
