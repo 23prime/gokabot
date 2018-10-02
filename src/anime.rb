@@ -1,7 +1,23 @@
 # coding: utf-8
 require 'yaml'
 
-$animes = File.open('./docs/18summer.yaml', 'r').read
+def get_season(month)
+  if [1, 2, 3].include?(month) then
+    return 'winter'
+  elsif [4, 5, 6].include?(month)
+    return 'spring'
+  elsif [7, 8, 9].include?(month)
+    return 'summer'
+  else
+    return 'fall'
+  end
+end
+
+$d = Time.now.localtime("+05:00")
+$year = $d.year
+$month = $d.month
+$season = get_season($month)
+$animes = File.open("./docs/#{$year}#{$season}.yaml", 'r').read
 
 
 class Anime
@@ -13,7 +29,7 @@ class Anime
 
   def convert(msg)
     wdays = %w[Sun Mon Tue Wed Thu Fri Sat]
-    today = Time.now.localtime("+05:00").wday
+    today = $d.wday
 
     case msg
     when /^all|今期#{ANIME_OF}/i
