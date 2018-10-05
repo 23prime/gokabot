@@ -936,7 +936,7 @@
   time: "25:55"
   station: TBS
   title: 色づく世界の明日から
-  recommend: false
+  recommend: true
 
 -
   year: "2018"
