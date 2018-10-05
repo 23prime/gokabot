@@ -45,6 +45,7 @@ class Anime
       ans << "#{day}, " if n.zero?
       ans << "#{time}, #{station}, #{title}\n"
     end
+    ans.strip!
     return ans
   end
 
