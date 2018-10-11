@@ -756,7 +756,7 @@
   time: "24:00"
   station: MX
   title: ソラとウミのアイダ
-  recommend: true
+  recommend: false
 
 -
   year: "2018"
@@ -819,7 +819,7 @@
   time: "24:00"
   station: MX
   title: ゾンビランドサガ
-  recommend: false
+  recommend: true
 
 -
   year: "2018"
@@ -990,7 +990,7 @@
   time: "23:30"
   station: MX
   title: 青春ブタ野郎はバニーガール先輩の夢を見ない
-  recommend: false
+  recommend: true
 
 -
   year: "2018"
