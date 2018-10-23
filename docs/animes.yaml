@@ -909,7 +909,7 @@
   time: "25:25"
   station: TBS
   title: 寄宿学校のジュリエット
-  recommend: false
+  recommend: true
 
 -
   year: "2018"
@@ -1026,7 +1026,7 @@
   time: "25:00"
   station: MX
   title: SSSS.GRIDMAN
-  recommend: false
+  recommend: true
 
 -
   year: "2018"
