@@ -28,9 +28,7 @@ class Gokabou
       return $VERSION
     when /\Agokabot[[:blank:]]+(-h|--help)\Z/
       return $HELP
-    when /ごかぼっと|gokabot/
-      return 'なんですか？'
-    when /ごかぼう|gokabou|\Aヒゲ\Z|\Aひげ\Z/
+    when /ごかぼっと|gokabot|ごかぼう|gokabou|\Aヒゲ\Z|\Aひげ\Z/
       return $TWEETS.sample
     when /\Aおみくじ\Z/
       return $OMIKUJI.sample
