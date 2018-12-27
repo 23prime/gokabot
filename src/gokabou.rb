@@ -4,7 +4,7 @@ $OMIKUJI = File.open('./docs/omikuji', 'r').read.split("\n")
 $TWEETS = File.open('./docs/gokabou_tweets', 'r').read.split("\n")
 $DEADS = [
   'いや、死なないよ。',
-  '死ぬ〜〜〜〜〜ｗ', 
+  '死ぬ〜〜〜〜〜ｗ',
   '死んだｗ',
   'おいおい…',
   '死んダダダダダダーン',
@@ -15,7 +15,6 @@ $DEADS = [
   'そっちからリプ送ってきて死ねっつうな！死ね！しねしねこうせん！💨',
   'いやでｗｗｗいやでござるｗｗｗ'
 ]
-
 
 class Gokabou
   def answer(msg)

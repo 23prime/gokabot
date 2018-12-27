@@ -1036,3 +1036,465 @@
   station: MX
   title: ゴブリンスレイヤー
   recommend: false
+
+
+############################## 2019-winter ##############################
+
+-
+  year: "2019"
+  season: winter
+  day: Mon
+  time: "25:05"
+  station: MX
+  title: 上野さんは不器用
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Tue
+  time: "00:00"
+  station: YouTube
+  title: アニメぷそ煮コミ
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Tue
+  time: "25:35"
+  station: MX
+  title: 雨色ココアsideG
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Sat
+  time: "25:00"
+  station: MX
+  title: えんどろ～！
+  recommend: true
+
+-
+  year: "2019"
+  season: winter
+  day: Sat
+  time: "25:30"
+  station: MX
+  title: W'z《ウィズ》
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Mon
+  time: "22:30"
+  station: MX
+  title: エガオノダイカ
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Sat
+  time: "23:30"
+  station: MX
+  title: かぐや様は告らせたい ～天才たちの恋愛頭脳戦～ 
+  recommend: true
+
+-
+  year: "2019"
+  season: winter
+  day: Sun
+  time: "23:30"
+  station: MX
+  title: 賭ケグルイ××
+  recommend: true
+
+-
+  year: "2019"
+  season: winter
+  day: Thu
+  time: "24:30"
+  station: MX
+  title: ガーリー・エアフォース
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Thu
+  time: "25:58"
+  station: TBS
+  title: グリムノーツ The Animation
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Wed
+  time: "22:30"
+  station: MX
+  title: ケムリクサ
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Mon
+  time: "26:05"
+  station: TX
+  title: けものフレンズ2
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Sun
+  time: "22:30"
+  station: MX
+  title: 荒野のコトブキ飛行隊
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Thu
+  time: "25:28"
+  station: MX
+  title: 五等分の花嫁
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Tue
+  time: "23:30"
+  station: MX
+  title: サークレット・プリンセス
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Tue 
+  time: "25:59"
+  station: AX
+  title: 3D彼女 リアルガール［第2期］
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Wed
+  time: "25:05"
+  station: MX
+  title: 盾の勇者の成り上がり
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Thu
+  time: "22:00"
+  station: MX
+  title: Dimension ハイスクール
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Fri
+  time: "25:40"
+  station: MX
+  title: デート・ア・ライブIII
+  recommend: true
+
+-
+  year: "2019"
+  season: winter
+  day: Wed
+  time: "24:00"
+  station: MX
+  title: 同居人はひざ、時々、頭のうえ。
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Fri
+  time: "25:55"
+  station: TBS
+  title: ドメスティックな彼女
+  recommend: true
+
+-
+  year: "2019"
+  season: winter
+  day: Mon
+  time: "22:00"
+  station: MX
+  title: どろろ
+  recommend: true
+
+-
+  year: "2019"
+  season: winter
+  day: Sat
+  time: "22:00"
+  station: MX
+  title: バミューダトライアングル ～カラフル・パストラーレ～
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Thu
+  time: "23:30"
+  station: MX
+  title: バンステ！ BanG Dream! STATION
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Thu
+  time: "23:00"
+  station: MX
+  title: BanG Dream! 2nd Season
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Wed
+  time: "24:00"
+  station: MX
+  title: バーチャルさんはみている
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Mon
+  time: "24:30"
+  station: MX
+  title: ぱすてるメモリーズ
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Sun
+  time: "25:00"
+  station: MX
+  title: パパだって、したい
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Fri
+  time: "24:00"
+  station: MX
+  title: B-PROJECT～絶頂＊エモーション～
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Sun
+  time: "24:10"
+  station: NHK
+  title: ピアノの森［第2期］
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Sun
+  time: "22:00"
+  station: MX
+  title: 不機嫌なモノノケ庵 續
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Thu
+  time: "27:05"
+  station: TX
+  title: フライングベイビーズ
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Fri
+  time: "22:30"
+  station: MX
+  title: ブギーポップは笑わない
+  recommend: true
+
+-
+  year: "2019"
+  season: winter
+  day: Sun
+  time: "24:30"
+  station: MX
+  title: マナリアフレンズ
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Fri
+  time: "26:25"
+  station: TBS
+  title: 魔法少女特殊戦あすか
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Mon
+  time: "21:54"
+  station: MX
+  title: みにとじ
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Wed
+  time: "23:30"
+  station: MX
+  title: 明治東亰恋伽
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Mon
+  time: "23:00"
+  station: MX
+  title: モブサイコ100 II
+  recommend: true
+
+-
+  year: "2019"
+  season: winter
+  day: Thu
+  time: "25:10"
+  station: CX
+  title: 約束のネバーランド
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Tue
+  time: "25:00"
+  station: MX
+  title: 臨死!! 江古田ちゃん
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Wed
+  time: "24:55"
+  station: CX
+  title: revisions リヴィジョンズ
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Tue
+  time: "24:30"
+  station: MX
+  title: 私に天使が舞い降りた！ 
+  recommend: true
+
+-
+  year: "2019"
+  season: winter
+  day: Fri
+  time: "25:23"
+  station: TX
+  title: 宇宙戦艦ヤマト2202 愛の戦士たち
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Fri
+  time: "25:05"
+  station: MX
+  title: ジョジョの奇妙な冒険 黄金の風
+  recommend: true
+
+-
+  year: "2019"
+  season: winter
+  day: Tue
+  time: "25:29"
+  station: NTV
+  title: 風が強く吹いている
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Fri
+  time: "25:35"
+  station: MX
+  title: おこしやす、ちとせちゃん
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Sat
+  time: "24:00"
+  station: MX
+  title: ソードアート・オンライン アリシゼーション
+  recommend: true
+
+-
+  year: "2019"
+  season: winter
+  day: Mon
+  time: "24:00"
+  station: MX
+  title: 転生したらスライムだった件
+  recommend: true
+
+-
+  year: "2019"
+  season: winter
+  day: Fri
+  time: "24:30"
+  station: MX
+  title: とある魔術の禁書目録III
+  recommend: true
+
+-
+  year: "2019"
+  season: winter
+  day: Fri
+  time: "22:00"
+  station: MX
+  title: 火ノ丸相撲
+  recommend: false
+
+-
+  year: "2019"
+  season: winter
+  day: Thu
+  time: "22:30"
+  station: MX
+  title: からくりサーカス
+  recommend: false
