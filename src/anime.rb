@@ -12,12 +12,14 @@ class Anime
   end
 
   @@d = Time.now.localtime('+05:00')
-  @@year = @@d.year.to_s
+  @@year = @@d.year
   @@month = @@d.month
   @@season = Season.get_season(@@month)
+  @@next_season = Season.get_season((@@month + 3) % 12)
   @@animes = YAML.safe_load(File.open('./docs/animes.yaml', 'r').read)
 
   def select_term(animes, year, season)
+    year = year.to_s
     return animes.select { |anime|
         anime['year'] == year && anime['season'] == season
       }
@@ -96,6 +98,8 @@ class Anime
   def answer(msg)
     day = convert(msg)
     animes = select_term(@@animes, @@year, @@season)
+    @@year += 1
+    next_animes = select_term(@@animes, @@year, @@next_season)
 
     case day
     when /^all|今期#{ANIME_OF}/i
@@ -103,8 +107,11 @@ class Anime
     when /^今期の(オススメ|おすすめ)$/i
       ans = select_rcm(animes)
       return print_animes(ans, 0)
-    when /^来期#{ANIME_OF}/i
-      return '早漏かよｗ'
+    when /^next|来期#{ANIME_OF}/i
+      return print_animes(next_animes, 0)
+    when /^来期の(オススメ|おすすめ)$/i
+      ans = select_rcm(next_animes)
+      return print_animes(ans, 0)
     when WEEK
       ans = select_day(animes, day)
       return print_animes(ans, 1)
