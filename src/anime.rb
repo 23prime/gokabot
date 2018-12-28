@@ -98,8 +98,8 @@ class Anime
   def answer(msg)
     day = convert(msg)
     animes = select_term(@@animes, @@year, @@season)
-    @@year += 1
-    next_animes = select_term(@@animes, @@year, @@next_season)
+    year2 = @@year + 1 if @@season == 'fall'
+    next_animes = select_term(@@animes, year2, @@next_season)
 
     case day
     when /^all|今期#{ANIME_OF}/i
