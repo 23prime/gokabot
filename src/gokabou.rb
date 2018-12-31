@@ -15,6 +15,14 @@ $DEADS = [
   'そっちからリプ送ってきて死ねっつうな！死ね！しねしねこうせん！💨',
   'いやでｗｗｗいやでござるｗｗｗ'
 ]
+$NEW_YEARS = [
+  'あけおめでつｗ',
+  'Happy New Year でござるｗｗ',
+  'は？',
+  'ことよろチクビｗ',
+  'あけおまんこｗｗｗｗｗｗ開帳くぱぁｗｗｗｗｗｗ',
+  '今年はヒゲを剃りたい'
+]
 
 class Gokabou
   def answer(msg)
@@ -35,6 +43,8 @@ class Gokabou
       return 'たけのこ君ｐｒｐｒ'
     when /\Aぬるぽ\Z/
       return 'ｶﾞｯ'
+    when /あけ|明け|おめ|こん|おは|happy|new|year|2019/i
+      return $NEW_YEARS.sample
     else
       return nil
     end
