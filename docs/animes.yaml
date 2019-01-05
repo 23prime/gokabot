@@ -1327,7 +1327,7 @@
   time: "25:10"
   station: CX
   title: 約束のネバーランド
-  recommend: false
+  recommend: true
 
 -
   year: "2019"
@@ -1336,7 +1336,7 @@
   time: "25:28"
   station: MX
   title: 五等分の花嫁
-  recommend: false
+  recommend: true
 
 -
   year: "2019"
