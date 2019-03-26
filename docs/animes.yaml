@@ -1490,3 +1490,500 @@
   station: MX
   title: W'z《ウィズ》
   recommend: false
+
+############################## 2019-spring ##############################
+
+-
+  year: "2019"
+  season: spring
+  day: Sun
+  time: "25:00"
+  station: MX
+  title: 洗い屋さん！～俺とアイツが女湯で!?～
+  recommend: true
+
+-
+  year: "2019"
+  season: spring
+  day: Tue
+  time: "21:54"
+  station: MX
+  title: アイドルマスター シンデレラガールズ劇場 CLIMAX SEASON
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Thu
+  time: "18:25"
+  station: TX
+  title: アイカツフレンズ！～かがやきのジュエル～
+  recommend: true
+
+-
+  year: "2019"
+  season: spring
+  day: Fri
+  time: "18:20"
+  station: NHK-ETV
+  title: あはれ！名作くん（シーズン4）
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Tue
+  time: "24:30"
+  station: MX
+  title: 異世界かるてっと
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Mon
+  time: "00:00"
+  station: Netflix
+  title: ULTRAMAN
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sun
+  time: "24:35"
+  station: NHK
+  title: 機動戦士ガンダム THE ORIGIN 前夜 赤い彗星
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sat
+  time: "23:30"
+  station: MX
+  title: 鬼滅の刃
+  recommend: true
+
+-
+  year: "2019"
+  season: spring
+  day: Wed
+  time: "24:55"
+  station: CX
+  title: キャロル＆チューズデイ
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sun
+  time: "10:00"
+  station: TX
+  title: キラッとプリ☆チャン シーズン2
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Mon
+  time: "25:35"
+  station: TX
+  title: KING OF PRISM -Shiny Seven Stars-
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sun
+  time: "22:00"
+  station: MX
+  title: 群青のマグメル
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sat
+  time: "10:00"
+  station: TX
+  title: けだまのゴンじろー
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Thu
+  time: "23:30"
+  station: MX
+  title: 賢者の孫
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sat
+  time: "25:00"
+  station: MX
+  title: この音とまれ！
+  recommend: true
+
+-
+  year: "2019"
+  season: spring
+  day: Tue
+  time: "23:00"
+  station: MX
+  title: この世の果てで恋を唄う少女YU-NO
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Thu
+  time: "24:55"
+  station: CX
+  title: さらざんまい
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sun
+  time: "23:30"
+  station: MX
+  title: 消滅都市
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sun
+  time: "24:10"
+  station: NHK
+  title: 進撃の巨人 Season3（Part.2）
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Mon
+  time: "07:05"
+  station: TX
+  title: ジモトがジャパン
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Mon
+  time: "24:15"
+  station: MX
+  title: 女子かう生
+  recommend: true
+
+-
+  year: "2019"
+  season: spring
+  day: Tue
+  time: "24:45"
+  station: MX
+  title: ストライクウィッチーズ 501部隊発進しますっ！
+  recommend: true
+
+-
+  year: "2019"
+  season: spring
+  day: --
+  time: "--:--"
+  station: Netflix
+  title: 7SEEDS
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Wed
+  time: "23:30"
+  station: MX
+  title: 世話やきキツネの仙狐さん
+  recommend: true
+
+-
+  year: "2019"
+  season: spring
+  day: Fri
+  time: "25:55"
+  station: TBS
+  title: 川柳少女
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sat
+  time: "24:00"
+  station: MX
+  title: 続・終物語
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Tue
+  time: "17:55"
+  station: TX
+  title: ダイヤのA actII
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Mon
+  time: "24:00"
+  station: MX
+  title: 超可動ガール1/6
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Mon
+  time: "22:30"
+  station: MX
+  title: なむあみだ仏っ！-蓮台 UTENA-
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sun
+  time: "25:05"
+  station: MX
+  title: なんでここに先生が！？
+  recommend: true
+
+-
+  year: "2019"
+  season: spring
+  day: Wed
+  time: "07:30"
+  station: TX
+  title: 猫のニャッホ
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Mon
+  time: "24:00"
+  station: MX
+  title: ノブナガ先生の幼な妻
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sun
+  time: "25:35"
+  station: TX
+  title: 八月のシンデレラナイン
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Thu
+  time: "22:00"
+  station: MX
+  title: 叛逆性ミリオンアーサー［第2期］
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Mon
+  time: "17:55"
+  station: TX
+  title: 爆丸バトルプラネット
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Thu
+  time: "25:58"
+  station: TBS
+  title: BAKUMATSUクライシス
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Fri
+  time: "26:25"
+  station: TBS
+  title: ひとりぼっちの○○生活
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Thu
+  time: "07:05"
+  station: TX
+  title: Bラッパーズ ストリート
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sun
+  time: "24:00"
+  station: MX
+  title: Fairy gone フェアリーゴーン
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Tue
+  time: "24:00"
+  station: MX
+  title: フリージ
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Fri
+  time: "25:23"
+  station: TX
+  title: フルーツバスケット
+  recommend: true
+
+-
+  year: "2019"
+  season: spring
+  day: Wed
+  time: "24:30"
+  station: MX
+  title: 文豪ストレイドッグス［第3期］
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Fri
+  time: "16:00"
+  station: YouTube
+  title: ベイブレードバースト ガチ
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Fri
+  time: "22:30"
+  station: AT-X
+  title: ほら、耳がみえてるよ！-畏，看見耳朶拉- シーズン2
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sat
+  time: "24:30"
+  station: MX
+  title: ぼくたちは勉強ができない
+  recommend: true
+
+-
+  year: "2019"
+  season: spring
+  day: Sun
+  time: "24:30"
+  station: MX
+  title: 真夜中のオカルト公務員
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Fri
+  time: "26:10"
+  station: TBS
+  title: みだらな青ちゃんは勉強ができない
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sat
+  time: "17:30"
+  station: AX
+  title: MIX
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Sat
+  time: "22:00"
+  station: niconico
+  title: みるタイツ
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Thu
+  time: "19:53"
+  station: MX
+  title: 八十亀ちゃんかんさつにっき
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Fri
+  time: "18:25"
+  station: TX
+  title: 妖怪ウォッチ！（2019新シリーズ）
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Fri
+  time: "00:00"
+  station: Netflix
+  title: リラックマとカオルさん
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Mon
+  time: "24:30"
+  station: MX
+  title: RobiHachi
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Fri
+  time: "24:52"
+  station: TX
+  title: 四月一日さん家の（わたぬきさんちの）
+  recommend: false
+
+-
+  year: "2019"
+  season: spring
+  day: Tue
+  time: "25:35"
+  station: TX
+  title: ワンパンマン［第2期］
+  recommend: false
