@@ -51,6 +51,20 @@ class Anime
     return ans
   end
 
+  def sort_by_time(animes)
+    animes.sort {|a1, a2| a1['time'] <=> a2['time']}
+  end
+
+  def sort_animes(animes)
+    days = %w[Sun Mon Tue Wed Thu Fri Sat]
+    ans = []
+    days.each do |day|
+      day_animes = select_day(animes, day)
+      ans += sort_by_time(day_animes)
+    end
+    return ans
+  end
+
   ANIME_OF = /(のアニメ|)$/
   RECOMMEND = /(おすすめ|オススメ)$/
   DAY_ANIME_OF = /曜(日|)#{ANIME_OF}/
@@ -89,7 +103,6 @@ class Anime
       return wdays[today - 1].downcase
     when /^明日の#{RECOMMEND}/i
       return wdays[(today + 1) % 7].downcase
-
     else
       return msg
     end
@@ -100,7 +113,7 @@ class Anime
     animes = select_term(@@animes, @@year, @@season)
     year2 = @@year
     year2 += 1 if @@season == 'fall'
-    next_animes = select_term(@@animes, year2, @@next_season)
+    next_animes = sort_animes(select_term(@@animes, year2, @@next_season))
 
     case day
     when /^all|今期#{ANIME_OF}/i
