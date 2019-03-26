@@ -26,15 +26,11 @@ class Anime
   end
 
   def select_day(animes, day)
-    return animes.select { |anime| 
-        anime['day'] == day
-      }
+    return animes.select { |anime| anime['day'] == day }
   end
 
   def select_rcm(animes)
-    return animes.select { |anime|
-        anime['recommend']
-      }
+    return animes.select { |anime| anime['recommend'] }
   end
 
   def print_animes(animes, n)
@@ -52,7 +48,7 @@ class Anime
   end
 
   def sort_by_time(animes)
-    animes.sort {|a1, a2| a1['time'] <=> a2['time']}
+    return animes.sort_by { |a| a['time'] }
   end
 
   def sort_animes(animes)
@@ -110,7 +106,7 @@ class Anime
 
   def answer(msg)
     day = convert(msg)
-    animes = select_term(@@animes, @@year, @@season)
+    animes = sort_animes(select_term(@@animes, @@year, @@season))
     year2 = @@year
     year2 += 1 if @@season == 'fall'
     next_animes = sort_animes(select_term(@@animes, year2, @@next_season))
