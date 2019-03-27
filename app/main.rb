@@ -6,7 +6,7 @@ require './app/imports.rb'
 $OBJS = [
   Nyokki.new(),
   Gokabou.new(),
-  Anime.new(),
+  Anime::Answerer.new(),
   Weather.new(),
   WebDict::Answerer.new(),
   Denippi.new(),
