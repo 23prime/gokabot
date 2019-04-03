@@ -13,6 +13,10 @@ module Anime
       return Animes.new(@animes + a2)
     end
 
+    def empty?
+      return @animes.empty?
+    end
+
     def select_term(year, season)
       year = year.to_s
       selected = @animes.select { |anime|
