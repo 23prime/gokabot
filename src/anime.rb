@@ -110,18 +110,26 @@ module Anime
         return 'Fri'
       when /^sat#{DAY}|^土#{DAY_ANIME_OF}/i
         return 'Sat'
-      when /^今日#{ANIME_OF}|^today$/i
-        return wdays[today]
+      when /^一昨日#{ANIME_OF}|^day before yesterday$/i
+        return wdays[today - 2]
       when /^昨日#{ANIME_OF}|^yesterday$/i
         return wdays[today - 1]
+      when /^今日#{ANIME_OF}|^today$/i
+        return wdays[today]
       when /^明日#{ANIME_OF}|^tomorrow$/i
         return wdays[(today + 1) % 7]
-      when /^(今日の|)#{RECOMMEND}/i
-        return wdays[today].downcase
+      when /^明後日#{ANIME_OF}|^day after tomorrow$/i
+        return wdays[(today + 2) % 7]
+      when /^一昨日の#{RECOMMEND}/i
+        return wdays[today - 2].downcase
       when /^昨日の#{RECOMMEND}/i
         return wdays[today - 1].downcase
+      when /^(今日の|)#{RECOMMEND}/i
+        return wdays[today].downcase
       when /^明日の#{RECOMMEND}/i
         return wdays[(today + 1) % 7].downcase
+      when /^明後日の#{RECOMMEND}/i
+        return wdays[(today + 2) % 7].downcase
       else
         return msg
       end
