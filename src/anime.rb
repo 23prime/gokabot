@@ -8,8 +8,8 @@ module Anime
       @animes = array
     end
 
-    def +(a2)
-      a2 = a2.animes()
+    def +(other)
+      a2 = other.animes
       return Animes.new(@animes + a2)
     end
 
@@ -20,8 +20,8 @@ module Anime
     def select_term(year, season)
       year = year.to_s
       selected = @animes.select { |anime|
-          anime['year'] == year && anime['season'] == season
-        }
+        anime['year'] == year && anime['season'] == season
+      }
       return Animes.new(selected)
     end
 
@@ -44,7 +44,7 @@ module Anime
       days = %w[Sun Mon Tue Wed Thu Fri Sat]
       ans = Animes.new([])
       days.each do |day|
-        ans += select_day(day).sort_by_time()
+        ans += select_day(day).sort_by_time
       end
       return ans
     end
@@ -137,20 +137,20 @@ module Anime
 
     def answer(msg)
       day = convert(msg)
-      animes = @@animes.select_term(@@year, @@season).sort_animes()
+      animes = @@animes.select_term(@@year, @@season).sort_animes
       year2 = @@year
       year2 += 1 if @@season == 'fall'
-      next_animes = @@animes.select_term(year2, @@next_season).sort_animes()
+      next_animes = @@animes.select_term(year2, @@next_season).sort_animes
 
       case day
       when /^all|今期#{ANIME_OF}/i
         return animes.print_animes(0)
       when /^今期の(オススメ|おすすめ)$/i
-        return animes.select_rcm().print_animes(0)
+        return animes.select_rcm.print_animes(0)
       when /^next|来期#{ANIME_OF}/i
         return next_animes.print_animes(0)
       when /^来期の(オススメ|おすすめ)$/i
-        return next_animes.select_rcm().print_animes(0)
+        return next_animes.select_rcm.print_animes(0)
       when WEEK
         return animes.select_day(day).print_animes(1)
       when WEEK_RCM
@@ -164,4 +164,3 @@ module Anime
     end
   end
 end
-

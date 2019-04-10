@@ -1,27 +1,25 @@
-# coding: utf-8
 require 'sinatra'
 require 'line/bot'
 require './app/imports.rb'
 
 $OBJS = [
-  Nyokki.new(),
-  Gokabou.new(),
-  Anime::Answerer.new(),
-  Weather.new(),
-  WebDict::Answerer.new(),
-  Denippi.new(),
-  Tex.new(),
-  Pigeons.new(),
-  Dfl_search.new()
+  Nyokki.new,
+  Gokabou.new,
+  Anime::Answerer.new,
+  Weather.new,
+  WebDict::Answerer.new,
+  Denippi.new,
+  Tex.new,
+  Pigeons.new,
+  Dfl_search.new
 ]
 
 def client
   @client ||= Line::Bot::Client.new { |config|
-    config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
-    config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
+    config.channel_secret = ENV['LINE_CHANNEL_SECRET']
+    config.channel_token = ENV['LINE_CHANNEL_TOKEN']
   }
 end
-
 
 # Make reply for each case.
 def reply(event)
@@ -29,8 +27,7 @@ def reply(event)
   return mk_reply(msg)
 end
 
-
-def mk_reply(msg) 
+def mk_reply(msg)
   reply_text  = ''
   $reply_type = 'text'
 
@@ -62,7 +59,6 @@ def mk_reply(msg)
 
   return reply
 end
-
 
 # Execute.
 post '/callback' do

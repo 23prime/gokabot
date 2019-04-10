@@ -1,5 +1,4 @@
 class Gokabou
-
   @@version = '1.0.0'
   @@help = File.open('./docs/help', 'r').read
   @@omikuji = File.open('./docs/omikuji', 'r').read.split("\n")
@@ -29,7 +28,7 @@ class Gokabou
   @@d = Time.now
   @@month = @@d.month
   @@day = @@d.day
-  
+
   def answer(msg)
     case msg
     when /死ね|死んで/

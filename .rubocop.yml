@@ -1,0 +1,38 @@
+AllCops:
+  TargetRubyVersion: 2.3
+
+FrozenStringLiteralComment:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+RedundantReturn:
+  Enabled: false
+
+MutableConstant:
+  Enabled: false
+
+EmptyLineAfterGuardClause:
+  Enabled: false
+
+# TrailingBlankLines:
+#   Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
+
+GlobalVars:
+  Enabled: false
+
+LineLength:
+  Max: 100
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+AsciiComments:
+  Enabled: false
