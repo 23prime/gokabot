@@ -36,3 +36,6 @@ Style/IfUnlessModifier:
 
 AsciiComments:
   Enabled: false
+
+MethodLength:
+  Max: 15
