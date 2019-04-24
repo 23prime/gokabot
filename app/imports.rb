@@ -1,5 +1,5 @@
 require './src/gokabou.rb'
-require './src/anime.rb'
+require './src/anime/answerer.rb'
 require './src/weather.rb'
 require './src/nyokki.rb'
 require './src/denippi.rb'
