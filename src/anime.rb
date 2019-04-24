@@ -5,7 +5,7 @@ module Anime
     attr_reader :animes
 
     def initialize(array)
-      @animes = array
+      @animes = array.dup
     end
 
     def +(other)
@@ -69,7 +69,7 @@ module Anime
       end
     end
 
-    $YAML = YAML.safe_load(File.open('./docs/animes.yaml', 'r').read)
+    @@yaml = YAML.safe_load(File.open('./docs/animes.yaml', 'r').read)
 
     def initialize
       @d = Time.now.localtime('+05:00')
@@ -78,23 +78,15 @@ module Anime
       @season = Season.get_season(month)
       @next_season = Season.get_season((month + 3) % 12)
 
-      @animes = Animes.new($YAML)
+      @animes = Animes.new(@@yaml)
       @animes.select_term(@year, @season)
       @animes.sort_animes
 
-      @tmp_animes = Animes.new($YAML)
-      @tmp_animes.select_term(@year, @season)
-      @tmp_animes.sort_animes
-
       year2 = @year
       year2 += 1 if @season == 'fall'
-      @next_animes = Animes.new($YAML)
+      @next_animes = Animes.new(@@yaml)
       @next_animes.select_term(year2, @next_season)
       @next_animes.sort_animes
-
-      @tmp_next_animes = Animes.new($YAML)
-      @tmp_next_animes.select_term(year2, @next_season)
-      @tmp_next_animes.sort_animes
     end
 
     ANIME_OF = /(のアニメ|)$/
@@ -156,30 +148,22 @@ module Anime
         return @animes.print_animes(0)
       when /^今期の(オススメ|おすすめ)$/i
         @animes.select_rcm
-        a = @animes
-        @animes = @tmp_animes
-        return a.print_animes(0)
+        return @animes.print_animes(0)
       when /^next|来期#{ANIME_OF}/i
-        a = @next_animes
-        @next_animes = @tmp_next_animes
-        return a.print_animes(0)
+        return @next_animes.print_animes(0) unless @next_animes.empty?
+        return '早漏かよｗ'
       when /^来期の(オススメ|おすすめ)$/i
         @next_animes.select_rcm
-        a = @next_animes
-        @next_animes = @tmp_next_animes
-        return a.print_animes(0)
+        return @next_animes.print_animes(0) unless @next_animes.empty?
+        return '早漏かよｗ'
       when WEEK
         @animes.select_day(day)
-        a = @animes
-        @animes = @tmp_animes
-        return a.print_animes(1)
+        return @animes.print_animes(1)
       when WEEK_RCM
         day = day.capitalize
         @animes.select_day(day)
         @animes.select_rcm
-        a = @animes
-        @animes = @tmp_animes
-        return a.print_animes(1) unless a.empty?
+        return @animes.print_animes(1) unless @animes.empty?
         return 'ありませ〜んｗｗｗｗ'
       else
         return nil
