@@ -75,17 +75,17 @@ module Anime
       @d = Time.now.localtime('+05:00')
       month = @d.month
       @year = @d.year
-      @season = Season.get_season(month)
-      @next_season = Season.get_season((month + 3) % 12)
+      season = Season.get_season(month)
+      next_season = Season.get_season((month + 3) % 12)
 
       @animes = Animes.new(@@yaml)
-      @animes.select_term(@year, @season)
+      @animes.select_term(@year, season)
       @animes.sort_animes
 
       year2 = @year
       year2 += 1 if @season == 'fall'
       @next_animes = Animes.new(@@yaml)
-      @next_animes.select_term(year2, @next_season)
+      @next_animes.select_term(year2, next_season)
       @next_animes.sort_animes
     end
 
