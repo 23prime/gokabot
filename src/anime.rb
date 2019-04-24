@@ -140,7 +140,7 @@ module Anime
       end
     end
 
-    def answer(msg)
+    def select_answer(msg)
       day = convert(msg)
 
       case day
@@ -168,6 +168,12 @@ module Anime
       else
         return nil
       end
+    end
+
+    def answer(msg)
+      ans = select_answer(msg)
+      initialize
+      return ans
     end
   end
 end
