@@ -1500,7 +1500,7 @@
   time: "25:00"
   station: MX
   title: 洗い屋さん！～俺とアイツが女湯で!?～
-  recommend: true
+  recommend: false
 
 -
   year: "2019"
@@ -1617,7 +1617,7 @@
   time: "23:30"
   station: MX
   title: 賢者の孫
-  recommend: false
+  recommend: true
 
 -
   year: "2019"
@@ -1680,7 +1680,7 @@
   time: "24:15"
   station: MX
   title: 女子かう生
-  recommend: true
+  recommend: false
 
 -
   year: "2019"
@@ -1716,7 +1716,7 @@
   time: "25:55"
   station: TBS
   title: 川柳少女
-  recommend: false
+  recommend: true
 
 -
   year: "2019"
@@ -1761,7 +1761,7 @@
   time: "25:05"
   station: MX
   title: なんでここに先生が！？
-  recommend: true
+  recommend: false
 
 -
   year: "2019"
@@ -1824,7 +1824,7 @@
   time: "26:25"
   station: TBS
   title: ひとりぼっちの○○生活
-  recommend: false
+  recommend: true
 
 -
   year: "2019"
@@ -1914,7 +1914,7 @@
   time: "26:10"
   station: TBS
   title: みだらな青ちゃんは勉強ができない
-  recommend: false
+  recommend: true
 
 -
   year: "2019"
@@ -1986,4 +1986,4 @@
   time: "25:35"
   station: TX
   title: ワンパンマン［第2期］
-  recommend: false
+  recommend: true
