@@ -1,7 +1,8 @@
 require 'sinatra'
 require 'line/bot'
-require './app/imports.rb'
 require 'dotenv/load'
+require 'rest-client'
+require './app/imports.rb'
 
 $OBJS = [
   Nyokki.new,
@@ -22,10 +23,26 @@ def client
   }
 end
 
+def get_name(user_id)
+  token = ENV['LINE_CHANNEL_TOKEN']
+  uri = "https://api.line.me/v2/bot/profile/#{user_id}"
+
+  begin
+    res = RestClient.get uri, { :Authorization => "Bearer #{token}" }
+    name = JSON.parse(res.body)['displayName']
+  rescue => exception
+    name = exception.message
+  end
+
+  return name
+end
+
 # Make reply for each case.
 def reply(event)
   msg = event.message['text']
   user_id = event['source']['userId']
+  name = get_name(user_id)
+  puts "#{user_id}, #{name}"
   return mk_reply(msg, user_id)
 end
 
