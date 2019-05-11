@@ -29,7 +29,7 @@ module Anime
       @wdays = wdays
       @today = today
     end
-    
+
     def convert(msg)
       case msg
       when /^一昨日#{ANIME_OF}|^day before yesterday$/i

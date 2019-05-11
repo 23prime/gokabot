@@ -1,4 +1,3 @@
-require 'yaml'
 require_relative 'anime'
 require_relative 'convert'
 
@@ -21,21 +20,12 @@ module Anime
     def initialize
       month = @@now.month
       @year = @@now.year
-      season = Season.get_season(month)
-      next_season = Season.get_season((month + 3) % 12)
-
-      @animes = Animes.new(YAML)
-      @animes.select_term(@year, season)
-      @animes.sort_animes
-
-      year2 = @year
-      year2 += 1 if @season == 'fall'
-      @next_animes = Animes.new(YAML)
-      @next_animes.select_term(year2, next_season)
-      @next_animes.sort_animes
+      @season = Season.get_season(month)
+      @next_season = Season.get_season((month + 3) % 12)
+      @year2 = @year
+      @year2 += 1 if @season == 'fall'
     end
 
-    YAML = YAML.safe_load(File.open('./docs/animes.yaml', 'r').read)
     WDAYS = %w[Sun Mon Tue Wed Thu Fri Sat]
     CONVERTS = [
       WeekDay.new,
@@ -48,7 +38,6 @@ module Anime
         ans = cvt.convert(msg)
         unless ans.nil?
           return ans
-          break
         end
       end
       return msg
@@ -59,26 +48,18 @@ module Anime
 
       case day
       when /^all|今期#{ANIME_OF}/i
-        return @animes.print_animes(0)
+        return Anime.get_animes(@year, @season, day, true, false)
       when /^今期の(オススメ|おすすめ)$/i
-        @animes.select_rcm
-        return @animes.print_animes(0)
+        return Anime.get_animes(@year, @season, day, true, true)
       when /^next|来期#{ANIME_OF}/i
-        return @next_animes.print_animes(0) unless @next_animes.empty?
-        return '早漏かよｗ'
+        return Anime.get_animes(@year2, @next_season, day, true, false)
       when /^来期の(オススメ|おすすめ)$/i
-        @next_animes.select_rcm
-        return @next_animes.print_animes(0) unless @next_animes.empty?
-        return '早漏かよｗ'
+        return Anime.get_animes(@year2, @next_season, day, true, true)
       when WEEK
-        @animes.select_day(day)
-        return @animes.print_animes(1)
+        return Anime.get_animes(@year, @season, day, false, false)
       when WEEK_RCM
-        day = day.capitalize
-        @animes.select_day(day)
-        @animes.select_rcm
-        return @animes.print_animes(1) unless @animes.empty?
-        return 'ありませ〜んｗｗｗｗ'
+        day.capitalize!
+        return Anime.get_animes(@year, @season, day, false, true)
       else
         return nil
       end
@@ -86,7 +67,7 @@ module Anime
 
     def answer(msg)
       ans = select_answer(msg)
-      initialize
+      # initialize
       return ans
     end
   end
