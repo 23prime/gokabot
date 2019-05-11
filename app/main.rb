@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'line/bot'
 require './app/imports.rb'
+require 'dotenv/load'
 
 $OBJS = [
   Nyokki.new,
@@ -24,10 +25,11 @@ end
 # Make reply for each case.
 def reply(event)
   msg = event.message['text']
-  return mk_reply(msg)
+  user_id = event['source']['userId']
+  return mk_reply(msg, user_id)
 end
 
-def mk_reply(msg)
+def mk_reply(msg, user_id)
   reply_text  = ''
   $reply_type = 'text'
 
@@ -42,6 +44,8 @@ def mk_reply(msg)
       reply_text = "エラーおつｗｗｗｗｗｗ\n\n> #{exception}"
     end
   end
+
+  reply_text = '' if user_id == ENV['MY_USER_ID'] && reply_text == '負けｗｗｗ'
 
   case $reply_type
   when 'text'
