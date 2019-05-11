@@ -2,10 +2,6 @@ require 'active_record'
 require 'dotenv/load'
 
 module Anime
-  ActiveRecord::Base.establish_connection(
-    ENV['DATABASE_URL']
-  )
-
   class Anime < ActiveRecord::Base
     SORT = "
       ORDER BY
@@ -65,6 +61,10 @@ module Anime
     end
 
     def self.get_animes(year, season, day, all, rcm)
+      Anime.establish_connection(
+        ENV['DATABASE_URL']
+      )
+
       con = Anime.connection
       query = Anime.mk_query(year, season, day, all, rcm)
       animes = con.select_all(query).to_hash
