@@ -1,4 +1,4 @@
-# Gokabot for LINE.
+# Gokabot for LINE
 
 ## What
 
@@ -14,47 +14,49 @@ Add Gokabot to your friends from the QR code below, and invite to your groups.
 
 - Calling
 
-  | Send examples                 | Return          |
-  |-------------------------------|-----------------|
-  | "ごかぼっと", "gokabot""      | "なんですか？"  |
-  | "ごかぼう", "ヒゲ", "gokabou" | Random response |
+  | Send examples                    | Response        |
+  |----------------------------------|-----------------|
+  | "ごかぼっと", "ごかぼう", "ヒゲ" | Random message  |
 
 - Anime
   
-  | Send examples                       | Return              |
-  |-------------------------------------|---------------------|
-  | "今日", "今日のアニメ", "today"     | Animes in today     |
-  | "昨日", "昨日のアニメ", "yesterday" | Animes in yesterday |
-  | "明日", "明日のアニメ", "tomorrow"  | Animes in tomorrow  |
-  | "日曜", "日曜のアニメ", "Sunday"    | Animes in Sunday    |
-  | "今期", "今期のアニメ", "all"       | Animes in this term |
+  | Send examples                       | Response                        |
+  |-------------------------------------|---------------------------------|
+  | "今日", "今日のアニメ", "today"     | Animes in today                 |
+  | "昨日", "昨日のアニメ", "yesterday" | Animes in yesterday             |
+  | "明日", "明日のアニメ", "tomorrow"  | Animes in tomorrow              |
+  | "日曜", "日曜のアニメ", "Sunday"    | Animes in Sunday                |
+  | "今期", "今期のアニメ", "all"       | Animes in this term             |
+  | "来期", "来期のアニメ", "next"      | Animes in next term             |
+  | "おすすめ"                          | Recommended animes in today     |
+  | "今期のおすすめ"                    | Recommended animes in this term |
 
 - Weather
 
-  | Send examples        | Return                         |
+  | Send examples        | Response                       |
   |----------------------|--------------------------------|
   | "天気", "今日の天気" | Today's weather in Default     |
   | "明日の天気"         | Tomorrrow's weather in Default |
-  | "天気 甲府"          | Today's weather in Kofu        |
-  | "明日の天気 甲府"    | Tomorrow's weather in Kofu     |
+  | "天気 東京"          | Today's weather in Tokyo       |
+  | "明日の天気 東京"    | Tomorrow's weather in Tokyo    |
 
   Now, Default is Tsukuba.
   
 - Dictionary
 
-  | Send examples                          | Return                                                       |
+  | Send examples                          | Response                                                     |
   |----------------------------------------|--------------------------------------------------------------|
   | "西郷隆盛ってなに", "西郷隆盛って誰？" | Informations of "西郷隆盛" in Wikipedia or pixiv or niconico |
 
 - Nyokki
 
-  | Send examples | Return            |
+  | Send examples | Response          |
   |---------------|-------------------|
   | "1ニョッキ"   | Start Nyokki Game |
 
 - Omikuji
 
-  | Send examples | Return            |
+  | Send examples | Response          |
   |---------------|-------------------|
   | "おみくじ"    | Result of Omikuji |
 
