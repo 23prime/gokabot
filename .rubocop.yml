@@ -16,9 +16,6 @@ MutableConstant:
 EmptyLineAfterGuardClause:
   Enabled: false
 
-# TrailingBlankLines:
-#   Enabled: false
-
 Style/BlockDelimiters:
   Enabled: false
 
@@ -28,14 +25,23 @@ Naming/UncommunicativeMethodParamName:
 GlobalVars:
   Enabled: false
 
-LineLength:
-  Max: 100
-
 Style/IfUnlessModifier:
   Enabled: false
 
 AsciiComments:
   Enabled: false
 
+LineLength:
+  Max: 100
+
 MethodLength:
-  Max: 15
+  Max: 30
+
+CyclomaticComplexity:
+  Max: 10
+
+RescueStandardError:
+  Enabled: false
+
+ClassVars:
+  Enabled: false

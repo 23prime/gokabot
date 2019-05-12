@@ -28,7 +28,7 @@ def get_name(user_id)
   uri = "https://api.line.me/v2/bot/profile/#{user_id}"
 
   begin
-    res = RestClient.get uri, { :Authorization => "Bearer #{token}" }
+    res = RestClient.get uri, Authorization: "Bearer #{token}"
     name = JSON.parse(res.body)['displayName']
   rescue => exception
     name = exception.message
@@ -52,8 +52,9 @@ def mk_reply(msg, user_id)
   $reply_type = 'text'
 
   $OBJS.each do |obj|
+    ans = obj.answer(msg)
     begin
-      if ans = obj.answer(msg)
+      unless ans.nil?
         reply_text = ans
         break
       end
