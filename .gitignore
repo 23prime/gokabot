@@ -4,3 +4,4 @@ test*.rb
 .vscode/
 .env
 get-log
+docs/ids.json
