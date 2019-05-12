@@ -42,7 +42,8 @@ def reply(event)
   msg = event.message['text']
   user_id = event['source']['userId']
   name = get_name(user_id)
-  puts "#{user_id}, #{name}"
+  puts "Message: #{msg}"
+  puts "From:    #{user_id} (#{name})"
   return mk_reply(msg, user_id)
 end
 
