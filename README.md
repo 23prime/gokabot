@@ -66,7 +66,8 @@ Add Gokabot to your friends from the QR code below, and invite to your groups.
 
 ## How to add new function
 
-1. Add file `hoge.rb` in `src/`.
-2. Implement `answer(msg)` in class `Fuga` in `hoge.rb`.
-3. Add `require 'hoge.rb'` to `app/imports.rb`.
-4. Add `Fuga.new()` to `$OBJS` in `app/main.rb`.
+1. Create new file `/src/hoge.rb`.
+2. Implement class `Fuga` in `/src/hoge.rb`.
+3. Implement instance method `answer(msg)` in class `Fuga`.
+4. Add `require './src/hoge.rb'` to `/src.rb`.
+5. Add `Fuga.new` to `$OBJS` in `/src.rb`.

@@ -2,19 +2,7 @@ require 'sinatra'
 require 'line/bot'
 require 'dotenv/load'
 require 'rest-client'
-require './app/imports.rb'
-
-$OBJS = [
-  Nyokki.new,
-  Gokabou.new,
-  Anime::Answerer.new,
-  Weather.new,
-  WebDict::Answerer.new,
-  Denippi.new,
-  Tex.new,
-  Pigeons.new,
-  Dfl_search.new
-]
+require './src.rb'
 
 def client
   @client ||= Line::Bot::Client.new { |config|
