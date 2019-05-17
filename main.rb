@@ -30,8 +30,11 @@ def reply(event)
   msg = event.message['text']
   user_id = event['source']['userId']
   name = get_name(user_id)
+
+  # Print message
   puts "From:    #{user_id} (#{name})"
   puts "Message: #{msg}"
+
   return mk_reply(msg, user_id)
 end
 
@@ -67,6 +70,9 @@ def mk_reply(msg, user_id)
       previewImageUrl: reply_text
     }
   end
+
+  # Print reply
+  puts "Reply:   #{reply}"
 
   return reply
 end
