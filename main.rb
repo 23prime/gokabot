@@ -72,7 +72,7 @@ def mk_reply(msg, user_id)
   end
 
   # Print reply
-  puts "Reply:   #{reply}"
+  puts "Reply:   #{reply_text}"
 
   return reply
 end
