@@ -13,6 +13,7 @@ class Weather
   end
 
   def change_city(city)
+    @city = city
     @city_id = @city_ids[city]
   end
 
