@@ -2,59 +2,64 @@ require 'net/http'
 require 'uri'
 require 'json'
 
-$CITY_IDS = JSON.parse(File.open('./docs/city_id.json', 'r').read)
-
 class Weather
-  def get_weather(date, city)
-    # Get city ID.
-    city_id = $CITY_IDS[city]
+  def initialize
+    # Default city
+    @city = '東京'
 
-    return '分かりませ〜んｗ' if city_id.nil?
+    # Get city ID
+    @city_ids = JSON.parse(File.open('./docs/city_id.json', 'r').read)
+    @city_id = @city_ids[@city]
+  end
 
-    # Get weather info in 'city'.
-    uri = URI.parse("http://weather.livedoor.com/forecast/webservice/json/v1?city=#{city_id}")
+  def change_city(city)
+    @city_id = @city_ids[city]
+  end
+
+  def get_weather_info
+    # Get weather infomation of the @city
+    base_uri = 'http://weather.livedoor.com/forecast/webservice/json/v1?city='
+    uri = URI.parse("#{base_uri}#{@city_id}")
     weather_json = Net::HTTP.get(uri)
-    city_all = JSON.parse(weather_json)
+    info = JSON.parse(weather_json)
+    return info
+  end
 
-    case date
-    # 0 -> today, 1 -> tomorrow.
-    # So, forecasts[0] -> today weather, forecasts[1] -> tomorrow weather.
-    when 0, 1
-      day_weather = city_all['forecasts'][date]
+  def get_mosts(temp, date, is_max)
+    return '' if temp.nil?
 
-      day   = day_weather['dateLabel']  # 今日 or 明日
-      date  = day_weather['date'][8, 9] # yyyy-mm-dd -> dd
-      telop = day_weather['telop']      # example: 晴, 曇時々雨
+    most = '最低'
+    most = '最高' if is_max
 
-      min_temp    = day_weather['temperature']['min']
-      max_temp    = day_weather['temperature']['max']
-      min_celsius = ''
-      max_celsius = ''
+    celsius = "#{most}気温：#{temp['celsius']}℃"
+    celsius = "予想#{celsius}" if date == 1
+    celsius = "\n#{celsius}"
+    return celsius
+  end
 
-      unless min_temp.nil?
-        min_celsius = "最低気温：#{min_temp['celsius']}℃"
-        min_celsius = "予想#{min_celsius}" if date == 1
-        min_celsius = "\n#{min_celsius}"
-      end
+  def get_weather(date)
+    return '分かりませ〜んｗ' if @city_id.nil?
 
-      unless max_temp.nil?
-        max_celsius = "最高気温：#{max_temp['celsius']}℃"
-        max_celsius = "予想#{max_celsius}" if date == 1
-        max_celsius = "\n#{max_celsius}"
-      end
+    weather_info = get_weather_info
+    day_weather = weather_info['forecasts'][date]
 
-      return "> #{city}の#{day}（#{date}日）の天気 <\n#{telop}#{max_celsius}#{min_celsius}"
+    day = day_weather['dateLabel']   # 今日 or 明日
+    date = day_weather['date'][8, 9] # yyyy-mm-dd -> dd
+    telop = day_weather['telop']     # example: 晴, 曇時々雨
 
-    else
-      return nil
-    end
+    min_temp = day_weather['temperature']['min']
+    max_temp = day_weather['temperature']['max']
+
+    min_celsius = get_mosts(min_temp, date, false)
+    max_celsius = get_mosts(max_temp, date, true)
+
+    return "> #{@city}の#{day}（#{date}日）の天気 <\n#{telop}#{max_celsius}#{min_celsius}"
   end
 
   def answer(msg)
     msg_split = msg.split(/[[:blank:]]+/)
-    msg0      = msg_split[0]
-    msg1      = msg_split[1]
-    default   = 'つくば'
+    msg0 = msg_split[0].strip
+    msg1 = msg_split[1]
 
     case msg0
     when /^(今日の|)天気$/
@@ -65,8 +70,11 @@ class Weather
       return nil
     end
 
-    return get_weather(date, default) if msg1.nil?
-    city = msg1.chomp
-    return get_weather(date, city)
+    unless msg1.nil?
+      msg1.strip!
+      change_city(msg1)
+    end
+
+    return get_weather(date)
   end
 end
