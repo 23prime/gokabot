@@ -45,3 +45,9 @@ RescueStandardError:
 
 ClassVars:
   Enabled: false
+
+Metrics/AbcSize:
+  Max: 20
+
+AccessorMethodName:
+  Enabled: false
