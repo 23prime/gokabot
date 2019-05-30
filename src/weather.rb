@@ -3,9 +3,10 @@ require 'uri'
 require 'json'
 
 class Weather
+  @@default_city = '東京'
+
   def initialize
-    # Default city
-    @city = '東京'
+    @city = @@default_city
 
     # Get city ID
     @city_ids = JSON.parse(File.open('./docs/city_id.json', 'r').read)
@@ -54,7 +55,10 @@ class Weather
     min_celsius = get_mosts(min_temp, date, false)
     max_celsius = get_mosts(max_temp, date, true)
 
-    return "> #{@city}の#{day}（#{date}日）の天気 <\n#{telop}#{max_celsius}#{min_celsius}"
+    ans = "> #{@city}の#{day}（#{date}日）の天気 <\n#{telop}#{max_celsius}#{min_celsius}"
+    change_city(@@default_city)
+
+    return ans
   end
 
   def answer(msg)
