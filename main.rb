@@ -77,6 +77,16 @@ def mk_reply(msg, user_id)
   return reply
 end
 
+def hello
+  msg = 'こん'
+  reply = {
+    type: 'text',
+    text: msg
+  }
+
+  return reply
+end
+
 # Execute.
 post '/callback' do
   body = request.body.read
@@ -87,7 +97,6 @@ post '/callback' do
   end
 
   events = client.parse_events_from(body)
-  puts events
 
   events.each { |event|
     case event
@@ -103,8 +112,7 @@ post '/callback' do
       end
 
     when Line::Bot::Event::Follow, Line::Bot::Event::Join, Line::Bot::Event::MemberJoined
-      msg = 'こん'
-      client.reply_message(event[event, msg])
+      client.reply_message(event['replyToken'], hello)
     end
   }
 
