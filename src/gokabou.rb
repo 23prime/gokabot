@@ -31,6 +31,8 @@ class Gokabou
 
   def answer(msg)
     case msg
+    when /\Aこん(|です)(|ｗ|w)\Z/i
+      return 'こん'
     when /死ね|死んで/
       return @@deads.sample
     when /行く/
