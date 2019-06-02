@@ -8,7 +8,7 @@ LINE BOT with Ruby, using [line-bot-sdk-ruby](https://github.com/line/line-bot-s
 
 Add Gokabot to your friends from the QR code below, and invite to your groups.
 
-![QR](./gokabotQR.png)
+![QR](./images/gokabotQR.png)
 
 ## Functions
 
