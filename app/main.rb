@@ -2,7 +2,7 @@ require 'sinatra'
 require 'line/bot'
 require 'dotenv/load'
 require 'rest-client'
-require './src.rb'
+require_relative './src.rb'
 
 def client
   @client ||= Line::Bot::Client.new { |config|

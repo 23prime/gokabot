@@ -1,0 +1,21 @@
+require_relative './src/gokabou.rb'
+require_relative './src/anime/answerer.rb'
+require_relative './src/weather.rb'
+require_relative './src/nyokki.rb'
+require_relative './src/denippi.rb'
+require_relative './src/pigeons.rb'
+require_relative './src/web_dict/answerer.rb'
+require_relative './src/texrenderer.rb'
+require_relative './src/searchdolls.rb'
+
+$OBJS = [
+  Nyokki.new,
+  Gokabou.new,
+  Anime::Answerer.new,
+  Weather.new,
+  WebDict::Answerer.new,
+  Denippi.new,
+  Tex.new,
+  Pigeons.new,
+  Dfl_search.new
+]
