@@ -22,7 +22,7 @@ GEM
       domain_name (~> 0.5)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
-    line-bot-api (1.9.0)
+    line-bot-api (1.11.0)
     mechanize (2.7.6)
       domain_name (~> 0.5, >= 0.5.1)
       http-cookie (~> 1.0)
