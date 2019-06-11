@@ -94,10 +94,7 @@ module Gokabou
 
   class Gokabou
     def initialize
-      # twis = File.open('./docs/gokabou_tweets', 'r').read
       twis = File.open('./docs/gokabou_tweets', 'r').read.split("\n")
-      twis = twis.slice(0, 1000)
-
       np = NattoParser.new
       wordss = np.parse_text_array(twis)
 
