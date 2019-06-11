@@ -1,6 +1,6 @@
 .bundle/
 vendor/
-test*.rb
+test/
 .vscode/
 .env
 get-log
