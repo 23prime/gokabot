@@ -42,8 +42,9 @@ def mk_reply(msg, user_id)
   reply_text  = ''
   $reply_type = 'text'
 
-  $OBJS.each do |obj|
+  $ANS_OBJS.each do |obj|
     ans = obj.answer(msg)
+
     begin
       unless ans.nil?
         reply_text = ans

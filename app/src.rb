@@ -8,7 +8,7 @@ require_relative './src/web_dict/answerer.rb'
 require_relative './src/texrenderer.rb'
 require_relative './src/searchdolls.rb'
 
-$OBJS = [
+$ANS_OBJS = [
   Nyokki.new,
   Gokabou::Answerer.new,
   Anime::Answerer.new,
