@@ -1,4 +1,4 @@
-require_relative './src/gokabou.rb'
+require_relative './src/gokabou/answerer.rb'
 require_relative './src/anime/answerer.rb'
 require_relative './src/weather.rb'
 require_relative './src/nyokki.rb'
@@ -10,7 +10,7 @@ require_relative './src/searchdolls.rb'
 
 $OBJS = [
   Nyokki.new,
-  Gokabou.new,
+  Gokabou::Answerer.new,
   Anime::Answerer.new,
   Weather.new,
   WebDict::Answerer.new,
