@@ -7,7 +7,7 @@ class CollectDebts
   end
 
   def takenoko?(msg_data)
-    return msg_data[1] == ENV['MY_USER_ID'] || (msg_data[2] =~ /たけのこ|このけた/)
+    return msg_data[1] == ENV['TAKENOKO_USER_ID'] || (msg_data[2] =~ /たけのこ|このけた/)
   end
 
   def answer(*msg_data)
