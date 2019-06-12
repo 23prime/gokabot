@@ -2,6 +2,8 @@ require_relative './gen_msg.rb'
 
 module Gokabou
   class Answerer
+    attr_accessor :help, :omikuji, :deads, :new_years
+
     def initialize
       @version = '1.0.0'
       @help = File.open('./docs/help', 'r').read
