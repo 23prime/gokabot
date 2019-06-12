@@ -18,6 +18,6 @@ $ANS_OBJS = [
   Denippi.new,
   Tex.new,
   Pigeons.new,
-  Dfl_search.new,
+  DflSearch.new,
   CollectDebts.new
 ]
