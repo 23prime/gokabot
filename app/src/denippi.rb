@@ -13,13 +13,13 @@ class Denippi
     return [*"ァ".."ン"].sample if msg =~ /^\p{Katakana}$/ && @@monyo_cnt == 2
   end
 
-  def answer(msg)
+  def answer(*msg_data)
+    msg = msg_data[0]
+
     if msg =~ /^([ぁ-ん]|[ァ-ン]|寝)$/
       monyo_chk(msg)
     else
       nil
     end
   end
-
 end
-

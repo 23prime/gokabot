@@ -58,7 +58,8 @@ module WebDict
       return nil
     end
 
-    def answer(msg)
+    def answer(*msg_data)
+      msg = msg_data[0]
       keyword = extract_keyword(msg)
       return nil if keyword.nil?
       result = search(keyword)

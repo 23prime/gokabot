@@ -23,8 +23,9 @@ class Dfl_search
     (BASE_URI + pic_dir).sub(/&rev=.+/,"") 
   end
 
+  def answer(*msg_data)
+    msg = msg_data[0]
 
-  def answer(msg)
     if msg =~ /^doll /
       pict_type=0
       doll_name = msg.sub(/^doll /,"")

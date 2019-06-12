@@ -12,7 +12,9 @@ class Nyokki
     return '負けｗｗｗ'
   end
 
-  def answer(msg)
+  def answer(*msg_data)
+    msg = msg_data[0]
+
     return nyokki(msg) if @@nyokki_stat.positive? || msg =~ /(1|１)(にょっき|ニョッキ|ﾆｮｯｷ)/
     return nil
   end

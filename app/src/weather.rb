@@ -61,7 +61,8 @@ class Weather
     return ans
   end
 
-  def answer(msg)
+  def answer(*msg_data)
+    msg = msg_data[0]
     msg_split = msg.split(/[[:blank:]]+/)
     msg0 = msg_split[0].strip
     msg1 = msg_split[1]

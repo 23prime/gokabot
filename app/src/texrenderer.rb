@@ -9,7 +9,9 @@ class Tex
     BASE_URI+CGI.escape(text)
   end
 
-  def answer(msg)
+  def answer(*msg_data)
+    msg = msg_data[0]
+
     if msg =~ /\A\$.+\$\Z/m 
       return "日本語禁止" if msg =~/[^\x01-\x7E]/
       msg.chop!.slice!(0)

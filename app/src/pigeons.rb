@@ -11,7 +11,9 @@ class Pigeons
     sub + "\n" + body
   end
 
-  def answer(msg)
+  def answer(*msg_data)
+    msg = msg_data[0]
+
     if msg =~ /鳩|ゆかり|はと/
       pick_mail
     else

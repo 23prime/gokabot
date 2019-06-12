@@ -65,7 +65,8 @@ module Anime
       end
     end
 
-    def answer(msg)
+    def answer(*msg_data)
+      msg = msg_data[0]
       ans = select_answer(msg)
       # initialize
       return ans

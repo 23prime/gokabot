@@ -38,7 +38,9 @@ module Gokabou
       @gkb = Gokabou.new
     end
 
-    def answer(msg)
+    def answer(*msg_data)
+      msg = msg_data[0]
+
       case msg
       when /\Aこん(|です)(|ｗ|w)\Z/i
         return 'こん'

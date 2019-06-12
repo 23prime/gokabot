@@ -35,15 +35,15 @@ def reply(event)
   puts "From:    #{user_id} (#{name})"
   puts "Message: #{msg}"
 
-  return mk_reply(msg, user_id)
+  return mk_reply(msg, user_id, name)
 end
 
-def mk_reply(msg, user_id)
+def mk_reply(*msg_data)
   reply_text  = ''
   $reply_type = 'text'
 
   $ANS_OBJS.each do |obj|
-    ans = obj.answer(msg)
+    ans = obj.answer(*msg_data)
 
     begin
       unless ans.nil?
@@ -55,8 +55,6 @@ def mk_reply(msg, user_id)
       reply_text = "エラーおつｗｗｗｗｗｗ\n\n> #{exception}"
     end
   end
-
-  reply_text = '' if user_id == ENV['MY_USER_ID'] && reply_text == '負けｗｗｗ'
 
   case $reply_type
   when 'text'
