@@ -4,40 +4,39 @@ module Gokabou
   class NattoParser
     attr_accessor :nm
 
-    def initialize()
+    def initialize
       @nm = Natto::MeCab.new
     end
 
     def parse_text_array(texts)
-      words = []
-      index = 0
+      wordses = []
 
       texts.each do |text|
-        words.push(Array[])
+        words = []
 
         @nm.parse(text) do |n|
-          words[index].push(n.surface) unless n.surface.empty?
+          words << n.surface unless n.surface.empty?
         end
 
-        index += 1
+        wordses << words
       end
 
-      return words
+      return wordses
     end
   end
 
   class Marcov
     def self.gen_marcov_block(words)
-      array = []
-
       # Insert nil begin and end
       words.unshift(nil)
-      words.push(nil)
+      words << nil
 
       # Add 3 words into each array
       bound = words.length - 3
+      array = []
+
       (0..bound).each do |i|
-        array.push([words[i], words[i + 1], words[i + 2]])
+        array << [words[i], words[i + 1], words[i + 2]]
       end
 
       return array
@@ -47,9 +46,7 @@ module Gokabou
       blocks = []
 
       array.each do |block|
-        if block[0] == target
-          blocks.push(block)
-        end
+        blocks << block if block[0] == target
       end
 
       return blocks
@@ -61,7 +58,7 @@ module Gokabou
 
       unless len.zero?
         array[rand(len)].each do |word|
-          dist.push(word) unless i.zero?
+          dist << word unless i.zero?
           i += 1
         end
       end
@@ -70,19 +67,16 @@ module Gokabou
     end
 
     def self.gen_text(array)
-      result = []
-      block = []
-
       # Find block which begin from nil
       block = find_blocks(array, nil)
-      result = connect_blocks(block, result)
+      result = connect_blocks(block, [])
 
       # Loop until the end word of result is nil
       i = 0
-      until result[result.length - 1].nil?
-        block = find_blocks(array, result[result.length - 1])
-        result = connect_blocks(block, result)
 
+      until result[-1].nil?
+        block = find_blocks(array, result[-1])
+        result = connect_blocks(block, result)
         i += 1
         break if i > 100
       end
@@ -96,10 +90,10 @@ module Gokabou
     def initialize
       twis = File.open('./docs/gokabou_tweets', 'r').read.split("\n")
       np = NattoParser.new
-      wordss = np.parse_text_array(twis)
+      wordses = np.parse_text_array(twis)
 
-      wordss.map! { |words| Marcov.gen_marcov_block(words) }
-      @words = wordss.flatten(1)
+      wordses.map! { |words| Marcov.gen_marcov_block(words) }
+      @words = wordses.flatten(1)
     end
 
     def gen_ans
