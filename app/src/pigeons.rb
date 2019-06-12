@@ -2,8 +2,7 @@
 require 'csv'
 
 class Pigeons
-
-  def pick_mail()
+  def pick_mail
     mails = CSV.read('./docs/yukarinmails.csv')
     mail = mails.sample
     sub = mail[1]
@@ -14,11 +13,6 @@ class Pigeons
   def answer(*msg_data)
     msg = msg_data[0]
 
-    if msg =~ /鳩|ゆかり|はと/
-      pick_mail
-    else
-      nil
-    end
+    pick_mail if msg =~ /鳩|ゆかり|はと/
   end
-
 end
