@@ -3,7 +3,7 @@ class Denippi
 
   def monyo_chk(msg)
     return 'そ' if msg =~ /^(ね|寝)$/
-    return %w[の こ].sample if msg =~ /^うん$/
+    return %w[の こ ち].sample if msg =~ /^うん$/
     @@monyo_cnt += 1
     return [*'ぁ'..'ん'].sample if msg =~ /^\p{Hiragana}$/ && @@monyo_cnt == 2
     return [*'ァ'..'ン'].sample if msg =~ /^\p{Katakana}$/ && @@monyo_cnt == 2
