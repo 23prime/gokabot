@@ -7,6 +7,7 @@ require_relative './src/pigeons.rb'
 require_relative './src/web_dict/answerer.rb'
 require_relative './src/texrenderer.rb'
 require_relative './src/searchdolls.rb'
+require_relative './src/collectdebts.rb'
 
 $ANS_OBJS = [
   Nyokki.new,
@@ -17,5 +18,6 @@ $ANS_OBJS = [
   Denippi.new,
   Tex.new,
   Pigeons.new,
-  Dfl_search.new
+  Dfl_search.new,
+  CollectDebts.new
 ]
