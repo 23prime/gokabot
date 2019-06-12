@@ -64,6 +64,8 @@ module Gokabou
         return 'ｶﾞｯ'
       when /あけ|明け|おめ|こん|おは|happy|new|year|2019/i
         return @new_years.sample if @month == 1 && @day == 1
+      when /\Aうん(こ|ち)\Z|\Aウン(コ|チ)\Z|\A💩\Z/
+        return 'ウンコマンだ～～‼️‼️‼️‼️‼️‼️‼️‼️‼️‼'
       else
         return nil
       end
