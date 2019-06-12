@@ -1,9 +1,11 @@
 class CollectDebts
+  @collect_msg = ['たけのこは借金返さないゴミクズ糞ニート\nしかもネカマ', 'たけのこ借金返してよおおおおおおおおお(´༎ຶོρ༎ຶོ`)']
+
   def takenoko?(msg_data)
-    return 'お金返して' if msg_data[1] == ENV['MY_USER_ID'] || (msg_data[2] =~ /たけのこ/)
+    return msg_data[1] == ENV['MY_USER_ID'] || (msg_data[2] =~ /たけのこ|このけた/)
   end
 
   def answer(*msg_data)
-    return takenoko?(msg_data)
+    return @collect_msg.sample if takenoko?(msg_data)
   end
 end
