@@ -1,4 +1,5 @@
 require_relative './gen_msg.rb'
+require_relative './update_db.rb'
 
 module Gokabou
   class Answerer
@@ -37,11 +38,16 @@ module Gokabou
       @month = @d.month
       @day = @d.day
 
+      @ud = UpdateDB.new
       @gkb = Gokabou.new
     end
 
     def answer(*msg_data)
       msg = msg_data[0]
+      user_id = msg_data[1]
+
+      # Update DB of Gokabou
+      @ud.update_db(msg, user_id)
 
       case msg
       when /\Aこん(|です)(|ｗ|w)\Z/i
