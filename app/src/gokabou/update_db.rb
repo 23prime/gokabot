@@ -7,7 +7,7 @@ module Gokabou
   end
 
   class UpdateDB
-    attr_accessor :all_sentences
+    attr_accessor :all_sentences, :update_counter
 
     def initialize
       Gokabous.establish_connection(
@@ -20,6 +20,8 @@ module Gokabou
 
       @query_s = 'select sentence from gokabous'
       @all_sentences = @con.select_values(@query_s)
+
+      @update_counter = 0
     end
 
     def insert_data(date, sentence)
@@ -38,6 +40,8 @@ module Gokabou
 
         @all_data = @con.select_all(@query_a).to_hash
         @all_sentences = @con.select_values(@query_s)
+
+        @update_counter += 1
       end
     end
 

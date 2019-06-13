@@ -42,12 +42,16 @@ module Gokabou
       @gkb = Gokabou.new(@ud.all_sentences)
     end
 
+    def re_gen_dict
+      @gkb = Gokabou.new(@ud.all_sentences) if @ud.update_counter > 3
+    end
+
     def answer(*msg_data)
       msg = msg_data[0]
       user_id = msg_data[1]
 
-      # Update DB of Gokabou
       @ud.update_db(msg, user_id)
+      re_gen_dict
 
       case msg
       when /\Aこん(|です)(|ｗ|w)\Z/i
