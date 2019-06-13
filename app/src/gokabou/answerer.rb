@@ -39,7 +39,7 @@ module Gokabou
       @day = @d.day
 
       @ud = UpdateDB.new
-      @gkb = Gokabou.new
+      @gkb = Gokabou.new(@ud.all_sentences)
     end
 
     def answer(*msg_data)

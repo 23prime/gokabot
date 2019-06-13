@@ -87,10 +87,9 @@ module Gokabou
   end
 
   class Gokabou
-    def initialize
-      twis = File.open('./docs/gokabou_tweets', 'r').read.split("\n")
+    def initialize(sentences)
       np = NattoParser.new
-      wordses = np.parse_text_array(twis)
+      wordses = np.parse_text_array(sentences)
 
       wordses.map! { |words| Marcov.gen_marcov_block(words) }
       @words = wordses.flatten(1)

@@ -7,6 +7,8 @@ module Gokabou
   end
 
   class UpdateDB
+    attr_accessor :all_sentences
+
     def initialize
       Gokabous.establish_connection(
         ENV['DATABASE_URL']
