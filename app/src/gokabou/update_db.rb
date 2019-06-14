@@ -41,6 +41,9 @@ module Gokabou
         @all_sentences = @con.select_values(@query_s)
 
         @update_counter += 1
+
+        puts "Insert '#{msg}' to DB."
+        puts "Row length -> #{row_length}"
       end
     end
 
@@ -60,6 +63,13 @@ module Gokabou
       splited.map! { |str| str =~ URI::DEFAULT_PARSER.regexp[:ABS_URI] }
 
       return splited.any?
+    end
+
+    def row_length
+      query = 'select count (*) from gokabous'
+      res = @con.select_all(query).to_hash
+
+      return res[0]['count']
     end
 
     # Will be implement...

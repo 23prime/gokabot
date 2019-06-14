@@ -43,7 +43,12 @@ module Gokabou
     end
 
     def re_gen_dict
-      @gkb = Gokabou.new(@ud.all_sentences) if @ud.update_counter > 3
+      puts "DB Update Counter -> #{@ud.update_counter}"
+
+      if @ud.update_counter > 3
+        puts 'Regenerate dictionary.'
+        @gkb = Gokabou.new(@ud.all_sentences) 
+      end
     end
 
     def answer(*msg_data)
