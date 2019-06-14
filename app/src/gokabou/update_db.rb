@@ -32,9 +32,7 @@ module Gokabou
     end
 
     def update_db(msg, user_id)
-      gid = ENV['GOKABOU_USER_ID']
-
-      if msg.length > 4 && !@all_sentences.include?(msg) && user_id == gid
+      if updatable(msg, user_id)
         date = Date.today.strftime('%Y-%m-%d')
         insert_data(date, msg)
 
@@ -43,6 +41,16 @@ module Gokabou
 
         @update_counter += 1
       end
+    end
+
+    def updatable(msg, user_id)
+      gid = ENV['GOKABOU_USER_ID']
+
+      unless user_id == gid && msg.length > 4 && msg.length <= 300
+        return false
+      end
+
+      return !@all_sentences.include?(msg)
     end
 
     # Will be implement...
