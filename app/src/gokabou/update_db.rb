@@ -1,6 +1,7 @@
 require 'active_record'
 require 'dotenv/load'
 require 'date'
+require 'uri'
 
 module Gokabou
   class Gokabous < ActiveRecord::Base
@@ -50,7 +51,15 @@ module Gokabou
         return false
       end
 
+      return false if include_uri?(msg)
       return !@all_sentences.include?(msg)
+    end
+
+    def include_uri?(msg)
+      splited = msg.split(/[[:space:]]/)
+      splited.map! { |str| str =~ URI::DEFAULT_PARSER.regexp[:ABS_URI] }
+
+      return splited.any?
     end
 
     # Will be implement...
