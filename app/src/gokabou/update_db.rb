@@ -44,7 +44,7 @@ module Gokabou
       puts "#####   Row length -> #{row_length} #####"
     end
 
-    def update_db(msg, user_id)
+    def update_db(msg)
       date = Date.today.strftime('%Y-%m-%d')
       insert_data(date, msg)
 
