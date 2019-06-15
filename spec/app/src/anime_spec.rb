@@ -9,9 +9,9 @@ test_cases = %w[
   明日のおすすめ
 ]
 
-animes_ans = Anime::Answerer.new
+describe Anime do
+  let(:animes_ans) { Anime::Answerer.new }
 
-describe 'Anime' do
   test_cases.each do |msg|
     it msg do
       ans = animes_ans.answer(msg)

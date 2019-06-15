@@ -3,6 +3,9 @@ require 'dotenv/load'
 
 module Anime
   class Anime < ActiveRecord::Base
+  end
+
+  class GetAnimes
     SORT = "
       ORDER BY
       CASE day
@@ -18,9 +21,17 @@ module Anime
       time
     "
 
+    def initialize
+      Anime.establish_connection(
+        ENV['DATABASE_URL']
+      )
+
+      @con = Anime.connection
+    end
+
     # all: Bool <- All of the season or not
     # rcm: Bool <- Only recommended or not
-    def self.mk_query(year, season, day, all, rcm)
+    def mk_query(year, season, day, all, rcm)
       colmuns = 'time, title, station'
       colmuns = "day, #{colmuns}" if all
 
@@ -43,7 +54,7 @@ module Anime
       return query
     end
 
-    def self.show_animes(animes, all)
+    def show_animes(animes, all)
       ans = ''
 
       animes.each do |anime|
@@ -60,16 +71,11 @@ module Anime
       return ans
     end
 
-    def self.get_animes(year, season, day, all, rcm)
-      Anime.establish_connection(
-        ENV['DATABASE_URL']
-      )
+    def get_animes(year, season, day, all, rcm)
+      query = mk_query(year, season, day, all, rcm)
+      animes = @con.select_all(query).to_hash
 
-      con = Anime.connection
-      query = Anime.mk_query(year, season, day, all, rcm)
-      animes = con.select_all(query).to_hash
-
-      return Anime.show_animes(animes, all) unless animes.empty?
+      return show_animes(animes, all) unless animes.empty?
       return 'ありませ〜んｗｗｗｗ' if rcm
       return '早漏かよｗ'
     end

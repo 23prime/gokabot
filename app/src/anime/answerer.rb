@@ -24,6 +24,7 @@ module Anime
       @next_season = Season.get_season((month + 3) % 12)
       @year2 = @year
       @year2 += 1 if @season == 'fall'
+      @anime = GetAnimes.new
     end
 
     WDAYS = %w[Sun Mon Tue Wed Thu Fri Sat]
@@ -48,18 +49,18 @@ module Anime
 
       case day
       when /^all|今期#{ANIME_OF}/i
-        return Anime.get_animes(@year, @season, day, true, false)
+        return @anime.get_animes(@year, @season, day, true, false)
       when /^今期の(オススメ|おすすめ)$/i
-        return Anime.get_animes(@year, @season, day, true, true)
+        return @anime.get_animes(@year, @season, day, true, true)
       when /^next|来期#{ANIME_OF}/i
-        return Anime.get_animes(@year2, @next_season, day, true, false)
+        return @anime.get_animes(@year2, @next_season, day, true, false)
       when /^来期の(オススメ|おすすめ)$/i
-        return Anime.get_animes(@year2, @next_season, day, true, true)
+        return @anime.get_animes(@year2, @next_season, day, true, true)
       when WEEK
-        return Anime.get_animes(@year, @season, day, false, false)
+        return @anime.get_animes(@year, @season, day, false, false)
       when WEEK_RCM
         day.capitalize!
-        return Anime.get_animes(@year, @season, day, false, true)
+        return @anime.get_animes(@year, @season, day, false, true)
       else
         return nil
       end
