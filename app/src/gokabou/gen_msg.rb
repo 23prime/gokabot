@@ -85,9 +85,7 @@ module Gokabou
   end
 
   class GenMsg
-    # For test #############
     attr_accessor :marcov_dict
-    #########################
 
     def initialize(sentences)
       @np = NattoParser.new
