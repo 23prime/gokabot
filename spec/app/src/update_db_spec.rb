@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'dotenv/load'
 
+gkb_ans = Gokabou::Answerer.new
 ud = Gokabou::UpdateDB.new
 
 true_msg = 'テストテキスト'
@@ -32,7 +33,7 @@ describe 'Update and Delete' do
     adding = c[3]
 
     it 'Update' do
-      ud.update_db(msg, user_id)
+      ud.update_db(msg, user_id) if gkb_ans.updatable(msg, user_id)
       len += adding
       expect(ud.row_length).to eq len
       # expect(ud.updatable(msg, user_id)).to be pred

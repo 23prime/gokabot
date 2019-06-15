@@ -1,3 +1,4 @@
+require 'dotenv/load'
 require_relative './gen_msg.rb'
 require_relative './update_db.rb'
 
@@ -39,24 +40,35 @@ module Gokabou
       @day = @d.day
 
       @ud = UpdateDB.new
-      @gkb = Gokabou.new(@ud.all_sentences)
+      @gen = GenMsg.new(@ud.all_sentences)
     end
 
-    def re_gen_dict
-      puts "##### DB Update Counter -> #{@ud.update_counter} #####"
+    def include_uri?(msg)
+      splited = msg.split(/[[:space:]]/)
+      splited.map! { |str| str =~ URI::DEFAULT_PARSER.regexp[:ABS_URI] }
 
-      if @ud.update_counter > 3
-        puts '##### Regenerate dictionary #####'
-        @gkb = Gokabou.new(@ud.all_sentences) 
+      return splited.any?
+    end
+
+    def updatable(msg, user_id)
+      gid = ENV['GOKABOU_USER_ID']
+
+      unless user_id == gid && msg.length > 4 && msg.length <= 300
+        return false
       end
+
+      return false if include_uri?(msg)
+      return !@ud.all_sentences.include?(msg)
     end
 
     def answer(*msg_data)
       msg = msg_data[0]
       user_id = msg_data[1]
 
-      @ud.update_db(msg, user_id)
-      re_gen_dict
+      if updatable(msg, user_id)
+        @ud.update_db(msg, user_id)
+        @gen.update_dict(msg)
+      end
 
       case msg
       when /\Aこん(|です)(|ｗ|w)\Z/i
@@ -70,7 +82,7 @@ module Gokabou
       when /\Agokabot[[:blank:]]+(-h|--help)\Z/
         return @help
       when /ごかぼっと|gokabot|ごかぼう|gokabou|\Aヒゲ\Z|\Aひげ\Z/
-        return @gkb.gen_ans
+        return @gen.gen_ans
       when /\Aおみくじ\Z/
         return @omikuji.sample
       when /たけのこ(君|くん|さん|ちゃん|)/

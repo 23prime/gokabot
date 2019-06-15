@@ -2,26 +2,25 @@ require 'natto'
 
 module Gokabou
   class NattoParser
-    attr_accessor :nm
+    attr_accessor :nm, :dict
 
     def initialize
       @nm = Natto::MeCab.new
+      @dict = []
     end
 
-    def parse_text_array(texts)
-      wordses = []
+    def parse_sentence(sentence)
+      words = []
 
-      texts.each do |text|
-        words = []
-
-        @nm.parse(text) do |n|
-          words << n.surface unless n.surface.empty?
-        end
-
-        wordses << words
+      @nm.parse(sentence) do |n|
+        words << n.surface unless n.surface.empty?
       end
 
-      return wordses
+      return words
+    end
+
+    def mk_dict(sentences)
+      @dict = sentences.map { |sentence| parse_sentence(sentence) }
     end
   end
 
@@ -74,11 +73,10 @@ module Gokabou
       # Loop until the end word of result is nil
       i = 0
 
-      until result[-1].nil?
+      until result[-1].nil? || i > 100
         block = find_blocks(array, result[-1])
         result = connect_blocks(block, result)
         i += 1
-        break if i > 100
       end
 
       text = result.join
@@ -86,17 +84,30 @@ module Gokabou
     end
   end
 
-  class Gokabou
-    def initialize(sentences)
-      np = NattoParser.new
-      wordses = np.parse_text_array(sentences)
+  class GenMsg
+    # For test #############
+    attr_accessor :marcov_dict
+    #########################
 
-      wordses.map! { |words| Marcov.gen_marcov_block(words) }
-      @words = wordses.flatten(1)
+    def initialize(sentences)
+      @np = NattoParser.new
+      @np.mk_dict(sentences)
+
+      @marcov_dict = @np.dict.map { |words| Marcov.gen_marcov_block(words) }
+      @marcov_dict.flatten!(1)
+    end
+
+    def update_dict(sentence)
+      words = @np.parse_sentence(sentence)
+      blocks = Marcov.gen_marcov_block(words)
+
+      blocks.each do |block|
+        @marcov_dict << block
+      end
     end
 
     def gen_ans
-      return Marcov.gen_text(@words)
+      return Marcov.gen_text(@marcov_dict)
     end
   end
 end
