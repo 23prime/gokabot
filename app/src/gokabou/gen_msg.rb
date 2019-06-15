@@ -4,9 +4,9 @@ module Gokabou
   class NattoParser
     attr_accessor :nm, :dict
 
-    def initialize
+    def initialize(sentences)
       @nm = Natto::MeCab.new
-      @dict = []
+      @dict = sentences.map { |sentence| parse_sentence(sentence) }
     end
 
     def parse_sentence(sentence)
@@ -17,10 +17,6 @@ module Gokabou
       end
 
       return words
-    end
-
-    def mk_dict(sentences)
-      @dict = sentences.map { |sentence| parse_sentence(sentence) }
     end
   end
 
@@ -88,8 +84,7 @@ module Gokabou
     attr_accessor :marcov_dict
 
     def initialize(sentences)
-      @np = NattoParser.new
-      @np.mk_dict(sentences)
+      @np = NattoParser.new(sentences)
 
       @marcov_dict = @np.dict.map { |words| Marcov.gen_marcov_block(words) }
       @marcov_dict.flatten!(1)
