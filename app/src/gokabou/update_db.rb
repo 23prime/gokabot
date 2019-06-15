@@ -30,6 +30,18 @@ module Gokabou
         sentence: sentence,
         reg_date: date
       )
+
+      puts "##### Insert '#{sentence}' to DB #####"
+      puts "#####   Row length -> #{row_length} #####"
+    end
+
+    def delete_data(sentence)
+      Gokabous.where(
+        sentence: sentence
+      ).delete_all
+
+      puts "##### Delete '#{sentence}' fron DB #####."
+      puts "#####   Row length -> #{row_length} #####"
     end
 
     def update_db(msg, user_id)
@@ -41,9 +53,6 @@ module Gokabou
         @all_sentences = @con.select_values(@query_s)
 
         @update_counter += 1
-
-        puts "Insert '#{msg}' to DB."
-        puts "Row length -> #{row_length}"
       end
     end
 
@@ -73,7 +82,8 @@ module Gokabou
     end
 
     # Will be implement...
-    # def delete_data
+    # def delete_data(msg)
+    #   @con.select_all(query)
     # end
   end
 end
