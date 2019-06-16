@@ -1,12 +1,11 @@
-require_relative './src/gokabou/answerer.rb'
-require_relative './src/anime/answerer.rb'
-require_relative './src/weather.rb'
-require_relative './src/nyokki.rb'
-require_relative './src/denippi.rb'
-require_relative './src/pigeons.rb'
-require_relative './src/web_dict/answerer.rb'
-require_relative './src/texrenderer.rb'
-require_relative './src/searchdolls.rb'
+srcs = [
+  '../app/src/*/answerer.rb',
+  '../app/src/*.rb'
+]
+
+srcs.each do |src|
+  Dir[File.join(File.dirname(__FILE__), src)].each { |f| require f }
+end
 
 $ANS_OBJS = [
   Nyokki.new,
