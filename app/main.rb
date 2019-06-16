@@ -4,11 +4,18 @@ require 'dotenv/load'
 require 'rest-client'
 require_relative './src.rb'
 
-def client
-  @client ||= Line::Bot::Client.new { |config|
-    config.channel_secret = ENV['LINE_CHANNEL_SECRET']
-    config.channel_token = ENV['LINE_CHANNEL_TOKEN']
-  }
+def reply(event)
+  $reply_type = 'text'
+
+  msg = event.message['text']
+  user_id = event['source']['userId']
+  name = get_name(user_id)
+  reply_text = mk_reply_text(msg, user_id, name)
+
+  monitor(user_id, name, msg, reply_text)
+  reply = mk_reply_body(reply_text)
+
+  return reply
 end
 
 def get_name(user_id)
@@ -25,22 +32,8 @@ def get_name(user_id)
   return name
 end
 
-# Make reply for each case.
-def reply(event)
-  msg = event.message['text']
-  user_id = event['source']['userId']
-  name = get_name(user_id)
-
-  # Print message
-  puts "From:    #{user_id} (#{name})"
-  puts "Message: #{msg}"
-
-  return mk_reply(msg, user_id, name)
-end
-
-def mk_reply(*msg_data)
-  reply_text  = ''
-  $reply_type = 'text'
+def mk_reply_text(*msg_data)
+  reply_text = ''
 
   $ANS_OBJS.each do |obj|
     ans = obj.answer(*msg_data)
@@ -56,24 +49,31 @@ def mk_reply(*msg_data)
     end
   end
 
+  return reply_text
+end
+
+def monitor(user_id, name, msg, reply_text)
+  puts "From:    #{user_id} (#{name})"
+  puts "Message: #{msg}"
+  puts "Reply:   #{reply_text}"
+end
+
+def mk_reply_body(reply_text)
   case $reply_type
   when 'text'
-    reply = {
+    return {
       type: 'text',
       text: reply_text
     }
   when 'image'
-    reply = {
+    return {
       type: 'image',
       originalContentUrl: reply_text,
       previewImageUrl: reply_text
     }
+  else
+    return nil
   end
-
-  # Print reply
-  puts "Reply:   #{reply_text}"
-
-  return reply
 end
 
 def hello
@@ -86,7 +86,14 @@ def hello
   return reply
 end
 
-# Execute.
+def client
+  @client ||= Line::Bot::Client.new { |config|
+    config.channel_secret = ENV['LINE_CHANNEL_SECRET']
+    config.channel_token = ENV['LINE_CHANNEL_TOKEN']
+  }
+end
+
+# Execute
 post '/callback' do
   body = request.body.read
   signature = request.env['HTTP_X_LINE_SIGNATURE']
