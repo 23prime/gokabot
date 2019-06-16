@@ -99,6 +99,7 @@ RSpec.configure do |config|
 =end
 
   srcs = [
+    '../app/main.rb',
     '../app/src/*/answerer.rb',
     '../app/src/*.rb'
   ]
