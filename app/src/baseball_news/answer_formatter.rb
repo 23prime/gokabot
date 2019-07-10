@@ -47,7 +47,7 @@ module BaseballNews
           text += r[:team][0] + ' - ' + r[:team][1] + "\n"
           text += r[:score][0] + ' - ' + r[:score][1] + "\n\n"
         }
-        return text
+        return text.chomp.chomp
       end
 
       def init(date)

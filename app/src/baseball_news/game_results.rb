@@ -32,6 +32,7 @@ module BaseballNews
           }
         }
       }
+      return @team_results
     end
 
     def team_to_i(name)

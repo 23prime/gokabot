@@ -1,6 +1,5 @@
 require 'open-uri'
 require 'nokogiri'
-require 'rexml/document'
 
 module BaseballNews
   class GetData
@@ -18,7 +17,7 @@ module BaseballNews
 
       def special?
         xpath = '//div [@id="gm_sch"]//table[@class="NpbSP"]'
-        return @xml.xpath(xpath) != []
+        return !(@xml.xpath(xpath).empty?)
       end
 
       def sp_page
