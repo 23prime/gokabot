@@ -2,7 +2,7 @@ require 'spec_helper'
 describe 'answer something' do
   test_cases = %w[
     今日 昨日 明日 巨人 ソフトバンク \ 7月10日 6月24日 
-    昨日\ 巨人 7月12日
+    昨日\ 巨人 七月１２日
   ]
 
   nans = /((試合前|結果|中止|\d回(表|裏))\n.* - .*\n(\d|-) - (\d|-)\n\n){6}/
