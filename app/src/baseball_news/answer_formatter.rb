@@ -1,34 +1,33 @@
+require 'zen_to_i'
 require_relative './game_results.rb'
 require_relative './get_data.rb'
 
 module BaseballNews
   class AnswerFormatter
     class << self
-      def day_all_game(msg)
-        return unless msg =~ /野球\Z/
-        date = make_date msg.gsub(/野球/, '')
-        return unless date
-        res = init(date).all_game
+      def day_all_game(date = make_date(0))
+        res = (init date).all_game
         day_res_to_s res
       end
 
-      def team_game(teamnum)
-        res = (init make_date).team_results[teamnum]
-        return team_res_to_s res
+      def team_game(teamnum, date)
+        res = (init date).make_team_result
+        return team_res_to_s res[teamnum]
       end
 
-      def make_date(msg = '今日の')
-        date = Date.today.strftime('%Y%m%d').to_i
-        case msg
-        when '今日の', ''
-          return date
-        when '昨日の'
-          return date - 1
-        when '明日の'
-          return date + 1
-        else
-          return false
+      def make_date(teamnum, msg = '今日')
+        msg = msg.zen_to_i
+        if msg =~ /^\d{1,2}月\d{1,2}日$/
+          return Date.today.strftime('%Y') +
+                 msg.split(/月|日/).map { |d|
+                   format('%02d', d)
+                 }.join
         end
+        dif = { '昨日' => -1, '今日' => 0, '明日' => 1 }[msg]
+        return false if dif.nil? && teamnum == -1
+        dif = 0 if dif.nil?
+        date = Date.today.strftime('%Y%m%d').to_i
+        return (date + dif).to_s
       end
 
       def team_res_to_s(res)
@@ -48,7 +47,7 @@ module BaseballNews
           text += r[:team][0] + ' - ' + r[:team][1] + "\n"
           text += r[:score][0] + ' - ' + r[:score][1] + "\n\n"
         }
-        return text
+        return text.chomp.chomp
       end
 
       def init(date)

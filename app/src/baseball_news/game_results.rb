@@ -6,7 +6,6 @@ module BaseballNews
       teams = scraped_data[1]
       scores = scraped_data[2]
       make_result_pairs results, teams, scores
-      make_team_result
     end
 
     def make_result_pairs(results, teams, scores)
@@ -33,6 +32,7 @@ module BaseballNews
           }
         }
       }
+      return @team_results
     end
 
     def team_to_i(name)
