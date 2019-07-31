@@ -49,7 +49,7 @@ module Main
 
         begin
           unless ans.nil?
-            reply_text = ans
+            reply_text = ans[0, 2000]
             break
           end
         rescue => exception
