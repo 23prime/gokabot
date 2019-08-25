@@ -37,9 +37,8 @@ describe 'Reply test' do
     ]
   }
 
-
   let(:true_replys) {
-    [    
+    [
       {
         type: 'text',
         text: 'ｶﾞｯ'
