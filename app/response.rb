@@ -18,8 +18,8 @@ module Response
       begin
         res = RestClient.get uri, Authorization: "Bearer #{token}"
         name = JSON.parse(res.body)['displayName']
-      rescue => exception
-        name = exception.message
+      rescue => e
+        name = e.message
       end
 
       return name
@@ -71,9 +71,9 @@ module Response
             reply_text = ans[0, 2000]
             break
           end
-        rescue => exception
-          exception.message
-          reply_text = "エラーおつｗｗｗｗｗｗ\n\n> #{exception}"
+        rescue => e
+          e.message
+          reply_text = "エラーおつｗｗｗｗｗｗ\n\n> #{e}"
         end
       end
 
