@@ -33,7 +33,7 @@ describe 'Update and Delete' do
     adding = c[3]
 
     it 'Update' do
-      ud.update_db(msg, user_id) if gkb_ans.updatable(msg, user_id)
+      ud.update_db(msg) if gkb_ans.updatable(msg, user_id)
       len += adding
       expect(ud.row_length).to eq len
       # expect(ud.updatable(msg, user_id)).to be pred
