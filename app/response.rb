@@ -185,7 +185,7 @@ module Response
     end
 
     def self.respond_to_events(events)
-      events.each { |event|
+      events.each do |event|
         @@event_classes.each do |ec|
           reply = ec.new(event).reply
 
@@ -194,7 +194,7 @@ module Response
             return reply
           end
         end
-      }
+      end
     end
   end
 end
