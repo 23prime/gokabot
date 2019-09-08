@@ -14,4 +14,5 @@ COPY . /app
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
-CMD ["bundle", "exec", "rackup", "app/config.ru", "-p", "$PORT"]
+# CMD ["bundle", "exec", "rackup", "app/config.ru", "-p", "$PORT"]
+CMD bundle exec rackup app/config.ru -p $PORT
