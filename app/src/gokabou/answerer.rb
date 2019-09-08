@@ -66,7 +66,7 @@ module Gokabou
       user_id = msg_data[1]
 
       if updatable(msg, user_id)
-        @ud.update_db(msg, user_id)
+        @ud.update_db(msg)
         @gen.update_dict(msg)
       end
 
