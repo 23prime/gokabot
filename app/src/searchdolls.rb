@@ -1,37 +1,47 @@
 require 'cgi'
 require 'open-uri'
-require 'nokogiri'
 
 class DflSearch
-  BASE_URI = 'https://wikiwiki.jp/dolls-fl/'
+  @@base_uri = 'https://cdn.wikiwiki.jp/to/w/dolls-fl/'
 
-  def get_doll_pict(doll_name, pict_type)
-    damage = ''
+  def mk_url(doll_name, is_damage)
+    file_name = doll_name
+    file_name += '_damage' if is_damage
+    url = "#{doll_name}/::ref/#{file_name}.jpg"
+    return @@base_uri + url
+  end
+
+  def fetchable(url)
+    begin
+      open(url)
+    rescue OpenURI::HTTPError
+      return false
+    end
+
+    return true
+  end
+
+  def get_doll_pict(doll_name, is_damage)
     doll_name = CGI.escape(doll_name)
     doll_name.gsub!('+', '%20')
-    damage = '_damage' if pict_type == 1
-    url = BASE_URI + doll_name
-    begin
-      doc = Nokogiri::HTML.parse(URI.parse(url).open, nil, 'utf-8')
-      pre_path = '//img [contains(@src, "plugin") and contains(@src, "' + damage + '")] /@src'
-      pic_dir = doc.xpath(pre_path)[0].inner_text
-    rescue
-      return '該当するドールが見つかりません'
-    end
+    url = mk_url(doll_name, is_damage)
+
+    return '該当するドールが見つかりません' unless fetchable(url)
     $reply_type = 'image'
-    (BASE_URI + pic_dir).sub(/&rev=.+/, '')
+    return url
   end
 
   def answer(*msg_data)
     msg = msg_data[0]
-
     return unless msg =~ /^doll /
-    pict_type = 0
+
+    is_damage = false
     doll_name = msg.sub(/^doll /, '')
+
     if doll_name =~ /damage/
-      pict_type = 1
+      is_damage = true
       doll_name.sub!(/damage /, '')
     end
-    get_doll_pict(doll_name, pict_type)
+    get_doll_pict(doll_name, is_damage)
   end
 end
