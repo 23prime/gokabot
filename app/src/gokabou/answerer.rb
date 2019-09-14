@@ -4,43 +4,31 @@ require_relative './update_db.rb'
 
 module Gokabou
   class Answerer
-    attr_accessor :help, :omikuji, :deads, :new_years
+    VERSION = '1.0.0'
+    HELP = File.open('./docs/help', 'r').read
+    OMIKUJI = File.open('./docs/omikuji', 'r').read.split("\n")
+    DEADS = File.open('./docs/deads', 'r').read.split("\n")
+    NEW_YEARS = File.open('./docs/new_years', 'r').read.split("\n")
 
     def initialize
-      @version = '1.0.0'
-      @help = File.open('./docs/help', 'r').read
-      @omikuji = File.open('./docs/omikuji', 'r').read.split("\n")
-
-      @deads = [
-        'いや、死なないよ。',
-        '死ぬ〜〜〜〜〜ｗ',
-        '死んだｗ',
-        'おいおい…',
-        '死んダダダダダダーン',
-        '人に死ねなんて言葉使うな😡',
-        '死ぬまで死なないよ',
-        '死ねのバーゲンセールかよ',
-        'きみ、死ねしか言えないの？',
-        'そっちからリプ送ってきて死ねっつうな！死ね！しねしねこうせん！💨',
-        'いやでｗｗｗいやでござるｗｗｗ',
-        'し、しにたくないでおぢゃる〜ｗｗｗ'
-      ]
-
-      @new_years = [
-        'あけおめでつｗ',
-        'Happy New Year でござるｗｗ',
-        'は？',
-        'ことよろチクビｗ',
-        'あけおまんこｗｗｗｗｗｗ開帳くぱぁｗｗｗｗｗｗ',
-        '今年はヒゲを剃りたい'
-      ]
-
-      @d = Time.now
-      @month = @d.month
-      @day = @d.day
+      d = Time.now
+      @month = d.month
+      @day = d.day
 
       @ud = UpdateDB.new
       @gen = GenMsg.new(@ud.all_sentences)
+
+      @answers = [
+        [/\Aこん(|です)(|ｗ|w)\Z/i, 'こん'],
+        [/死ね|死んで/, DEADS.sample],
+        [/行く/, '俺もイク！ｗ'],
+        [/\Agokabot[[:blank:]]+(-v|--version)\Z/, VERSION],
+        [/\Agokabot[[:blank:]]+(-h|--help)\Z/, HELP],
+        [/\Aおみくじ\Z/, OMIKUJI.sample],
+        [/たけのこ(君|くん|さん|ちゃん|)/, 'たけのこ君ｐｒｐｒ'],
+        [/\Aぬるぽ\Z/, 'ｶﾞｯ'],
+        [/あけ|明け|おめ|こん|おは|happy|new|year|2019/i, NEW_YEARS.sample]
+      ]
     end
 
     def include_uri?(msg)
@@ -61,6 +49,10 @@ module Gokabou
       return !@ud.all_sentences.include?(msg)
     end
 
+    def gokabou?(msg)
+      return msg =~ /ごかぼっと|gokabot|ごかぼう|gokabou|\Aヒゲ\Z|\Aひげ\Z/
+    end
+
     def answer(*msg_data)
       msg = msg_data[0]
       user_id = msg_data[1]
@@ -70,30 +62,12 @@ module Gokabou
         @gen.update_dict(msg)
       end
 
-      case msg
-      when /\Aこん(|です)(|ｗ|w)\Z/i
-        return 'こん'
-      when /死ね|死んで/
-        return @deads.sample
-      when /行く/
-        return '俺もイク！ｗ'
-      when /\Agokabot[[:blank:]]+(-v|--version)\Z/
-        return @version
-      when /\Agokabot[[:blank:]]+(-h|--help)\Z/
-        return @help
-      when /ごかぼっと|gokabot|ごかぼう|gokabou|\Aヒゲ\Z|\Aひげ\Z/
-        return @gen.gen_ans
-      when /\Aおみくじ\Z/
-        return @omikuji.sample
-      when /たけのこ(君|くん|さん|ちゃん|)/
-        return 'たけのこ君ｐｒｐｒ'
-      when /\Aぬるぽ\Z/
-        return 'ｶﾞｯ'
-      when /あけ|明け|おめ|こん|おは|happy|new|year|2019/i
-        return @new_years.sample if @month == 1 && @day == 1
-      else
-        return nil
+      @answers.each do |reg_ans|
+        reg = reg_ans[0]
+        return reg_ans[1] if msg =~ reg
       end
+
+      return @gen.gen_ans if gokabou?(msg)
     end
   end
 end

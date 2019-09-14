@@ -10,8 +10,8 @@ test_cases1 = [
 gkb_ans = Gokabou::Answerer.new
 
 test_cases2 = [
-  ['おみくじ', gkb_ans.omikuji],
-  ['死ね', gkb_ans.deads]
+  ['おみくじ', Gokabou::Answerer::OMIKUJI],
+  ['死ね', Gokabou::Answerer::DEADS]
 ]
 
 describe 'Gokabou' do

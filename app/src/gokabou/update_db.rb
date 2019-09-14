@@ -11,9 +11,7 @@ module Gokabou
     attr_accessor :all_sentences, :update_counter
 
     def initialize
-      Gokabous.establish_connection(
-        ENV['DATABASE_URL']
-      )
+      Gokabous.establish_connection(ENV['DATABASE_URL'])
       @con = Gokabous.connection
 
       @query_a = 'select * from gokabous'
@@ -60,10 +58,5 @@ module Gokabou
 
       return res[0]['count']
     end
-
-    # Will be implement...
-    # def delete_data(msg)
-    #   @con.select_all(query)
-    # end
   end
 end
