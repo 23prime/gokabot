@@ -17,7 +17,7 @@ module Gokabou
       @con = Gokabous.connection
 
       @query_a = 'select * from gokabous'
-      @all_data = @con.select_all(@query_a).to_hash
+      @all_data = @con.select_all(@query_a).to_a
 
       @query_s = 'select sentence from gokabous'
       @all_sentences = @con.select_values(@query_s)
@@ -48,7 +48,7 @@ module Gokabou
       date = Date.today.strftime('%Y-%m-%d')
       insert_data(date, msg)
 
-      @all_data = @con.select_all(@query_a).to_hash
+      @all_data = @con.select_all(@query_a).to_a
       @all_sentences = @con.select_values(@query_s)
 
       @update_counter += 1
@@ -56,7 +56,7 @@ module Gokabou
 
     def row_length
       query = 'select count (*) from gokabous'
-      res = @con.select_all(query).to_hash
+      res = @con.select_all(query).to_a
 
       return res[0]['count']
     end

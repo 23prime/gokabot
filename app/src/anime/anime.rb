@@ -73,7 +73,7 @@ module Anime
 
     def get_animes(year, season, day, all, rcm)
       query = mk_query(year, season, day, all, rcm)
-      animes = @con.select_all(query).to_hash
+      animes = @con.select_all(query).to_a
 
       return show_animes(animes, all) unless animes.empty?
       return 'ありませ〜んｗｗｗｗ' if rcm
