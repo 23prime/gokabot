@@ -12,6 +12,7 @@ module Gokabou
   class NewYear
     def sample
       return NEW_YEARS.sample if @month == 1 && @day == 1
+      return nil
     end
   end
 
@@ -65,13 +66,15 @@ module Gokabou
         @gen.update_dict(msg)
       end
 
+      ans = nil
+
       @answers.each do |reg_ans|
         reg = reg_ans[0]
-        if msg =~ reg
-          ans = reg_ans[1].sample
-          return ans unless ans.nil?
-        end
+        ans = reg_ans[1].sample if msg =~ reg
+        break unless ans.nil?
       end
+
+      return ans
     end
   end
 end

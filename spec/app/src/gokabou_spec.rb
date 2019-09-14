@@ -4,7 +4,8 @@ test_cases1 = [
   %w[こん こん],
   %w[たけのこ たけのこ君ｐｒｐｒ],
   %w[ぬるぽ ｶﾞｯ],
-  %w[行く 俺もイク！ｗ]
+  %w[行く 俺もイク！ｗ],
+  ['今日', nil]
 ]
 
 gkb_ans = Gokabou::Answerer.new
