@@ -19,15 +19,15 @@ module Gokabou
       @gen = GenMsg.new(@ud.all_sentences)
 
       @answers = [
-        [/\Aこん(|です)(|ｗ|w)\Z/i, 'こん'],
-        [/死ね|死んで/, DEADS.sample],
-        [/行く/, '俺もイク！ｗ'],
-        [/\Agokabot[[:blank:]]+(-v|--version)\Z/, VERSION],
-        [/\Agokabot[[:blank:]]+(-h|--help)\Z/, HELP],
-        [/\Aおみくじ\Z/, OMIKUJI.sample],
-        [/たけのこ(君|くん|さん|ちゃん|)/, 'たけのこ君ｐｒｐｒ'],
-        [/\Aぬるぽ\Z/, 'ｶﾞｯ'],
-        [/あけ|明け|おめ|こん|おは|happy|new|year|2019/i, NEW_YEARS.sample]
+        [/\Aこん(|です)(|ｗ|w)\Z/i, ['こん']],
+        [/死ね|死んで/, DEADS],
+        [/行く/, ['俺もイク！ｗ']],
+        [/\Agokabot[[:blank:]]+(-v|--version)\Z/, [VERSION]],
+        [/\Agokabot[[:blank:]]+(-h|--help)\Z/, [HELP]],
+        [/\Aおみくじ\Z/, OMIKUJI],
+        [/たけのこ(君|くん|さん|ちゃん|)/, ['たけのこ君ｐｒｐｒ']],
+        [/\Aぬるぽ\Z/, ['ｶﾞｯ']],
+        [/あけ|明け|おめ|こん|おは|happy|new|year|2019/i, NEW_YEARS]
       ]
     end
 
@@ -64,7 +64,7 @@ module Gokabou
 
       @answers.each do |reg_ans|
         reg = reg_ans[0]
-        return reg_ans[1] if msg =~ reg
+        return reg_ans[1].sample if msg =~ reg
       end
 
       return @gen.gen_ans if gokabou?(msg)
