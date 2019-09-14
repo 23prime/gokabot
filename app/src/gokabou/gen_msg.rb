@@ -99,7 +99,7 @@ module Gokabou
       end
     end
 
-    def gen_ans
+    def sample
       return Marcov.gen_text(@marcov_dict)
     end
   end

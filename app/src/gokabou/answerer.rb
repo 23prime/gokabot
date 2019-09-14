@@ -3,13 +3,19 @@ require_relative './gen_msg.rb'
 require_relative './update_db.rb'
 
 module Gokabou
-  class Answerer
-    VERSION = '1.0.0'
-    HELP = File.open('./docs/help', 'r').read
-    OMIKUJI = File.open('./docs/omikuji', 'r').read.split("\n")
-    DEADS = File.open('./docs/deads', 'r').read.split("\n")
-    NEW_YEARS = File.open('./docs/new_years', 'r').read.split("\n")
+  VERSION = '1.0.0'
+  HELP = File.open('./docs/help', 'r').read
+  OMIKUJI = File.open('./docs/omikuji', 'r').read.split("\n")
+  DEADS = File.open('./docs/deads', 'r').read.split("\n")
+  NEW_YEARS = File.open('./docs/new_years', 'r').read.split("\n")
 
+  class NewYear
+    def sample
+      return NEW_YEARS.sample if @month == 1 && @day == 1
+    end
+  end
+
+  class Answerer
     def initialize
       d = Time.now
       @month = d.month
@@ -27,7 +33,8 @@ module Gokabou
         [/\Aおみくじ\Z/, OMIKUJI],
         [/たけのこ(君|くん|さん|ちゃん|)/, ['たけのこ君ｐｒｐｒ']],
         [/\Aぬるぽ\Z/, ['ｶﾞｯ']],
-        [/あけ|明け|おめ|こん|おは|happy|new|year|2019/i, NEW_YEARS]
+        [/あけ|明け|おめ|こん|おは|happy|new|year|2019/i, NewYear.new],
+        [/ごかぼっと|gokabot|ごかぼう|gokabou|\Aヒゲ\Z|\Aひげ\Z/, @gen]
       ]
     end
 
@@ -49,10 +56,6 @@ module Gokabou
       return !@ud.all_sentences.include?(msg)
     end
 
-    def gokabou?(msg)
-      return msg =~ /ごかぼっと|gokabot|ごかぼう|gokabou|\Aヒゲ\Z|\Aひげ\Z/
-    end
-
     def answer(*msg_data)
       msg = msg_data[0]
       user_id = msg_data[1]
@@ -64,10 +67,11 @@ module Gokabou
 
       @answers.each do |reg_ans|
         reg = reg_ans[0]
-        return reg_ans[1].sample if msg =~ reg
+        if msg =~ reg
+          ans = reg_ans[1].sample
+          return ans unless ans.nil?
+        end
       end
-
-      return @gen.gen_ans if gokabou?(msg)
     end
   end
 end
