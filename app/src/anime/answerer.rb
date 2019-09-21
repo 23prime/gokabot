@@ -8,7 +8,7 @@ module Season
     return 'winter' if [1, 2, 3].include?(month)
     return 'spring' if [4, 5, 6].include?(month)
     return 'summer' if [7, 8, 9].include?(month)
-    return 'fall' if [10, 11, 12].include?(month)
+    return 'fall' if [10, 11, 0].include?(month)
   end
 end
 
