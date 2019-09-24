@@ -5,7 +5,6 @@ docker-compose*
 .dockerignore
 .git
 .gitignore
-.env
 */bin
 */obj
 README.md
