@@ -9,10 +9,9 @@ RUN gem install bundler -v 2.0.2
 RUN bundle config --global frozen 1
 
 WORKDIR /app
-COPY . /app
 
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
+COPY . .
 
-# CMD ["bundle", "exec", "rackup", "app/config.ru", "-p", "$PORT"]
 CMD bundle exec rackup app/config.ru -p $PORT
