@@ -46,8 +46,9 @@ module Anime
     end
 
     def next_season
-      @year += 1 if @season == 'fall'
-      @season = Season.next_season(@season)
+      year += 1 if @season == 'fall'
+      season = Season.next_season(@season)
+      return year, season
     end
 
     def select_answer(msg)
@@ -59,11 +60,11 @@ module Anime
       when /^今期の(オススメ|おすすめ)$/i
         return @anime.get_animes(@year, @season, day, true, true)
       when /^next|来期#{ANIME_OF}/i
-        next_season
-        return @anime.get_animes(@year, @season, day, true, false)
+        year, season = next_season
+        return @anime.get_animes(year, season, day, true, false)
       when /^来期の(オススメ|おすすめ)$/i
-        next_season
-        return @anime.get_animes(@year, @season, day, true, true)
+        year, season = next_season
+        return @anime.get_animes(year, season, day, true, true)
       when WEEK
         return @anime.get_animes(@year, @season, day, false, false)
       when WEEK_RCM
