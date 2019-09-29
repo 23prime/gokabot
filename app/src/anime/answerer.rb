@@ -4,11 +4,15 @@ require_relative 'convert'
 module Season
   module_function
 
+  SEASONS = %w[winter spring summer fall]
+
   def get_season(month)
-    return 'winter' if [1, 2, 3].include?(month)
-    return 'spring' if [4, 5, 6].include?(month)
-    return 'summer' if [7, 8, 9].include?(month)
-    return 'fall' if [10, 11, 0].include?(month)
+    return SEASONS[(month - 1) / 3]
+  end
+
+  def next_season(season)
+    idx = (SEASONS.index(season) + 1) % 4
+    return SEASONS[idx]
   end
 end
 
@@ -21,9 +25,6 @@ module Anime
       month = @@now.month
       @year = @@now.year
       @season = Season.get_season(month)
-      @next_season = Season.get_season((month + 3) % 12)
-      @year2 = @year
-      @year2 += 1 if @season == 'fall'
       @anime = GetAnimes.new
     end
 
@@ -44,6 +45,11 @@ module Anime
       return msg
     end
 
+    def next_season
+      @year += 1 if @season == 'fall'
+      @season = Season.next_season(@season)
+    end
+
     def select_answer(msg)
       day = converts(msg)
 
@@ -53,9 +59,11 @@ module Anime
       when /^今期の(オススメ|おすすめ)$/i
         return @anime.get_animes(@year, @season, day, true, true)
       when /^next|来期#{ANIME_OF}/i
-        return @anime.get_animes(@year2, @next_season, day, true, false)
+        next_season
+        return @anime.get_animes(@year, @season, day, true, false)
       when /^来期の(オススメ|おすすめ)$/i
-        return @anime.get_animes(@year2, @next_season, day, true, true)
+        next_season
+        return @anime.get_animes(@year, @season, day, true, true)
       when WEEK
         return @anime.get_animes(@year, @season, day, false, false)
       when WEEK_RCM
@@ -69,7 +77,6 @@ module Anime
     def answer(*msg_data)
       msg = msg_data[0]
       ans = select_answer(msg)
-      # initialize
       return ans
     end
   end
