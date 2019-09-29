@@ -2,7 +2,7 @@ require 'spec_helper'
 
 test_cases = %w[
   今期 今期のアニメ 今期のオススメ
-  来期
+  来期 来期のオススメ
   Sunday 日曜
   月曜のアニメ
   today 今日 今日のアニメ 今日のオススメ
