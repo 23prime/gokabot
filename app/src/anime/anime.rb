@@ -6,6 +6,8 @@ module Anime
   end
 
   class GetAnimes
+    attr_accessor :con
+
     SORT = "
       ORDER BY
       CASE day
