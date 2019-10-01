@@ -18,25 +18,24 @@ end
 
 module Anime
   class Answerer
-    @@now = Time.now.localtime('+05:00')
-    @@today = @@now.wday
+    WDAYS = %w[Sun Mon Tue Wed Thu Fri Sat]
 
     def initialize
-      month = @@now.month
-      @year = @@now.year
+      now = Time.now.localtime('+05:00')
+      today = now.wday
+      month = now.month
+      @year = now.year
       @season = Season.get_season(month)
       @anime = GetAnimes.new
+      @converts = [
+        WeekDay.new,
+        Day.new(WDAYS, today),
+        Recommend.new(WDAYS, today)
+      ]
     end
 
-    WDAYS = %w[Sun Mon Tue Wed Thu Fri Sat]
-    CONVERTS = [
-      WeekDay.new,
-      Day.new(WDAYS, @@today),
-      Recommend.new(WDAYS, @@today)
-    ]
-
-    def converts(msg)
-      CONVERTS.each do |cvt|
+    def convert(msg)
+      @converts.each do |cvt|
         ans = cvt.convert(msg)
         unless ans.nil?
           return ans
@@ -46,14 +45,12 @@ module Anime
     end
 
     def next_season
-      year = @year
-      year += 1 if @season == 'fall'
-      season = Season.next_season(@season)
-      return year, season
+      @year += 1 if @season == 'fall'
+      @season = Season.next_season(@season)
     end
 
     def select_answer(msg)
-      day = converts(msg)
+      day = convert(msg)
 
       case day
       when /^all|今期#{ANIME_OF}/i
@@ -61,11 +58,11 @@ module Anime
       when /^今期の(オススメ|おすすめ)$/i
         return @anime.get_animes(@year, @season, day, true, true)
       when /^next|来期#{ANIME_OF}/i
-        year, season = next_season
-        return @anime.get_animes(year, season, day, true, false)
+        next_season
+        return @anime.get_animes(@year, @season, day, true, false)
       when /^来期の(オススメ|おすすめ)$/i
-        year, season = next_season
-        return @anime.get_animes(year, season, day, true, true)
+        next_season
+        return @anime.get_animes(@year, @season, day, true, true)
       when WEEK
         return @anime.get_animes(@year, @season, day, false, false)
       when WEEK_RCM
@@ -77,6 +74,7 @@ module Anime
     end
 
     def answer(*msg_data)
+      initialize
       msg = msg_data[0]
       ans = select_answer(msg)
       return ans
