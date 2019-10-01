@@ -62,13 +62,9 @@ module Anime
         return @anime.get_animes(@year, @season, day, true, true)
       when /^next|来期#{ANIME_OF}/i
         year, season = next_season
-        puts year
-        puts season
         return @anime.get_animes(year, season, day, true, false)
       when /^来期の(オススメ|おすすめ)$/i
         year, season = next_season
-        puts year
-        puts season
         return @anime.get_animes(year, season, day, true, true)
       when WEEK
         return @anime.get_animes(@year, @season, day, false, false)
