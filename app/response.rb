@@ -65,16 +65,14 @@ module Response
 
       $ANS_OBJS.each do |obj|
         ans = obj.answer(*msg_data)
-
-        begin
-          unless ans.nil?
-            reply_text = ans[0, 2000]
-            break
-          end
-        rescue => e
-          e.message
-          reply_text = "エラーおつｗｗｗｗｗｗ\n\n> #{e}"
+        unless ans.nil?
+          reply_text = ans[0, 2000]
+          break
         end
+      rescue => e
+        e.message
+        reply_text = "エラーおつｗｗｗｗｗｗ\n\n> #{e}"
+        break
       end
 
       return reply_text
