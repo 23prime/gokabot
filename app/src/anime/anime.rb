@@ -3,6 +3,7 @@ require 'dotenv/load'
 
 module Anime
   class Anime < ActiveRecord::Base
+    self.table_name = 'gokabot.animes'
   end
 
   class GetAnimes
@@ -39,7 +40,7 @@ module Anime
 
       default_select = "
         SELECT #{colmuns}
-          FROM animes
+          FROM gokabot.animes
       "
       add_conds = ''
       add_conds = "#{add_conds} AND day = '#{day}'" unless all

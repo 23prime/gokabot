@@ -5,6 +5,7 @@ require 'uri'
 
 module Gokabou
   class Gokabous < ActiveRecord::Base
+    self.table_name = 'gokabot.gokabous'
   end
 
   class UpdateDB
@@ -14,10 +15,10 @@ module Gokabou
       Gokabous.establish_connection(ENV['DATABASE_URL'])
       @con = Gokabous.connection
 
-      @query_a = 'select * from gokabous'
+      @query_a = 'select * from gokabot.gokabous'
       @all_data = @con.select_all(@query_a).to_a
 
-      @query_s = 'select sentence from gokabous'
+      @query_s = 'select sentence from gokabot.gokabous'
       @all_sentences = @con.select_values(@query_s)
 
       @update_counter = 0
@@ -53,7 +54,7 @@ module Gokabou
     end
 
     def row_length
-      query = 'select count (*) from gokabous'
+      query = 'select count (*) from gokabot.gokabous'
       res = @con.select_all(query).to_a
 
       return res[0]['count']
