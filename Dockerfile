@@ -13,5 +13,3 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
 COPY . .
-
-CMD bundle exec rackup app/config.ru -p $PORT

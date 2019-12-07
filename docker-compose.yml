@@ -3,4 +3,11 @@ version: '2.1'
 services:
   gokabot-line:
     image: gokabot-line
+    container_name: gokabot-line
     build: .
+    ports:
+      - "8080:8080"
+    command: [
+      "bundle", "exec", "rackup", "app/config.ru",
+      "-p", "8080"
+    ]

@@ -3,8 +3,12 @@ version: '2.1'
 services:
   gokabot-line:
     image: gokabot-line
-    build:
-      context: .
-      dockerfile: Dockerfile
+    container_name: gokabot-line-local
+    build: .
     ports:
-        - 3000:3000
+      - "8080:8080"
+    command: [
+      "bundle", "exec", "rackup", "app-localhost/config.ru",
+      "-o", "0.0.0.0",
+      "-p", "8080"
+    ]
