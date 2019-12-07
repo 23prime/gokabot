@@ -9,5 +9,7 @@ services:
       - "8080:8080"
     command: [
       "bundle", "exec", "rackup", "app/config.ru",
+      "-o", "0.0.0.0",
       "-p", "8080"
     ]
+    

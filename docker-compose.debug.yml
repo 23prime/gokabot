@@ -1,12 +1,12 @@
 version: '2.1'
 
 services:
-  gokabot-line:
-    image: gokabot-line
-    container_name: gokabot-line-local
+  gokabot-line-dev:
+    image: gokabot-line-dev
+    container_name: gokabot-line-dev
     build: .
     ports:
-      - "8080:8080"
+      - "8081:8080"
     command: [
       "bundle", "exec", "rackup", "app-localhost/config.ru",
       "-o", "0.0.0.0",
