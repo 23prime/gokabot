@@ -12,7 +12,7 @@ services:
     ports:
       - "8081:8080"
     command: [
-      "bundle", "exec", "rackup", "app-localhost/config.ru",
+      "bundle", "exec", "rackup", "app-dev/config.ru",
       "-o", "0.0.0.0",
       "-p", "8080"
     ]
