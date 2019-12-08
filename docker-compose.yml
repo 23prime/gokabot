@@ -4,6 +4,10 @@ services:
   gokabot-line:
     image: gokabot-line
     container_name: gokabot-line
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: Asia/Tokyo
     build: .
     ports:
       - "8080:8080"
