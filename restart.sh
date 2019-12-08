@@ -2,7 +2,7 @@ option=''
 
 if [ $# -eq 0 ]; then
     echo '##### git pull #####'
-    git pull
+    git pull --recurse-submodules
 
     if [ `basename \`pwd\``  = 'gokabot-line-dev' ]; then
         echo '##### Option set #####'
