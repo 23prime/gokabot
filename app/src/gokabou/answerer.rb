@@ -11,17 +11,14 @@ module Gokabou
 
   class NewYear
     def sample
-      return NEW_YEARS.sample if @month == 1 && @day == 1
+      d = Time.now
+      return NEW_YEARS.sample if d.month == 1 && d.day == 1
       return nil
     end
   end
 
   class Answerer
     def initialize
-      d = Time.now
-      @month = d.month
-      @day = d.day
-
       @ud = UpdateDB.new
       @gen = GenMsg.new(@ud.all_sentences)
 
