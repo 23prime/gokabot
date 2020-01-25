@@ -1,3 +1,0 @@
-[submodule "app-dev/public/fake-gokabot"]
-	path = app-dev/public/fake-gokabot
-	url = git@github.com:23prime/fake-gokabot.git
