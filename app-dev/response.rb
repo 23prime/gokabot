@@ -72,6 +72,7 @@ module Response
       rescue => e
         e.message
         reply_text = "エラーおつｗｗｗｗｗｗ\n\n> #{e}"
+        puts e.backtrace
         break
       end
 
