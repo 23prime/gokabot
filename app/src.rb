@@ -17,6 +17,5 @@ $ANS_OBJS = [
   Tex.new,
   Pigeons.new,
   DflSearch.new,
-  BaseballNews::Answerer.new,
-  # Dou.new
+  BaseballNews::Answerer.new
 ]
