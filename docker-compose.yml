@@ -23,4 +23,4 @@ services:
         awslogs-region: ap-northeast-1
         awslogs-group: docker-logs
         awslogs-create-group: "true"
-        awslogs-stream: ok-diet
+        awslogs-stream: gokabot-line-dev
