@@ -13,7 +13,7 @@ else
     if [ $1 = '--local' ]; then
         echo '##### Option set #####'
         echo '-> For local'
-        option='-f docker-compose.debug.yml'
+        option='-f docker-compose.local.yml'
     else
         exit 1
     fi

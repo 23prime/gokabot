@@ -17,3 +17,10 @@ services:
       "-p", "8080"
     ]
     restart: always
+    logging:
+      driver: awslogs
+      options: 
+        awslogs-region: ap-northeast-1
+        awslogs-group: docker-logs
+        awslogs-create-group: "true"
+        awslogs-stream: ok-diet
