@@ -28,8 +28,6 @@ module Anime
       Anime.establish_connection(
         ENV['DATABASE_URL']
       )
-
-      @con = Anime.connection
     end
 
     # all: Bool <- All of the season or not
@@ -76,7 +74,11 @@ module Anime
 
     def get_animes(year, season, day, all, rcm)
       query = mk_query(year, season, day, all, rcm)
-      animes = @con.select_all(query).to_a
+      animes = []
+
+      Anime.connection_pool.with_connection do |con|
+        animes = con.select_all(query).to_a
+      end
 
       return show_animes(animes, all) unless animes.empty?
       return 'ありませ〜んｗｗｗｗ' if rcm

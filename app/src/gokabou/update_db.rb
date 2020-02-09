@@ -11,17 +11,18 @@ module Gokabou
   class UpdateDB
     attr_accessor :all_sentences, :update_counter
 
+    QUERY_A = 'select * from gokabot.gokabous'
+    QUERY_S = 'select sentence from gokabot.gokabous'
+
     def initialize
       Gokabous.establish_connection(ENV['DATABASE_URL'])
-      @con = Gokabous.connection
-
-      @query_a = 'select * from gokabot.gokabous'
-      @all_data = @con.select_all(@query_a).to_a
-
-      @query_s = 'select sentence from gokabot.gokabous'
-      @all_sentences = @con.select_values(@query_s)
 
       @update_counter = 0
+
+      Gokabous.connection_pool.with_connection do |con|
+        @all_data = con.select_all(QUERY_A).to_a
+        @all_sentences = con.select_values(QUERY_S)
+      end
     end
 
     def insert_data(date, sentence)
@@ -47,15 +48,21 @@ module Gokabou
       date = Date.today.strftime('%Y-%m-%d')
       insert_data(date, msg)
 
-      @all_data = @con.select_all(@query_a).to_a
-      @all_sentences = @con.select_values(@query_s)
+      Gokabous.connection_pool.with_connection do |con|
+        @all_data = con.select_all(QUERY_A).to_a
+        @all_sentences = con.select_values(QUERY_S)
+      end
 
       @update_counter += 1
     end
 
     def row_length
       query = 'select count (*) from gokabot.gokabous'
-      res = @con.select_all(query).to_a
+      res = []
+
+      Gokabous.connection_pool.with_connection do |con|
+        res = con.select_all(query).to_a
+      end
 
       return res[0]['count']
     end
