@@ -11,6 +11,10 @@ before do
           'Access-Control-Allow-Headers' => 'Content-Type, Accept'
 end
 
+get '/' do
+  'Hello, gokabot!'
+end
+
 options '/callback' do
   200
 end
