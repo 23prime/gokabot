@@ -5,6 +5,11 @@ language: ruby
 rvm:
   - 2.6.3
 
+cache:
+  directories:
+    - $HOME/.rvm
+    - $TRAVIS_BUILD_DIR/vendor
+
 env:
   global:
     - secure: ZKrKANuYoB6ppci97D+hDzSfiBtLxsoWbx7JBrFK81RHxLyWcDI5qfJpPWUsFjxlSJRCTH7+uyHk7SSZWpSMEZuXPr1nl9ohAPK1S9EeFj7xGKXimmiu6a30jkmHrGmJwjJYWKiNvVfixtEuhbRMrSYwnwIfkjiTKWQ+fekyd6r8qpyyRTTa14tfDA9R41/AJDf7fAVD3PrAybf3ogWVIGWCSaj14dd+Ns9iA/lDmAwWCo9D0JIOlw9EVMDV7mefaofwmL6RYCsMhw+I7GtQPIOOR9R3xxqOnsdVataq3wJ74e5HqXoPvlt/jVGAFlWFahq/dpkOiDF4Q1ogxObFaGG3gjKLdJqnN2q5POOOLDGz6pxt5WSSQczzdyS/MOeIZn3ZmTI1EOe7tq3Iibyuun2pjvMEOtuOCfR7ZC5Sz86JfgqQ+1IdU8AFPq1XG8brXS8BGzfHpFGvh42yNMwTHlJCt8c2oe3ls7rjmyB/NMQPiU3+qv0j44anWL+gzqSWxboRQkBMpSMPA9S+gXX2wORNOmGvsoWMhDyM/e7f1pnYW+LfWqURQEwNi2roA8UH3NVNsBtPVVRWrmZLbWhjzGQQLGOPQKykAAg3vA3S1Ct/5hw+8/85OqlYJBsAclxftSC49WqPMSaZXM8CaiqWdBvMHpFyD5ao2mrhvLEa4R4=
