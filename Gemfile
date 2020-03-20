@@ -1,16 +1,27 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-ruby "2.6.3"
+ruby '2.6.3'
 
-gem 'sinatra'
+gem 'activerecord'
+gem 'dotenv'
 gem 'line-bot-api'
 gem 'mechanize'
-gem 'activerecord'
-gem 'pg'
-gem 'dotenv'
-gem 'rest-client'
 gem 'natto'
-gem 'rspec'
 gem 'nokogiri'
+gem 'pg'
+gem 'rest-client'
 gem 'rexml'
+gem 'sinatra'
 gem 'zen_to_i', '0.0.2'
+
+group :test do
+  gem 'rspec'
+end
+
+group :development do
+  gem 'debase'
+  gem 'pry'
+  gem 'rubocop'
+  gem 'ruby-debug-ide'
+  gem 'solargraph'
+end

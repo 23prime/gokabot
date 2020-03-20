@@ -11,5 +11,5 @@ RUN bundle config --global frozen 1
 WORKDIR /app
 
 COPY Gemfile Gemfile.lock ./
-RUN bundle install
+RUN bundle install --without development
 COPY . .
