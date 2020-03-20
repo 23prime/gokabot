@@ -2,7 +2,7 @@ describe 'Reply test' do
   let(:bodies) {
     [
       '{
-        "destination": "xxxxxxxxxx", 
+        "destination": "xxxxxxxxxx",
         "events": [
           {
           "replyToken": "0f3779fba3b349968c5d07db31eab56f",
@@ -21,7 +21,7 @@ describe 'Reply test' do
         ]
       }',
       '{
-        "destination": "xxxxxxxxxx", 
+        "destination": "xxxxxxxxxx",
         "events": [
           {
             "replyToken": "8cf9239d56244f4197887e939187e19e",

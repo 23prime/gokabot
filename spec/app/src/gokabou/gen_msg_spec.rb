@@ -1,8 +1,5 @@
-require 'spec_helper'
-
 ud = Gokabou::UpdateDB.new
 gm = Gokabou::GenMsg.new(ud.all_sentences)
-
 
 describe 'GenMsg' do
   dict0 = gm.marcov_dict

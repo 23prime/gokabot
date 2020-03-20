@@ -4,7 +4,7 @@ srcs = [
 ]
 
 srcs.each do |src|
-  Dir[File.join(File.dirname(__FILE__), src)].each { |f| require f }
+  Dir[File.join(File.dirname(__FILE__), src)].sort.each { |f| require f }
 end
 
 $ANS_OBJS = [

@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'dotenv/load'
 
 gkb_ans = Gokabou::Answerer.new
@@ -29,7 +28,7 @@ describe 'Update and Delete' do
   test_case.each do |c|
     msg = c[0]
     user_id = c[1]
-    pred = c[2]
+    # pred = c[2]
     adding = c[3]
 
     it 'Update' do

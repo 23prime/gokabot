@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 test_cases1 = [
   %w[こん こん],
   %w[たけのこ たけのこ君ｐｒｐｒ],
