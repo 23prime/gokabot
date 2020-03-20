@@ -1,4 +1,4 @@
-version: '2.1'
+version: "2.1"
 
 services:
   gokabot-line:
@@ -11,15 +11,21 @@ services:
     build: .
     ports:
       - "8080:8080"
-    command: [
-      "bundle", "exec", "rackup", "app/config.ru",
-      "-o", "0.0.0.0",
-      "-p", "8080"
-    ]
+    command:
+      [
+        "bundle",
+        "exec",
+        "rackup",
+        "app/config.ru",
+        "-o",
+        "0.0.0.0",
+        "-p",
+        "8080",
+      ]
     restart: always
     logging:
       driver: awslogs
-      options: 
+      options:
         awslogs-region: ap-northeast-1
         awslogs-group: docker-logs
         awslogs-create-group: "true"

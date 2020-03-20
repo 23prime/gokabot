@@ -1,4 +1,4 @@
-version: '2.1'
+version: "2.1"
 
 services:
   gokabot-line-local:
@@ -11,9 +11,15 @@ services:
     build: .
     ports:
       - "8081:8080"
-    command: [
-      "bundle", "exec", "rackup", "app-dev/config.ru",
-      "-o", "0.0.0.0",
-      "-p", "8080"
-    ]
+    command:
+      [
+        "bundle",
+        "exec",
+        "rackup",
+        "app-dev/config.ru",
+        "-o",
+        "0.0.0.0",
+        "-p",
+        "8080",
+      ]
     restart: always
