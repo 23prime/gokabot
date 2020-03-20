@@ -1,53 +1,62 @@
 AllCops:
   TargetRubyVersion: 2.6
 
-FrozenStringLiteralComment:
+Style/FrozenStringLiteralComment:
   Enabled: false
 
-Documentation:
+Style/Documentation:
   Enabled: false
 
-RedundantReturn:
+Style/RedundantReturn:
   Enabled: false
 
-MutableConstant:
+Style/MutableConstant:
   Enabled: false
 
-EmptyLineAfterGuardClause:
+Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
 Style/BlockDelimiters:
   Enabled: false
 
-Naming/UncommunicativeMethodParamName:
+Naming/MethodParameterName:
   Enabled: false
 
-GlobalVars:
+Style/GlobalVars:
   Enabled: false
 
 Style/IfUnlessModifier:
   Enabled: false
 
-AsciiComments:
+Style/AsciiComments:
   Enabled: false
 
-LineLength:
+Layout/LineLength:
   Max: 100
 
-MethodLength:
+Metrics/MethodLength:
   Max: 30
 
-CyclomaticComplexity:
+Metrics/CyclomaticComplexity:
   Max: 10
 
-RescueStandardError:
+Style/RescueStandardError:
   Enabled: false
 
-ClassVars:
+Style/ClassVars:
   Enabled: false
 
 Metrics/AbcSize:
   Max: 20
 
-AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: false
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
