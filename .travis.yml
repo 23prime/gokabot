@@ -6,9 +6,9 @@ rvm:
   - 2.6.3
 
 cache:
-  directories:
-    - $HOME/.rvm
-    - $TRAVIS_BUILD_DIR/vendor
+  - bundler
+  - directories:
+      - $HOME/.rvm
 
 env:
   global:
