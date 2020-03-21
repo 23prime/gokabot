@@ -1,10 +1,10 @@
-FROM ruby:2.6.3
+FROM ruby:2.6.5
 ENV RUBYOPT -EUTF-8
 
 LABEL Name=gokabot-line Version=1.0.0
 
 RUN apt update && apt -y install mecab libmecab-dev mecab-ipadic
-RUN gem install bundler -v 2.0.2
+RUN gem install bundler -v 2.1.2
 
 RUN bundle config --global frozen 1
 
