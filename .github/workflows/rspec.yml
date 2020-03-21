@@ -1,0 +1,41 @@
+name: gokabot-line-dev
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+    paths-ignore:
+      - "**.md"
+  pull_request:
+    branches:
+      - master
+      - develop
+    paths-ignore:
+      - "**.md"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby 2.6
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+      - name: Install MeCab
+        run: |
+          sudo apt update
+          sudo apt -y install mecab libmecab-dev mecab-ipadic
+      - name: Test with RSpec
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          GOKABOU_USER_ID: ${{ secrets.GOKABOU_USER_ID }}
+          LINE_CHANNEL_SECRET: ${{ secrets.LINE_CHANNEL_SECRET }}
+          LINE_CHANNEL_TOKEN: ${{ secrets.LINE_CHANNEL_TOKEN }}
+          TAKENOKO_USER_ID: ${{ secrets.TAKENOKO_USER_ID }}
+        run: |
+          gem install bundler -v 2.0.2
+          bundle install --without development
+          bundle exec rspec
