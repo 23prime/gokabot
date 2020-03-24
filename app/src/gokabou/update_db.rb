@@ -1,7 +1,9 @@
 require 'active_record'
-require 'dotenv/load'
 require 'date'
+require 'dotenv/load'
 require 'uri'
+
+require './app/log_config'
 
 module Gokabou
   class Gokabous < ActiveRecord::Base
@@ -9,6 +11,8 @@ module Gokabou
   end
 
   class UpdateDB
+    include LogConfig
+
     attr_accessor :all_sentences, :update_counter
 
     QUERY_A = 'select * from gokabot.gokabous'
@@ -31,8 +35,8 @@ module Gokabou
         reg_date: date
       )
 
-      puts "##### Insert '#{sentence}' to DB #####"
-      puts "#####   Row length -> #{row_length} #####"
+      @@logger.debug("##### Insert '#{sentence}' to DB #####")
+      @@logger.debug("#####   Row length -> #{row_length} #####")
     end
 
     def delete_data(sentence)
@@ -40,8 +44,8 @@ module Gokabou
         sentence: sentence
       ).delete_all
 
-      puts "##### Delete '#{sentence}' fron DB #####."
-      puts "#####   Row length -> #{row_length} #####"
+      @@logger.debug("##### Delete '#{sentence}' fron DB #####.")
+      @@logger.debug("#####   Row length -> #{row_length} #####")
     end
 
     def update_db(msg)

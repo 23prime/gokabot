@@ -1,10 +1,14 @@
-require 'line/bot'
 require 'dotenv/load'
+require 'line/bot'
 require 'rest-client'
-require_relative '../app/src.rb'
+
+require './app/log_config'
+require './app/src'
 
 module Response
   class Reply
+    include LogConfig
+
     def initialize(event)
       @event = event
       @user_id = @event['source']['userId']
@@ -26,9 +30,9 @@ module Response
     end
 
     def monitor(msg, reply_text)
-      puts "From:    #{@user_id} (#{@user_name})"
-      puts "Message: #{msg}"
-      puts "Reply:   #{reply_text}"
+      @@logger.info("From:    #{@user_id} (#{@user_name})")
+      @@logger.info("Message: #{msg}")
+      @@logger.info("Reply:   #{reply_text}")
     end
 
     def hello
@@ -72,7 +76,7 @@ module Response
       rescue => e
         e.message
         reply_text = "エラーおつｗｗｗｗｗｗ\n\n> #{e}"
-        puts e.backtrace
+        @@logger.error(e.backtrace)
         break
       end
 
@@ -172,7 +176,7 @@ module Response
       }
     end
 
-    def self.response(body, signature)
+    def self.response(body, _signature)
       events = client.parse_events_from(body)
       respond_to_events(events)
     end
