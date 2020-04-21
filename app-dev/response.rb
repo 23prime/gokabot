@@ -12,7 +12,6 @@ module Response
     def initialize(event)
       @event = event
       @user_id = @event['source']['userId']
-      @user_name = get_name
     end
 
     def get_name
@@ -30,7 +29,8 @@ module Response
     end
 
     def monitor(msg, reply_text)
-      @@logger.info("From:    #{@user_id} (#{@user_name})")
+      @@logger.info("From:    #{@user_id} (#{get_name})")
+      @@logger.info("Group:   #{@event['source']['groupId']}")
       @@logger.info("Message: #{msg}")
       @@logger.info("Reply:   #{reply_text}")
     end
@@ -56,7 +56,7 @@ module Response
       when Line::Bot::Event::MessageType::Text
         $reply_type = 'text'
         msg = @event.message['text']
-        reply_text = mk_reply_text(msg, @user_id, @user_name)
+        reply_text = mk_reply_text(msg, @user_id, get_name)
         monitor(msg, reply_text)
         reply = mk_reply_body(reply_text)
       end
