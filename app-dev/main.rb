@@ -3,7 +3,8 @@ require 'dotenv/load'
 require 'json'
 require 'rest-client'
 
-require './app/src/push'
+require './app/src/push/push'
+require './app/src/push/ramdom_push'
 require_relative './response.rb'
 
 before do
@@ -37,4 +38,10 @@ post '/push' do
   target = params[:target]
   return 401 if msg.nil? || target.nil?
   return Push.send_push_msg(msg, target)
+end
+
+post '/push/random' do
+  target = params[:target]
+  return 401 if target.nil?
+  return RamdomPush.send_push_msg(target)
 end
