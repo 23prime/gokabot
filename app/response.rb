@@ -76,7 +76,7 @@ module Response
       rescue => e
         e.message
         reply_text = "エラーおつｗｗｗｗｗｗ\n\n> #{e}"
-        LogConfig.logger.error(e.backtrace)
+        @@logger.error(e.backtrace)
         break
       end
 
