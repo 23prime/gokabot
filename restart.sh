@@ -5,7 +5,7 @@ if [ $# -eq 0 ]; then
     echo '##### git pull #####'
     git pull --recurse-submodules
 
-    if [ `basename \`pwd\``  = 'gokabot-line-dev' ]; then
+    if [ $(basename $(pwd)) = 'gokabot-line-dev' ]; then
         echo '##### Set option #####'
         echo '-> For development'
         option='-f docker-compose.debug.yml'
