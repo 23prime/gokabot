@@ -1,55 +1,61 @@
 AllCops:
   TargetRubyVersion: 2.6
 
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
-Style/Documentation:
-  Enabled: false
-
-Style/RedundantReturn:
-  Enabled: false
-
-Style/MutableConstant:
-  Enabled: false
-
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
-Style/BlockDelimiters:
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
+Layout/LineLength:
+  Max: 100
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
+Metrics/AbcSize:
+  Max: 20
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/MethodLength:
+  Max: 30
+
+Naming/AccessorMethodName:
   Enabled: false
 
 Naming/MethodParameterName:
   Enabled: false
 
-Style/GlobalVars:
-  Enabled: false
-
-Style/IfUnlessModifier:
-  Enabled: false
-
 Style/AsciiComments:
   Enabled: false
 
-Layout/LineLength:
-  Max: 100
-
-Metrics/MethodLength:
-  Max: 30
-
-Metrics/CyclomaticComplexity:
-  Max: 10
-
-Style/RescueStandardError:
+Style/BlockDelimiters:
   Enabled: false
 
 Style/ClassVars:
   Enabled: false
 
-Metrics/AbcSize:
-  Max: 20
+Style/Documentation:
+  Enabled: false
 
-Naming/AccessorMethodName:
+Style/ExponentialNotation:
+  Enabled: true
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GlobalVars:
   Enabled: false
 
 Style/HashEachMethods:
@@ -59,4 +65,19 @@ Style/HashTransformKeys:
   Enabled: true
 
 Style/HashTransformValues:
+  Enabled: true
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false
+
+Style/RedundantReturn:
+  Enabled: false
+
+Style/RescueStandardError:
+  Enabled: false
+
+Style/SlicingWithRange:
   Enabled: true
