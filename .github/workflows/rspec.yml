@@ -36,6 +36,6 @@ jobs:
           LINE_CHANNEL_TOKEN: ${{ secrets.LINE_CHANNEL_TOKEN }}
           TAKENOKO_USER_ID: ${{ secrets.TAKENOKO_USER_ID }}
         run: |
-          gem install bundler -v 2.0.2
+          gem install bundler -v 2.1.2
           bundle install --without development
           bundle exec rspec
