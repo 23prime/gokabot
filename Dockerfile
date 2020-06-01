@@ -1,4 +1,4 @@
-FROM ruby:2.6.5
+FROM ruby:2.6.6
 ENV RUBYOPT -EUTF-8
 
 LABEL Name=gokabot-line Version=1.0.0
