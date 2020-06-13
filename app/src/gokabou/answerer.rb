@@ -36,24 +36,6 @@ module Gokabou
       ]
     end
 
-    def include_uri?(msg)
-      splited = msg.split(/[[:space:]]/)
-      splited.map! { |str| str =~ URI::DEFAULT_PARSER.regexp[:ABS_URI] }
-
-      return splited.any?
-    end
-
-    def updatable(msg, user_id)
-      gid = ENV['GOKABOU_USER_ID']
-
-      unless user_id == gid && msg.length > 4 && msg.length <= 300
-        return false
-      end
-
-      return false if include_uri?(msg)
-      return !@ud.all_sentences.include?(msg)
-    end
-
     def answer(*msg_data)
       msg = msg_data[0]
       user_id = msg_data[1]
@@ -72,6 +54,26 @@ module Gokabou
       end
 
       return ans
+    end
+
+    def updatable(msg, user_id)
+      gid = ENV['GOKABOU_USER_ID']
+
+      unless user_id == gid && msg.length > 4 && msg.length <= 300
+        return false
+      end
+
+      return false if include_uri?(msg)
+      return !@ud.all_sentences.include?(msg)
+    end
+
+    private
+
+    def include_uri?(msg)
+      splited = msg.split(/[[:space:]]/)
+      splited.map! { |str| str =~ URI::DEFAULT_PARSER.regexp[:ABS_URI] }
+
+      return splited.any?
     end
   end
 end

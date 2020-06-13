@@ -13,7 +13,7 @@ module Gokabou
   class UpdateDB
     include LogConfig
 
-    attr_accessor :all_sentences, :update_counter
+    attr_reader :all_sentences, :update_counter
 
     QUERY_A = 'select * from gokabot.gokabous'
     QUERY_S = 'select sentence from gokabot.gokabous'
@@ -29,16 +29,6 @@ module Gokabou
         @all_data = con.select_all(QUERY_A).to_a
         @all_sentences = con.select_values(QUERY_S)
       end
-    end
-
-    def insert_data(date, sentence)
-      Gokabous.create(
-        sentence: sentence,
-        reg_date: date
-      )
-
-      @@logger.debug("##### Insert '#{sentence}' to DB #####")
-      @@logger.debug("#####   Row length -> #{row_length} #####")
     end
 
     def delete_data(sentence)
@@ -71,6 +61,18 @@ module Gokabou
       end
 
       return res[0]['count']
+    end
+
+    private
+
+    def insert_data(date, sentence)
+      Gokabous.create(
+        sentence: sentence,
+        reg_date: date
+      )
+
+      @@logger.debug("##### Insert '#{sentence}' to DB #####")
+      @@logger.debug("#####   Row length -> #{row_length} #####")
     end
   end
 end

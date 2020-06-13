@@ -19,9 +19,36 @@ class Weather
     @city_id = @@city_ids[@city]
   end
 
+  def answer(*msg_data)
+    msg = msg_data[0]
+    msg_split = msg.split(/[[:blank:]]+/)
+    msg0 = msg_split[0].strip
+    msg1 = msg_split[1]
+
+    case msg0
+    when /^(今日の|)天気$/
+      date = 0
+    when /^明日の天気$/
+      date = 1
+    else
+      return nil
+    end
+
+    unless msg1.nil?
+      msg1.strip!
+      change_city(msg1)
+    end
+
+    ans = get_weather(date)
+    change_city(@@default_city)
+    return ans
+  end
+
   def self.get_default_city
     return @@default_city
   end
+
+  private
 
   def change_city(city)
     @city = city
@@ -66,30 +93,5 @@ class Weather
     max_celsius = get_mosts(max_temp, date, true)
 
     return "> #{@city}の#{day}（#{date}日）の天気 <\n#{telop}#{max_celsius}#{min_celsius}"
-  end
-
-  def answer(*msg_data)
-    msg = msg_data[0]
-    msg_split = msg.split(/[[:blank:]]+/)
-    msg0 = msg_split[0].strip
-    msg1 = msg_split[1]
-
-    case msg0
-    when /^(今日の|)天気$/
-      date = 0
-    when /^明日の天気$/
-      date = 1
-    else
-      return nil
-    end
-
-    unless msg1.nil?
-      msg1.strip!
-      change_city(msg1)
-    end
-
-    ans = get_weather(date)
-    change_city(@@default_city)
-    return ans
   end
 end

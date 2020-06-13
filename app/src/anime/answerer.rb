@@ -34,6 +34,15 @@ module Anime
       ]
     end
 
+    def answer(*msg_data)
+      initialize
+      msg = msg_data[0]
+      ans = select_answer(msg)
+      return ans
+    end
+
+    private
+
     def convert(msg)
       @converts.each do |cvt|
         ans = cvt.convert(msg)
@@ -71,13 +80,6 @@ module Anime
       else
         return nil
       end
-    end
-
-    def answer(*msg_data)
-      initialize
-      msg = msg_data[0]
-      ans = select_answer(msg)
-      return ans
     end
   end
 end

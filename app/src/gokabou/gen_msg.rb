@@ -37,6 +37,26 @@ module Gokabou
       return array
     end
 
+    def self.gen_text(array)
+      # Find block which begin from nil
+      block = find_blocks(array, nil)
+      result = connect_blocks(block, [])
+
+      # Loop until the end word of result is nil
+      i = 0
+
+      until result[-1].nil? || i > 100
+        block = find_blocks(array, result[-1])
+        result = connect_blocks(block, result)
+        i += 1
+      end
+
+      text = result.join
+      return text
+    end
+
+    private
+
     def self.find_blocks(array, target)
       blocks = []
 
@@ -59,24 +79,6 @@ module Gokabou
       end
 
       return dist
-    end
-
-    def self.gen_text(array)
-      # Find block which begin from nil
-      block = find_blocks(array, nil)
-      result = connect_blocks(block, [])
-
-      # Loop until the end word of result is nil
-      i = 0
-
-      until result[-1].nil? || i > 100
-        block = find_blocks(array, result[-1])
-        result = connect_blocks(block, result)
-        i += 1
-      end
-
-      text = result.join
-      return text
     end
   end
 

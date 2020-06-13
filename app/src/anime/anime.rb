@@ -7,7 +7,7 @@ module Anime
   end
 
   class GetAnimes
-    attr_accessor :con
+    attr_reader :con
 
     SORT = "
       ORDER BY
@@ -29,6 +29,21 @@ module Anime
         ENV['DATABASE_URL']
       )
     end
+
+    def get_animes(year, season, day, all, rcm)
+      query = mk_query(year, season, day, all, rcm)
+      animes = []
+
+      Anime.connection_pool.with_connection do |con|
+        animes = con.select_all(query).to_a
+      end
+
+      return show_animes(animes, all) unless animes.empty?
+      return 'ありませ〜んｗｗｗｗ' if rcm
+      return '早漏かよｗ'
+    end
+
+    private
 
     # all: Bool <- All of the season or not
     # rcm: Bool <- Only recommended or not
@@ -70,19 +85,6 @@ module Anime
       ans.strip!
 
       return ans
-    end
-
-    def get_animes(year, season, day, all, rcm)
-      query = mk_query(year, season, day, all, rcm)
-      animes = []
-
-      Anime.connection_pool.with_connection do |con|
-        animes = con.select_all(query).to_a
-      end
-
-      return show_animes(animes, all) unless animes.empty?
-      return 'ありませ〜んｗｗｗｗ' if rcm
-      return '早漏かよｗ'
     end
   end
 end
