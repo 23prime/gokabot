@@ -2,20 +2,30 @@ require 'net/http'
 require 'uri'
 require 'json'
 
+require './app/log_config'
+
 class Weather
+  include LogConfig
+
   @@default_city = '東京'
+  @@city_ids = JSON.parse(File.open('./docs/city_id.json', 'r').read)
 
   def initialize
-    @city = @@default_city
+    @city = @@default_city.clone
+    @@logger.debug("Set city: '#{@city}'")
 
-    # Get city ID
-    @city_ids = JSON.parse(File.open('./docs/city_id.json', 'r').read)
-    @city_id = @city_ids[@city]
+    @city_id = @@city_ids[@city]
+  end
+
+  def self.get_default_city
+    return @@default_city
   end
 
   def change_city(city)
     @city = city
-    @city_id = @city_ids[city]
+    @@logger.debug("Set city: '#{@city}'")
+
+    @city_id = @@city_ids[city]
   end
 
   def get_weather_info
@@ -23,8 +33,7 @@ class Weather
     base_uri = 'http://weather.livedoor.com/forecast/webservice/json/v1?city='
     uri = URI.parse("#{base_uri}#{@city_id}")
     weather_json = Net::HTTP.get(uri)
-    info = JSON.parse(weather_json)
-    return info
+    return JSON.parse(weather_json)
   end
 
   def get_mosts(temp, date, is_max)
@@ -35,8 +44,7 @@ class Weather
 
     celsius = "#{most}気温：#{temp['celsius']}℃"
     celsius = "予想#{celsius}" if date == 1
-    celsius = "\n#{celsius}"
-    return celsius
+    return "\n#{celsius}"
   end
 
   def get_weather(date)
@@ -55,10 +63,7 @@ class Weather
     min_celsius = get_mosts(min_temp, date, false)
     max_celsius = get_mosts(max_temp, date, true)
 
-    ans = "> #{@city}の#{day}（#{date}日）の天気 <\n#{telop}#{max_celsius}#{min_celsius}"
-    change_city(@@default_city)
-
-    return ans
+    return "> #{@city}の#{day}（#{date}日）の天気 <\n#{telop}#{max_celsius}#{min_celsius}"
   end
 
   def answer(*msg_data)
@@ -81,6 +86,8 @@ class Weather
       change_city(msg1)
     end
 
-    return get_weather(date)
+    ans = get_weather(date)
+    change_city(@@default_city)
+    return ans
   end
 end
