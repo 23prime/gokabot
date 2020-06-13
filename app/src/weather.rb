@@ -11,6 +11,8 @@ class Weather
   @@city_ids = JSON.parse(File.open('./docs/city_id.json', 'r').read)
 
   def initialize
+    @@logger.progname = self.class.to_s
+
     @city = @@default_city.clone
     @@logger.debug("Set city: '#{@city}'")
 

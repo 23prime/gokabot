@@ -19,6 +19,8 @@ module Gokabou
     QUERY_S = 'select sentence from gokabot.gokabous'
 
     def initialize
+      @@logger.progname = self.class.to_s
+
       Gokabous.establish_connection(ENV['DATABASE_URL'])
 
       @update_counter = 0

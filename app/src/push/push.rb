@@ -7,6 +7,8 @@ class Push
   include LogConfig
 
   def self.send_push_msg(msg, target)
+    @@logger.progname = self.class.to_s
+
     @@logger.info("Send push message: '#{msg}' to '#{target}'")
 
     target_id = ENV[target]

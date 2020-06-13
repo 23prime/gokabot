@@ -10,6 +10,8 @@ module Response
     include LogConfig
 
     def initialize(event)
+      @@logger.progname = self.class.to_s
+
       @event = event
       @user_id = @event['source']['userId']
     end
