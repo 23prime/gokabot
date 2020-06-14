@@ -1,5 +1,7 @@
 require 'natto'
 
+require './app/log_config'
+
 module Gokabou
   class NattoParser
     attr_accessor :nm, :dict
@@ -55,8 +57,6 @@ module Gokabou
       return text
     end
 
-    private
-
     def self.find_blocks(array, target)
       blocks = []
 
@@ -83,9 +83,14 @@ module Gokabou
   end
 
   class GenMsg
+    include LogConfig
+
     attr_accessor :marcov_dict
 
     def initialize(sentences)
+      @logger = @@logger.clone
+      @logger.progname = self.class.to_s
+
       @np = NattoParser.new(sentences)
 
       @marcov_dict = @np.dict.map { |words| Marcov.gen_marcov_block(words) }
@@ -99,6 +104,8 @@ module Gokabou
       blocks.each do |block|
         @marcov_dict << block
       end
+
+      @logger.info('Dictionary updated')
     end
 
     def sample

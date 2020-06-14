@@ -10,7 +10,8 @@ module Response
     include LogConfig
 
     def initialize(event)
-      @@logger.progname = self.class.to_s
+      @logger = @@logger.clone
+      @logger.progname = self.class.to_s
 
       @event = event
       @user_id = @event['source']['userId']
@@ -31,10 +32,10 @@ module Response
     end
 
     def monitor(msg, reply_text)
-      @@logger.info("From:    #{@user_id} (#{get_name})")
-      @@logger.info("Group:   #{@event['source']['groupId']}")
-      @@logger.info("Message: #{msg}")
-      @@logger.info("Reply:   #{reply_text}")
+      @logger.info("From:    #{@user_id} (#{get_name})")
+      @logger.info("Group:   #{@event['source']['groupId']}")
+      @logger.info("Message: #{msg}")
+      @logger.info("Reply:   #{reply_text}")
     end
 
     def hello
@@ -78,7 +79,7 @@ module Response
       rescue => e
         e.message
         reply_text = "エラーおつｗｗｗｗｗｗ\n\n> #{e}"
-        @@logger.error(e.backtrace)
+        @logger.error(e.backtrace)
         break
       end
 

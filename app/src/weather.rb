@@ -11,11 +11,10 @@ class Weather
   @@city_ids = JSON.parse(File.open('./docs/city_id.json', 'r').read)
 
   def initialize
-    @@logger.progname = self.class.to_s
+    @logger = @@logger.clone
+    @logger.progname = self.class.to_s
 
     @city = @@default_city.clone
-    @@logger.debug("Set city: '#{@city}'")
-
     @city_id = @@city_ids[@city]
   end
 
@@ -52,7 +51,7 @@ class Weather
 
   def change_city(city)
     @city = city
-    @@logger.debug("Set city: '#{@city}'")
+    @logger.debug("Set city: '#{@city}'")
 
     @city_id = @@city_ids[city]
   end

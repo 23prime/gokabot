@@ -19,7 +19,8 @@ module Gokabou
     QUERY_S = 'select sentence from gokabot.gokabous'
 
     def initialize
-      @@logger.progname = self.class.to_s
+      @logger = @@logger.clone
+      @logger.progname = self.class.to_s
 
       Gokabous.establish_connection(ENV['DATABASE_URL'])
 
@@ -36,8 +37,7 @@ module Gokabou
         sentence: sentence
       ).delete_all
 
-      @@logger.debug("##### Delete '#{sentence}' fron DB #####.")
-      @@logger.debug("#####   Row length -> #{row_length} #####")
+      @logger.debug("Delete '#{sentence}' fron DB: Row length -> #{row_length}")
     end
 
     def update_db(msg)
@@ -71,8 +71,7 @@ module Gokabou
         reg_date: date
       )
 
-      @@logger.debug("##### Insert '#{sentence}' to DB #####")
-      @@logger.debug("#####   Row length -> #{row_length} #####")
+      @logger.debug("Insert '#{sentence}' to DB: Row length -> #{row_length}")
     end
   end
 end
