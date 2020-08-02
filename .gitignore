@@ -1,7 +1,6 @@
 .bundle/
 vendor/
 test/
-.vscode/
 .env
 get-log
 docs/ids.json

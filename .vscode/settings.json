@@ -1,0 +1,22 @@
+{
+    // Ruby
+    "[ruby]": {
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2
+    },
+    "ruby.rubocop.useBundler": true,
+    "solargraph.useBundler": true,
+    "solargraph.autoformat": true,
+
+    // JSON
+    "[json]": {
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2
+    },
+
+    // YAML
+    "[yaml]": {
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2
+    }
+}
