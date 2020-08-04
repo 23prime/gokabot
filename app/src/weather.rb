@@ -1,21 +1,32 @@
+require 'dotenv/load'
 require 'net/http'
 require 'uri'
 require 'json'
 
 require './app/log_config'
 
+class CityId
+  attr_reader :id, :name
+
+  def initialize(id, name)
+    @id = id
+    @name = name
+  end
+end
+
 class Weather
   include LogConfig
 
-  @@default_city = '東京'
+  @@default_city = 'tokyo'
   @@city_ids = JSON.parse(File.open('./docs/city_id.json', 'r').read)
+                   .map { |hash| CityId.new(hash['id'], hash['name']) }
 
   def initialize
     @logger = @@logger.clone
     @logger.progname = self.class.to_s
 
     @city = @@default_city.clone
-    @city_id = @@city_ids[@city]
+    @city_id = get_city_id(@city)
   end
 
   def answer(*msg_data)
@@ -33,10 +44,7 @@ class Weather
       return nil
     end
 
-    unless msg1.nil?
-      msg1.strip!
-      change_city(msg1)
-    end
+    change_city(msg1.strip.downcase) unless msg1.nil?
 
     ans = get_weather(date)
     change_city(@@default_city)
@@ -49,48 +57,45 @@ class Weather
 
   private
 
-  def change_city(city)
-    @city = city
+  def get_city_id(city_name)
+    result = @@city_ids.select { |city_id| city_id.name == city_name }
+    return nil if result.empty?
+    return result[0].id
+  end
+
+  def change_city(city_name)
+    @city = city_name
     @logger.debug("Set city: '#{@city}'")
 
-    @city_id = @@city_ids[city]
+    @city_id = get_city_id(city_name)
   end
 
   def get_weather_info
     # Get weather infomation of the @city
-    base_uri = 'http://weather.livedoor.com/forecast/webservice/json/v1?city='
-    uri = URI.parse("#{base_uri}#{@city_id}")
+    base_uri = 'https://api.openweathermap.org/data/2.5/weather?'
+
+    uri = URI.parse("#{base_uri}&appid=#{ENV['OPEN_WEATHER_API_KEY']}&id=#{@city_id}&units=metric")
     weather_json = Net::HTTP.get(uri)
+
     return JSON.parse(weather_json)
   end
 
-  def get_mosts(temp, date, is_max)
-    return '' if temp.nil?
-
-    most = '最低'
-    most = '最高' if is_max
-
-    celsius = "#{most}気温：#{temp['celsius']}℃"
-    celsius = "予想#{celsius}" if date == 1
-    return "\n#{celsius}"
-  end
-
-  def get_weather(date)
+  def get_weather(_date)
     return '分かりませ〜んｗ' if @city_id.nil?
 
     weather_info = get_weather_info
-    day_weather = weather_info['forecasts'][date]
+    weather = weather_info['weather'][0]['main']
 
-    day = day_weather['dateLabel']   # 今日 or 明日
-    date = day_weather['date'][8, 9] # yyyy-mm-dd -> dd
-    telop = day_weather['telop']     # example: 晴, 曇時々雨
+    main = weather_info['main']
+    now_temp = main['temp']
+    min_temp = main['temp_min']
+    max_temp = main['temp_max']
 
-    min_temp = day_weather['temperature']['min']
-    max_temp = day_weather['temperature']['max']
-
-    min_celsius = get_mosts(min_temp, date, false)
-    max_celsius = get_mosts(max_temp, date, true)
-
-    return "> #{@city}の#{day}（#{date}日）の天気 <\n#{telop}#{max_celsius}#{min_celsius}"
+    result = "> #{@city.capitalize}の現在の天気 <\n"
+    result += "#{weather}\n"
+    result += "現在の気温：#{now_temp}℃\n"
+    result += "最高気温：#{max_temp}℃\n"
+    result += "最低気温：#{min_temp}℃"
+    return result
   end
 end

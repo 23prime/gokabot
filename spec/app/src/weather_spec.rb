@@ -6,7 +6,8 @@ describe Weather do
     @name = 'SAMPLE_NAME'
     @weather = Weather.new
     @default_city = Weather.get_default_city
-    @changed_city = 'つくば'
+    @changed_city1 = 'Tsukuba'
+    @changed_city2 = 'kofu'
     @unavailable_city = 'ほげほげ'
   end
 
@@ -14,17 +15,27 @@ describe Weather do
     base_msg_cases.each do |msg|
       it "[Base msg = #{msg}]" do
         ans = @weather.answer(msg, @user_id, @name)
-        expect(ans).to include @default_city
+        expect(ans).to include @default_city.capitalize
       end
     end
   end
 
-  context "Changed city: '#{@changed_city}'" do
+  context "Changed city-1: '#{@changed_city1}'" do
     base_msg_cases.each do |msg|
       it "[Base msg = #{msg}]" do
-        msg += ' ' + @changed_city
+        msg += ' ' + @changed_city1
         ans = @weather.answer(msg, @user_id, @name)
-        expect(ans).to include @changed_city
+        expect(ans).to include @changed_city1.capitalize
+      end
+    end
+  end
+
+  context "Changed city-2: '#{@changed_city2}'" do
+    base_msg_cases.each do |msg|
+      it "[Base msg = #{msg}]" do
+        msg += ' ' + @changed_city2
+        ans = @weather.answer(msg, @user_id, @name)
+        expect(ans).to include @changed_city2.capitalize
       end
     end
   end
@@ -41,13 +52,13 @@ describe Weather do
 
   context 'Reset city to default' do
     it 'After changed' do
-      msg = '天気 ' + @changed_city
+      msg = '天気 ' + @changed_city1
       ans = @weather.answer(msg, @user_id, @name)
-      expect(ans).to include @changed_city
+      expect(ans).to include @changed_city1.capitalize
 
       msg = '天気'
       ans = @weather.answer(msg, @user_id, @name)
-      expect(ans).to include @default_city
+      expect(ans).to include @default_city.capitalize
     end
 
     it 'After unavailable' do
@@ -57,7 +68,7 @@ describe Weather do
 
       msg = '天気'
       ans = @weather.answer(msg, @user_id, @name)
-      expect(ans).to include @default_city
+      expect(ans).to include @default_city.capitalize
     end
   end
 end
