@@ -73,9 +73,10 @@ class Weather
   def get_weather_info
     # Get weather infomation of the @city
     base_uri = 'https://api.openweathermap.org/data/2.5/weather?'
-
     uri = URI.parse("#{base_uri}&appid=#{ENV['OPEN_WEATHER_API_KEY']}&id=#{@city_id}&units=metric")
+
     weather_json = Net::HTTP.get(uri)
+    @@logger.info("Get weather info from: #{uri}")
 
     return JSON.parse(weather_json)
   end
@@ -84,6 +85,9 @@ class Weather
     return '分かりませ〜んｗ' if @city_id.nil?
 
     weather_info = get_weather_info
+
+    return '天気を取得できませんでした〜ｗ' if weather_info.nil?
+
     weather = weather_info['weather'][0]['main']
 
     main = weather_info['main']
