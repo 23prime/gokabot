@@ -3,7 +3,9 @@ ENV RUBYOPT -EUTF-8
 
 LABEL Name=gokabot-line Version=1.0.0
 
-RUN apt update && apt -y install mecab libmecab-dev mecab-ipadic
+RUN apt update 
+RUN apt install -y mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8
+
 RUN gem install bundler -v 2.1.2
 
 RUN bundle config --global frozen 1
