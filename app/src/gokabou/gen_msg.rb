@@ -25,12 +25,14 @@ module Gokabou
   class Markov
     include LogConfig
 
-    @@logger = @@logger.clone
-    @@logger.progname = self.class.to_s
-
     @@upper_bound_of_block_connection = 9
 
-    def self.gen_markov_block(words)
+    def initialize
+      @logger = @@logger.clone
+      @logger.progname = self.class.to_s
+    end
+
+    def gen_markov_block(words)
       # Insert nil begin and end
       words.unshift(nil)
       words << nil
@@ -44,17 +46,17 @@ module Gokabou
       return array
     end
 
-    def self.gen_text(all_blocks)
+    def gen_text(all_blocks)
       # Select a first block randomly
       result = all_blocks.select { |b| b[0].nil? }.sample
-      @@logger.debug("Current block: #{result}")
+      @logger.debug("Current block: #{result}")
 
       @@upper_bound_of_block_connection.times do
         break if result[-1].nil?
 
         block = all_blocks.select { |b| b[0] == result[-1] }.sample
         break if block.nil? # Not found next word
-        @@logger.debug("Current block: #{block}")
+        @logger.debug("Current block: #{block}")
         result.concat(block[1..])
       end
 
@@ -72,16 +74,17 @@ module Gokabou
       @logger.progname = self.class.to_s
 
       @np = NattoParser.new(sentences)
+      @markov = Markov.new
 
-      @markov_dict = @np.dict.map { |words| Markov.gen_markov_block(words) }
+      @markov_dict = @np.dict.map { |words| @markov.gen_markov_block(words) }
       @markov_dict.flatten!(1)
     end
 
     def update_dict(sentence)
       words = @np.parse_sentence(sentence)
-      blocks = Markov.gen_markov_block(words)
+      markov_blocks = @markov.gen_markov_block(words)
 
-      blocks.each do |block|
+      markov_blocks.each do |block|
         @markov_dict << block
       end
 
@@ -89,7 +92,7 @@ module Gokabou
     end
 
     def sample
-      return Markov.gen_text(@markov_dict)
+      return @markov.gen_text(@markov_dict)
     end
   end
 end

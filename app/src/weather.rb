@@ -76,7 +76,7 @@ class Weather
     uri = URI.parse("#{base_uri}&appid=#{ENV['OPEN_WEATHER_API_KEY']}&id=#{@city_id}&units=metric")
 
     weather_json = Net::HTTP.get(uri)
-    @@logger.info("Get weather info from: #{uri}")
+    @logger.info("Get weather info from: #{uri}")
 
     return JSON.parse(weather_json)
   end

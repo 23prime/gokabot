@@ -6,7 +6,7 @@ require 'rest-client'
 require './app/src/push/push'
 require './app/src/push/ramdom_push'
 require './app/src/push/push_discord'
-require_relative './response.rb'
+require_relative './response'
 
 before do
   content_type :json
@@ -38,18 +38,18 @@ post '/push' do
   msg = params[:msg]
   target = params[:target]
   return 401 if msg.nil? || target.nil?
-  return Push.send_push_msg(msg, target)
+  return Push.new.send_push_msg(msg, target)
 end
 
 post '/push/random' do
   target = params[:target]
   return 401 if target.nil?
-  return RamdomPush.send_push_msg(target)
+  return RamdomPush.new.send_push_msg(target)
 end
 
 post '/push/discord' do
   msg = params[:msg]
   return 401 if msg.nil?
-  return 200 if PushDiscord.send_message(msg)
+  return 200 if PushDiscord.new.send_message(msg)
   return 500
 end
