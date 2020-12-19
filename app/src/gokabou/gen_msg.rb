@@ -23,62 +23,36 @@ module Gokabou
   end
 
   class Marcov
+    @@upper_bound_of_block_connection = 9
+
     def self.gen_marcov_block(words)
       # Insert nil begin and end
       words.unshift(nil)
       words << nil
 
       # Add 3 words into each array
-      bound = words.length - 3
       array = []
-
-      (0..bound).each do |i|
+      (0..words.length - 3).each do |i|
         array << [words[i], words[i + 1], words[i + 2]]
       end
 
       return array
     end
 
-    def self.gen_text(array)
-      # Find block which begin from nil
-      block = find_blocks(array, nil)
-      result = connect_blocks(block, [])
+    def self.gen_text(all_blocks)
+      # Select a first block randomly
+      result = all_blocks.select { |b| b[0].nil? }.sample
 
-      # Loop until the end word of result is nil
-      i = 0
+      @@upper_bound_of_block_connection.times do
+        puts "Temporary result: #{result}"
+        break if result[-1].nil?
 
-      until result[-1].nil? || i > 100
-        block = find_blocks(array, result[-1])
-        result = connect_blocks(block, result)
-        i += 1
+        block = all_blocks.select { |b| b[0] == result[-1] }.sample
+        break if block.nil? # Not found next word
+        result.concat(block[1..])
       end
 
-      text = result.join
-      return text
-    end
-
-    def self.find_blocks(array, target)
-      blocks = []
-
-      array.each do |block|
-        blocks << block if block[0] == target
-      end
-
-      return blocks
-    end
-
-    def self.connect_blocks(array, dist)
-      i = 0
-      len = array.length
-
-      unless len.zero?
-        array[rand(len)].each do |word|
-          dist << word unless i.zero?
-          i += 1
-        end
-      end
-
-      return dist
+      return result.join
     end
   end
 

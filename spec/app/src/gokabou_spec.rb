@@ -38,8 +38,8 @@ describe 'Gokabou' do
     it 'マルコフ' do
       ans = gkb_ans.answer('ごかぼっと')
 
-      puts '--------------------------------------------------'
       puts ans
+      puts '--------------------------------------------------'
 
       expect(ans).not_to be_empty
     end
