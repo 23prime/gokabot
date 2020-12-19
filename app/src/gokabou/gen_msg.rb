@@ -22,7 +22,7 @@ module Gokabou
     end
   end
 
-  class Marcov
+  class Markov
     include LogConfig
 
     @@logger = @@logger.clone
@@ -30,7 +30,7 @@ module Gokabou
 
     @@upper_bound_of_block_connection = 9
 
-    def self.gen_marcov_block(words)
+    def self.gen_markov_block(words)
       # Insert nil begin and end
       words.unshift(nil)
       words << nil
@@ -65,7 +65,7 @@ module Gokabou
   class GenMsg
     include LogConfig
 
-    attr_accessor :marcov_dict
+    attr_accessor :markov_dict
 
     def initialize(sentences)
       @logger = @@logger.clone
@@ -73,23 +73,23 @@ module Gokabou
 
       @np = NattoParser.new(sentences)
 
-      @marcov_dict = @np.dict.map { |words| Marcov.gen_marcov_block(words) }
-      @marcov_dict.flatten!(1)
+      @markov_dict = @np.dict.map { |words| Markov.gen_markov_block(words) }
+      @markov_dict.flatten!(1)
     end
 
     def update_dict(sentence)
       words = @np.parse_sentence(sentence)
-      blocks = Marcov.gen_marcov_block(words)
+      blocks = Markov.gen_markov_block(words)
 
       blocks.each do |block|
-        @marcov_dict << block
+        @markov_dict << block
       end
 
       @logger.info('Dictionary updated')
     end
 
     def sample
-      return Marcov.gen_text(@marcov_dict)
+      return Markov.gen_text(@markov_dict)
     end
   end
 end
