@@ -1,5 +1,9 @@
 AllCops:
   TargetRubyVersion: 2.6
+  NewCops: disable
+  SuggestExtensions: false
+  Exclude:
+    - "vendor/**/*"
 
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
@@ -16,10 +20,34 @@ Layout/SpaceAroundMethodCallOperator:
 Lint/DeprecatedOpenSSLConstant:
   Enabled: true
 
+Lint/DuplicateBranch:
+  Enabled: true
+
+Lint/DuplicateRegexpCharacterClassElement:
+  Enabled: true
+
+Lint/EmptyBlock:
+  Enabled: true
+
+Lint/EmptyClass:
+  Enabled: true
+
+Lint/NoReturnInBeginEndBlocks:
+  Enabled: true
+
 Lint/RaiseException:
   Enabled: true
 
 Lint/StructNewOverride:
+  Enabled: true
+
+Lint/ToEnumArguments:
+  Enabled: true
+
+Lint/UnexpectedBlockArity:
+  Enabled: true
+
+Lint/UnmodifiedReduceAccumulator:
   Enabled: true
 
 Metrics/AbcSize:
@@ -37,6 +65,9 @@ Naming/AccessorMethodName:
 Naming/MethodParameterName:
   Enabled: false
 
+Style/ArgumentsForwarding:
+  Enabled: true
+
 Style/AsciiComments:
   Enabled: false
 
@@ -46,8 +77,14 @@ Style/BlockDelimiters:
 Style/ClassVars:
   Enabled: false
 
+Style/CollectionCompact:
+  Enabled: true
+
 Style/Documentation:
   Enabled: false
+
+Style/DocumentDynamicEvalDefinition:
+  Enabled: true
 
 Style/ExponentialNotation:
   Enabled: true
@@ -73,6 +110,15 @@ Style/IfUnlessModifier:
 Style/MutableConstant:
   Enabled: false
 
+Style/NegatedIfElseCondition:
+  Enabled: true
+
+Style/NilLambda:
+  Enabled: true
+
+Style/RedundantArgument:
+  Enabled: true
+
 Style/RedundantReturn:
   Enabled: false
 
@@ -80,4 +126,7 @@ Style/RescueStandardError:
   Enabled: false
 
 Style/SlicingWithRange:
+  Enabled: true
+
+Style/SwapValues:
   Enabled: true
