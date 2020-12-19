@@ -23,6 +23,11 @@ module Gokabou
   end
 
   class Marcov
+    include LogConfig
+
+    @@logger = @@logger.clone
+    @@logger.progname = self.class.to_s
+
     @@upper_bound_of_block_connection = 9
 
     def self.gen_marcov_block(words)
@@ -42,13 +47,14 @@ module Gokabou
     def self.gen_text(all_blocks)
       # Select a first block randomly
       result = all_blocks.select { |b| b[0].nil? }.sample
+      @@logger.debug("Current block: #{result}")
 
       @@upper_bound_of_block_connection.times do
-        puts "Temporary result: #{result}"
         break if result[-1].nil?
 
         block = all_blocks.select { |b| b[0] == result[-1] }.sample
         break if block.nil? # Not found next word
+        @@logger.debug("Current block: #{block}")
         result.concat(block[1..])
       end
 
