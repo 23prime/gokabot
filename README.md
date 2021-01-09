@@ -16,52 +16,87 @@ Add Gokabot to your friends from the QR code below, and invite to your groups.
 
 - Calling
 
-  | Send examples                    | Response        |
-  |----------------------------------|-----------------|
-  | "ごかぼっと", "ごかぼう", "ヒゲ" | Random message  |
+  | Send examples         | Response       |
+  | --------------------- | -------------- |
+  | "ごかぼっと", "ごかぼう", "ヒゲ" | Random message |
 
 - Anime
-  
-  | Send examples                       | Response                        |
-  |-------------------------------------|---------------------------------|
+
+  | Send examples               | Response                        |
+  | --------------------------- | ------------------------------- |
   | "今日", "今日のアニメ", "today"     | Animes in today                 |
   | "昨日", "昨日のアニメ", "yesterday" | Animes in yesterday             |
   | "明日", "明日のアニメ", "tomorrow"  | Animes in tomorrow              |
   | "日曜", "日曜のアニメ", "Sunday"    | Animes in Sunday                |
   | "今期", "今期のアニメ", "all"       | Animes in this term             |
   | "来期", "来期のアニメ", "next"      | Animes in next term             |
-  | "おすすめ"                          | Recommended animes in today     |
-  | "今期のおすすめ"                    | Recommended animes in this term |
+  | "おすすめ"                      | Recommended animes in today     |
+  | "今期のおすすめ"                   | Recommended animes in this term |
 
 - Weather
 
-  | Send examples        | Response                       |
-  |----------------------|--------------------------------|
+  | Send examples | Response                       |
+  | ------------- | ------------------------------ |
   | "天気", "今日の天気" | Today's weather in Default     |
-  | "明日の天気"         | Tomorrrow's weather in Default |
-  | "天気 東京"          | Today's weather in Tokyo       |
+  | "明日の天気"       | Tomorrrow's weather in Default |
+  | "天気 東京"       | Today's weather in Tokyo       |
   | "明日の天気 東京"    | Tomorrow's weather in Tokyo    |
 
   Now, Default is Tsukuba.
-  
+
 - Dictionary
 
-  | Send examples                          | Response                                                     |
-  |----------------------------------------|--------------------------------------------------------------|
+  | Send examples          | Response                                                 |
+  | ---------------------- | -------------------------------------------------------- |
   | "西郷隆盛ってなに", "西郷隆盛って誰？" | Informations of "西郷隆盛" in Wikipedia or pixiv or niconico |
 
 - Nyokki
 
   | Send examples | Response          |
-  |---------------|-------------------|
-  | "1ニョッキ"   | Start Nyokki Game |
+  | ------------- | ----------------- |
+  | "1ニョッキ"       | Start Nyokki Game |
 
 - Omikuji
 
   | Send examples | Response          |
-  |---------------|-------------------|
-  | "おみくじ"    | Result of Omikuji |
+  | ------------- | ----------------- |
+  | "おみくじ"        | Result of Omikuji |
 
 - Others
 
   See source code.
+
+## Development
+
+### At local
+
+```sh
+$ docker-compose -f docker-compose.local.yml up
+```
+
+### Deploy to ECS
+
+Create Docker Context on your local.
+
+```sh
+$ docker context create ecs aws/ecs
+```
+
+```sh
+$ docker context ls
+NAME                TYPE                DESCRIPTION                               DOCKER ENDPOINT               KUBERNETES ENDPOINT   ORCHESTRATOR
+aws/ecs             ecs                                                                                                               
+default *           moby                Current DOCKER_HOST based configuration   unix:///var/run/docker.sock                         swarm
+```
+
+Push Docker image to ECR.
+
+```sh
+$ docker-compose push
+```
+
+Deploy.
+
+```sh
+docker compose up --context aws/ecs
+```

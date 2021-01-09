@@ -2,13 +2,10 @@ version: "2.1"
 
 services:
   gokabot-line:
-    image: gokabot-line
+    image: 678084882233.dkr.ecr.ap-northeast-1.amazonaws.com/gokabot-line:latest
     container_name: gokabot-line
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
     environment:
       TZ: Asia/Tokyo
-    build: .
     ports:
       - "8080:8080"
     command:
@@ -22,11 +19,10 @@ services:
         "-p",
         "8080",
       ]
-    restart: always
     logging:
       driver: awslogs
       options:
         awslogs-region: ap-northeast-1
         awslogs-group: docker-logs
         awslogs-create-group: "true"
-        awslogs-stream: gokabot-line
+        awslogs-stream-prefix: gokabot-line
