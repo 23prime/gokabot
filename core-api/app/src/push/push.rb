@@ -1,7 +1,7 @@
 require 'net/http'
 require 'json'
 
-require './app/log_config'
+require_relative '../../log_config'
 
 class Push
   include LogConfig

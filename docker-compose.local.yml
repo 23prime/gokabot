@@ -1,22 +1,25 @@
 version: "2.1"
 
 services:
-  gokabot-line-local:
-    image: gokabot-line-local
-    container_name: gokabot-line-local
+  gokabot-core-local:
+    image: gokabot-core-local
+    container_name: gokabot-core-local
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:
       TZ: Asia/Tokyo
-    build: .
+    env_file:
+      - core-api/.env
+    build:
+      context: core-api
     ports:
-      - "8081:8080"
+      - "8080:8080"
     command:
       [
         "bundle",
         "exec",
         "rackup",
-        "app-dev/config.ru",
+        "app/config.ru",
         "-o",
         "0.0.0.0",
         "-p",

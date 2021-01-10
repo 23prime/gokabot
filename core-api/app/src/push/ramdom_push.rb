@@ -1,5 +1,5 @@
-require './app/src/gokabou/gen_msg'
-require './app/src/gokabou/update_db'
+require_relative '../gokabou/gen_msg'
+require_relative '../gokabou/update_db'
 require_relative './push'
 
 class RamdomPush < Push

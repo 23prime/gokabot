@@ -76,27 +76,27 @@ $ docker-compose -f docker-compose.local.yml up
 
 ### Deploy to ECS
 
+Build image for deploy.
+
+```sh
+$ docker-compose build
+```
+
+Push Docker image to ECR.
+
+```sh
+$ docker tag gokabot-core:latest 678084882233.dkr.ecr.ap-northeast-1.amazonaws.com/gokabot-core:latest
+$ docker push 678084882233.dkr.ecr.ap-northeast-1.amazonaws.com/gokabot-core:latest
+```
+
 Create Docker Context on your local.
 
 ```sh
 $ docker context create ecs aws/ecs
 ```
 
-```sh
-$ docker context ls
-NAME                TYPE                DESCRIPTION                               DOCKER ENDPOINT               KUBERNETES ENDPOINT   ORCHESTRATOR
-aws/ecs             ecs                                                                                                               
-default *           moby                Current DOCKER_HOST based configuration   unix:///var/run/docker.sock                         swarm
-```
-
-Push Docker image to ECR.
-
-```sh
-$ docker-compose push
-```
-
 Deploy.
 
 ```sh
-docker compose up --context aws/ecs
+$ docker compose up -c aws/ecs -f docker-compose.prod.yml
 ```

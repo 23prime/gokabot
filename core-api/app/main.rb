@@ -2,20 +2,27 @@ require 'sinatra'
 require 'dotenv/load'
 require 'rest-client'
 
-require './app/src/push/push'
-require './app/src/push/ramdom_push'
-require './app/src/push/push_discord'
+require_relative './src/push/push'
+require_relative './src/push/ramdom_push'
+require_relative './src/push/push_discord'
 require_relative './response'
 
 get '/' do
   'Hello, gokabot!'
 end
 
+post '/callback/line' do
+  body = request.body.read
+  signature = request.env['HTTP_X_LINE_SIGNATURE']
+  Response::Response.response(body, signature)
+  return 200
+end
+
 post '/callback' do
   body = request.body.read
   signature = request.env['HTTP_X_LINE_SIGNATURE']
   Response::Response.response(body, signature)
-  'OK'
+  return 200
 end
 
 post '/push' do

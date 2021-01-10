@@ -1,7 +1,7 @@
 FROM ruby:2.6.6
 ENV RUBYOPT -EUTF-8
 
-LABEL Name=gokabot-line Version=1.0.0
+LABEL Name=gokabot-core Version=1.0.0
 
 RUN apt update 
 RUN apt install -y mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8

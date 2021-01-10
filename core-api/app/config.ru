@@ -1,4 +1,4 @@
-require_relative './main.rb'
+require_relative './main'
 
 $stdout.sync = true
 

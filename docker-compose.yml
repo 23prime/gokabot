@@ -1,28 +1,8 @@
 version: "2.1"
 
 services:
-  gokabot-line:
-    image: 678084882233.dkr.ecr.ap-northeast-1.amazonaws.com/gokabot-line:latest
-    container_name: gokabot-line
-    environment:
-      TZ: Asia/Tokyo
-    ports:
-      - "8080:8080"
-    command:
-      [
-        "bundle",
-        "exec",
-        "rackup",
-        "app/config.ru",
-        "-o",
-        "0.0.0.0",
-        "-p",
-        "8080",
-      ]
-    logging:
-      driver: awslogs
-      options:
-        awslogs-region: ap-northeast-1
-        awslogs-group: docker-logs
-        awslogs-create-group: "true"
-        awslogs-stream-prefix: gokabot-line
+  gokabot-core:
+    image: gokabot-core
+    container_name: gokabot-core
+    build:
+      context: core-api

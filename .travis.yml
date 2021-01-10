@@ -29,8 +29,10 @@ addons:
       - mecab
       - libmecab-dev
       - mecab-ipadic
+      - mecab-ipadic-utf8
 
 before_install:
+  - cd core-api
   - gem install bundler -v 2.1.2
   - bundle install --without development
 

@@ -1,6 +1,6 @@
 require 'natto'
 
-require './app/log_config'
+require_relative '../../log_config'
 
 module Gokabou
   class NattoParser

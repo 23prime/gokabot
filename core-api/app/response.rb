@@ -2,8 +2,8 @@ require 'dotenv/load'
 require 'line/bot'
 require 'rest-client'
 
-require './app/log_config'
-require './app/src'
+require_relative 'log_config'
+require_relative 'src'
 
 module Response
   class Reply
@@ -179,7 +179,11 @@ module Response
       }
     end
 
-    def self.response(body, _signature)
+    def self.response(body, signature)
+      unless client.validate_signature(body, signature)
+        error 400 do 'Bad Request' end
+      end
+
       events = client.parse_events_from(body)
       respond_to_events(events)
     end

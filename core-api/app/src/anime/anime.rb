@@ -25,9 +25,7 @@ module Anime
     "
 
     def initialize
-      Anime.establish_connection(
-        ENV['DATABASE_URL']
-      )
+      Anime.establish_connection(ENV['DATABASE_URL'])
     end
 
     def get_animes(year, season, day, all, rcm)

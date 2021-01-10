@@ -3,7 +3,7 @@ require 'net/http'
 require 'uri'
 require 'json'
 
-require './app/log_config'
+require_relative '../log_config'
 
 class CityId
   attr_reader :id, :name

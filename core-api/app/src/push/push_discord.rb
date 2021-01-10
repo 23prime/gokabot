@@ -1,7 +1,7 @@
 require 'discordrb'
 require 'dotenv/load'
 
-require './app/log_config'
+require_relative '../../log_config'
 
 class PushDiscord
   include LogConfig

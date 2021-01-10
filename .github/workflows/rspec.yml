@@ -27,7 +27,7 @@ jobs:
       - name: Install MeCab
         run: |
           sudo apt update
-          sudo apt -y install mecab libmecab-dev mecab-ipadic
+          sudo apt -y install mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8
       - name: Test with RSpec
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -37,6 +37,7 @@ jobs:
           TAKENOKO_USER_ID: ${{ secrets.TAKENOKO_USER_ID }}
           OPEN_WEATHER_API_KEY: ${{ secrets.OPEN_WEATHER_API_KEY }}
         run: |
+          cd core-api
           gem install bundler -v 2.1.2
           bundle install --without development
           bundle exec rspec

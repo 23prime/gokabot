@@ -1,6 +1,7 @@
 require 'dotenv/load'
-require_relative './gen_msg.rb'
-require_relative './update_db.rb'
+
+require_relative 'gen_msg'
+require_relative 'update_db'
 
 module Gokabou
   VERSION = '1.0.0'

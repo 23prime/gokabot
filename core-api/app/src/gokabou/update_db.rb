@@ -3,7 +3,7 @@ require 'date'
 require 'dotenv/load'
 require 'uri'
 
-require './app/log_config'
+require_relative '../../log_config'
 
 module Gokabou
   class Gokabous < ActiveRecord::Base
