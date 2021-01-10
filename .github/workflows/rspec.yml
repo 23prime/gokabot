@@ -1,4 +1,4 @@
-name: gokabot-line-dev
+name: main
 
 on:
   push:

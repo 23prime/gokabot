@@ -1,6 +1,6 @@
 # Gokabot for LINE
 
-[![Travis Build Status](https://travis-ci.org/23prime/gokabot-line.svg)](https://travis-ci.org/github/23prime/gokabot-line)
+[![GitHub Actions Status - core-api](https://github.com/23prime/gokabot/workflows/main/badge.svg)](https://github.com/23prime/gokabot/actions)
 
 ## What
 
