@@ -25,4 +25,3 @@ services:
         "-p",
         "8080",
       ]
-    restart: always
