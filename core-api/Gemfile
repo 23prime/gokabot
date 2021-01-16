@@ -13,6 +13,7 @@ gem 'pg'
 gem 'rest-client'
 gem 'rexml'
 gem 'sinatra'
+gem 'sinatra-cors'
 gem 'zen_to_i', '0.0.2'
 
 group :test do

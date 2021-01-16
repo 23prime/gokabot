@@ -28,22 +28,18 @@ module Line
       end
 
       def mk_reply_text(*msg_data)
-        reply_text = ''
-
         $ANS_OBJS.each do |obj|
           ans = obj.answer(*msg_data)
           unless ans.nil?
-            reply_text = ans[0, 2000]
-            break
+            return ans[0, 2000]
           end
         rescue => e
           e.message
-          reply_text = "エラーおつｗｗｗｗｗｗ\n\n> #{e}"
           @logger.error(e.backtrace)
-          break
+          return "エラーおつｗｗｗｗｗｗ\n\n> #{e}"
         end
 
-        return reply_text
+        return ''
       end
 
       def mk_reply_body(reply_text)

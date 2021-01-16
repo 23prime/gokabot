@@ -1,21 +1,37 @@
-require 'sinatra'
 require 'dotenv/load'
 require 'rest-client'
+require 'sinatra'
+require 'sinatra/cors'
 
+require_relative 'core'
+require_relative 'callback'
 require_relative 'line/callback'
 require_relative 'line/push'
 require_relative 'line/ramdom_push'
 require_relative 'discord/push'
 
+before do
+  content_type :json
+  headers 'Access-Control-Allow-Origin' => '*',
+          'Access-Control-Allow-Methods' => %w[POST OPTIONS],
+          'Access-Control-Allow-Headers' => 'Content-Type, Accept'
+end
+
+set :allow_origin, '*'
+set :allow_methods, 'GET,POST'
+set :allow_headers, 'Content-Type, Accept'
+
 get '/' do
   'Hello, gokabot!'
 end
 
+# options '/callback' do
+#   return 200
+# end
+
 post '/callback' do
   body = request.body.read
-  signature = request.env['HTTP_X_LINE_SIGNATURE']
-  Line::Callback.response(body, signature)
-  return 200
+  return Callback.response(body).to_json
 end
 
 post '/line/callback' do
