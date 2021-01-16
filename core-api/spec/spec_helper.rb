@@ -9,13 +9,5 @@ RSpec.configure do |config|
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
-  srcs = [
-    '../app/*.rb',
-    '../app/src/*/answerer.rb',
-    '../app/src/*.rb'
-  ]
-
-  srcs.each do |src|
-    Dir[File.join(File.dirname(__FILE__), src)].sort.each { |f| require f }
-  end
+  Dir[File.join(File.dirname(__FILE__), '../app/**/*.rb')].sort.each { |f| require f }
 end

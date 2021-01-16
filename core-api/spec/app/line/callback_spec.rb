@@ -1,7 +1,6 @@
-describe 'Reply test' do
-  let(:bodies) {
-    [
-      '{
+describe 'LINE Callback test' do
+  let(:body_message) {
+    '{
         "destination": "xxxxxxxxxx",
         "events": [
           {
@@ -19,8 +18,18 @@ describe 'Reply test' do
             }
           }
         ]
-      }',
-      '{
+      }'
+  }
+
+  let(:result_message) {
+    {
+      type: 'text',
+      text: 'ｶﾞｯ'
+    }
+  }
+
+  let(:body_follow) {
+    '{
         "destination": "xxxxxxxxxx",
         "events": [
           {
@@ -34,31 +43,24 @@ describe 'Reply test' do
           }
         ]
       }'
-    ]
   }
 
-  let(:true_replys) {
-    [
-      {
-        type: 'text',
-        text: 'ｶﾞｯ'
-      },
-      {
-        type: 'text',
-        text: 'こん'
-      }
-    ]
+  let(:result_follow) {
+    {
+      type: 'text',
+      text: 'こん'
+    }
   }
 
-  it 'Reply to Text' do
-    events = Response::Response.client.parse_events_from(bodies[0])
-    reply = Response::Response.respond_to_events(events)
-    expect(reply).to eq true_replys[0]
+  it 'Callback for Message event' do
+    events = Line::Callback::Callback.client.parse_events_from(body_message)
+    reply = Line::Callback::Callback.respond_to_events(events)
+    expect(reply).to eq result_message
   end
 
-  it 'Reply to Follow' do
-    events = Response::Response.client.parse_events_from(bodies[1])
-    reply = Response::Response.respond_to_events(events)
-    expect(reply).to eq true_replys[1]
+  it 'Callback for Follow event' do
+    events = Line::Callback::Callback.client.parse_events_from(body_follow)
+    reply = Line::Callback::Callback.respond_to_events(events)
+    expect(reply).to eq result_follow
   end
 end
