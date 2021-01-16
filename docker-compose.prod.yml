@@ -6,6 +6,7 @@ services:
     container_name: gokabot-core
     environment:
       TZ: Asia/Tokyo
+      RACK_ENV: production
     ports:
       - "8080:8080"
     env_file:
