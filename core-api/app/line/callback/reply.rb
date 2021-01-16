@@ -7,17 +7,14 @@ module Line
     class Reply
       include LogConfig
 
-      def initialize(event)
+      def initialize
         @logger = @@logger.clone
         @logger.progname = self.class.to_s
-
-        @event = event
-        @user_id = @event['source']['userId']
       end
 
-      def get_name
+      def get_name(user_id)
         token = ENV['LINE_CHANNEL_TOKEN']
-        uri = "https://api.line.me/v2/bot/profile/#{@user_id}"
+        uri = "https://api.line.me/v2/bot/profile/#{user_id}"
 
         begin
           res = RestClient.get uri, Authorization: "Bearer #{token}"
@@ -29,9 +26,9 @@ module Line
         return name
       end
 
-      def monitor(msg, reply_text)
-        @logger.info("From:    #{@user_id} (#{get_name})")
-        @logger.info("Group:   #{@event['source']['groupId']}")
+      def monitor(msg, reply_text, user_id, event)
+        @logger.info("From:    #{user_id} (#{get_name})")
+        @logger.info("Group:   #{event['source']['groupId']}")
         @logger.info("Message: #{msg}")
         @logger.info("Reply:   #{reply_text}")
       end

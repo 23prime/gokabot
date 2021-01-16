@@ -1,5 +1,5 @@
-require_relative '../src/gokabou/gen_msg'
-require_relative '../src/gokabou/update_db'
+require_relative '../core/gokabou/gen_msg'
+require_relative '../core/gokabou/update_db'
 require_relative './push'
 
 module Line

@@ -1,11 +1,4 @@
-srcs = [
-  '../app/src/*/answerer.rb',
-  '../app/src/*.rb'
-]
-
-srcs.each do |src|
-  Dir[File.join(File.dirname(__FILE__), src)].sort.each { |f| require f }
-end
+Dir[File.join(File.dirname(__FILE__), '../app/**/*.rb')].sort.each { |f| require f }
 
 $ANS_OBJS = [
   Nyokki.new,

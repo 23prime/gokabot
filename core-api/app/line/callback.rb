@@ -2,7 +2,6 @@ require 'dotenv/load'
 require 'line/bot'
 
 require_relative '../log_config'
-require_relative '../src'
 require_relative 'callback/reply_to_msg'
 require_relative 'callback/reply_to_follow'
 require_relative 'callback/reply_to_join'
@@ -34,7 +33,7 @@ module Line
     def self.respond_to_events(events)
       events.each do |event|
         @@event_classes.each do |ec|
-          reply = ec.new(event).reply
+          reply = ec.new.reply(event)
 
           unless reply.nil?
             client.reply_message(event['replyToken'], reply)
