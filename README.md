@@ -93,6 +93,7 @@ $ docker compose build
 Push Docker image to ECR.
 
 ```sh
+$ aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 678084882233.dkr.ecr.ap-northeast-1.amazonaws.com
 $ docker tag gokabot-core:latest 678084882233.dkr.ecr.ap-northeast-1.amazonaws.com/gokabot-core:latest
 $ docker push 678084882233.dkr.ecr.ap-northeast-1.amazonaws.com/gokabot-core:latest
 ```
