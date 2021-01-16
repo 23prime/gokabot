@@ -70,8 +70,16 @@ Add Gokabot to your friends from the QR code below, and invite to your groups.
 
 ### At local
 
+Build image for local.
+
 ```sh
-$ docker-compose -f docker-compose.local.yml up
+$ docker compose local -f docker-compose.local.yml
+```
+
+Run.
+
+```sh
+$ docker compose up -f docker-compose.local.yml
 ```
 
 ### Deploy to ECS
@@ -79,7 +87,7 @@ $ docker-compose -f docker-compose.local.yml up
 Build image for deploy.
 
 ```sh
-$ docker-compose build
+$ docker compose build
 ```
 
 Push Docker image to ECR.
