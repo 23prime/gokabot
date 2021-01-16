@@ -8,10 +8,10 @@ require_relative 'callback/reply_to_join'
 
 module Line
   module Callback
-    @@event_classes = [
-      Line::Callback::ReplyToMsg,
-      Line::Callback::ReplyToFollow,
-      Line::Callback::ReplyToJoin
+    @@event_types = [
+      Line::Callback::ReplyToMsg.new,
+      Line::Callback::ReplyToFollow.new,
+      Line::Callback::ReplyToJoin.new
     ]
 
     def self.client
@@ -32,8 +32,8 @@ module Line
 
     def self.respond_to_events(events)
       events.each do |event|
-        @@event_classes.each do |ec|
-          reply = ec.new.reply(event)
+        @@event_types.each do |ec|
+          reply = ec.reply(event)
 
           unless reply.nil?
             client.reply_message(event['replyToken'], reply)

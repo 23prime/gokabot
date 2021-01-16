@@ -12,7 +12,11 @@ module Line
         @logger.progname = self.class.to_s
       end
 
-      def get_name(user_id)
+      def get_user_id(event)
+        return event['source']['userId']
+      end
+
+      def get_user_name(user_id)
         token = ENV['LINE_CHANNEL_TOKEN']
         uri = "https://api.line.me/v2/bot/profile/#{user_id}"
 
@@ -26,16 +30,20 @@ module Line
         return name
       end
 
-      def monitor(msg, reply_text, user_id, event)
-        @logger.info("From:    #{user_id} (#{get_name})")
-        @logger.info("Group:   #{event['source']['groupId']}")
-        @logger.info("Message: #{msg}")
-        @logger.info("Reply:   #{reply_text}")
+      def get_group(event)
+        return event['source']['groupId']
+      end
+
+      def monitor(msg: 'No message', reply_text: '', user_id: '', user_name: '', group: '')
+        @logger.info("From:    [#{user_id} (#{user_name})]")
+        @logger.info("Group:   [#{group}]")
+        @logger.info("Message: [#{msg}]")
+        @logger.info("Reply:   [#{reply_text}]")
       end
 
       def hello
         reply_text = 'こん'
-        monitor('No message', reply_text)
+        monitor(reply_text: reply_text)
 
         return {
           type: 'text',

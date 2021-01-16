@@ -8,19 +8,15 @@ module Line
   module Callback
     class ReplyToMsg < Reply
       @@msg_types = [
-        Line::Callback::ReplyToText,
-        Line::Callback::ReplyToMedia
+        Line::Callback::ReplyToText.new,
+        Line::Callback::ReplyToMedia.new
       ]
 
-      def initialize(event)
-        super(event)
-      end
-
-      def reply
-        case @event
+      def reply(event)
+        case event
         when Line::Bot::Event::Message
           @@msg_types.each do |mt|
-            reply = mt.new(@event).reply
+            reply = mt.reply(event)
             return reply unless reply.nil?
           end
         end
