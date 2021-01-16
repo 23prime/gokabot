@@ -14,14 +14,14 @@ end
 post '/callback' do
   body = request.body.read
   signature = request.env['HTTP_X_LINE_SIGNATURE']
-  Line::Callback::Callback.response(body, signature)
+  Line::Callback.response(body, signature)
   return 200
 end
 
 post '/line/callback' do
   body = request.body.read
   signature = request.env['HTTP_X_LINE_SIGNATURE']
-  Line::Callback::Callback.response(body, signature)
+  Line::Callback.response(body, signature)
   return 200
 end
 

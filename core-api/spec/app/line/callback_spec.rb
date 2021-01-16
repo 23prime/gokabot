@@ -53,14 +53,14 @@ describe 'LINE Callback test' do
   }
 
   it 'Callback for Message event' do
-    events = Line::Callback::Callback.client.parse_events_from(body_message)
-    reply = Line::Callback::Callback.respond_to_events(events)
+    events = Line::Callback.client.parse_events_from(body_message)
+    reply = Line::Callback.respond_to_events(events)
     expect(reply).to eq result_message
   end
 
   it 'Callback for Follow event' do
-    events = Line::Callback::Callback.client.parse_events_from(body_follow)
-    reply = Line::Callback::Callback.respond_to_events(events)
+    events = Line::Callback.client.parse_events_from(body_follow)
+    reply = Line::Callback.respond_to_events(events)
     expect(reply).to eq result_follow
   end
 end
