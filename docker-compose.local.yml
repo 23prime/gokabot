@@ -25,3 +25,14 @@ services:
         "-p",
         "8080",
       ]
+
+  gokabot-demo:
+    image: gokabot-demo
+    container_name: gokabot-demo
+    environment:
+      TZ: Asia/Tokyo
+    build:
+      context: gokabot-demo
+    ports:
+      - "3000:3000"
+    command: ["yarn", "serve"]
