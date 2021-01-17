@@ -1,7 +1,4 @@
-require 'dotenv/load'
-
 require_relative 'gen_msg'
-require_relative 'update_db'
 
 module Gokabou
   VERSION = '1.0.0'
@@ -20,8 +17,7 @@ module Gokabou
 
   class Answerer
     def initialize
-      @ud = UpdateDB.new
-      @gen = GenMsg.new(@ud.all_sentences)
+      @gem_msg = GenMsg.new
 
       @answers = [
         [/\Aこん(|です)(|ｗ|w)\Z/i, ['こん']],
@@ -33,7 +29,7 @@ module Gokabou
         [/たけのこ(君|くん|さん|ちゃん|)/, ['たけのこ君ｐｒｐｒ']],
         [/\Aぬるぽ\Z/, ['ｶﾞｯ']],
         [/あけ|明け|おめ|こん|おは|happy|new|year|2019/i, NewYear.new],
-        [/ごかぼっと|gokabot|ごかぼう|gokabou|\Aヒゲ\Z|\Aひげ\Z/, @gen]
+        [/ごかぼっと|gokabot|ごかぼう|gokabou|\Aヒゲ\Z|\Aひげ\Z/, @gem_msg]
       ]
     end
 
@@ -41,40 +37,15 @@ module Gokabou
       msg = msg_data[0]
       user_id = msg_data[1]
 
-      if updatable(msg, user_id)
-        @ud.update_db(msg)
-        @gen.update_dict(msg)
-      end
-
-      ans = nil
+      @gem_msg.update_dict(msg, user_id)
 
       @answers.each do |reg_ans|
         reg = reg_ans[0]
         ans = reg_ans[1].sample if msg =~ reg
-        break unless ans.nil?
+        return ans unless ans.nil?
       end
 
-      return ans
-    end
-
-    def updatable(msg, user_id)
-      gid = ENV['GOKABOU_USER_ID']
-
-      unless user_id == gid && msg.length > 4 && msg.length <= 300
-        return false
-      end
-
-      return false if include_uri?(msg)
-      return !@ud.all_sentences.include?(msg)
-    end
-
-    private
-
-    def include_uri?(msg)
-      splited = msg.split(/[[:space:]]/)
-      splited.map! { |str| str =~ URI::DEFAULT_PARSER.regexp[:ABS_URI] }
-
-      return splited.any?
+      return nil
     end
   end
 end

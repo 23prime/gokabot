@@ -1,14 +1,15 @@
+require 'dotenv/load'
 require 'natto'
 
 require_relative '../../log_config'
+require_relative '../../db/gokabous_dao'
 
 module Gokabou
   class NattoParser
-    attr_accessor :nm, :dict
+    attr_accessor :nm
 
-    def initialize(sentences)
+    def initialize
       @nm = Natto::MeCab.new
-      @dict = sentences.map { |sentence| parse_sentence(sentence) }
     end
 
     def parse_sentence(sentence)
@@ -69,30 +70,53 @@ module Gokabou
 
     attr_accessor :markov_dict
 
-    def initialize(sentences)
+    def initialize
       @logger = @@logger.clone
       @logger.progname = self.class.to_s
 
-      @np = NattoParser.new(sentences)
+      @dao = GokabousDao.new
+      @np = NattoParser.new
       @markov = Markov.new
 
-      @markov_dict = @np.dict.map { |words| @markov.gen_markov_block(words) }
-      @markov_dict.flatten!(1)
+      @markov_dict = mk_dict
     end
 
-    def update_dict(sentence)
-      words = @np.parse_sentence(sentence)
-      markov_blocks = @markov.gen_markov_block(words)
+    def mk_dict
+      return @dao
+             .select_all_sentences.map { |s| @np.parse_sentence(s) }
+             .map { |ws| @markov.gen_markov_block(ws) }
+             .flatten!(1)
+    end
 
-      markov_blocks.each do |block|
-        @markov_dict << block
-      end
+    def update_dict(msg, user_id)
+      return unless updatable(msg, user_id)
 
+      @dao.insert(Date.today.strftime('%Y-%m-%d'), msg)
+      @markov_dict = mk_dict
       @logger.info('Dictionary updated')
     end
 
     def sample
       return @markov.gen_text(@markov_dict)
+    end
+
+    private
+
+    def updatable(msg, user_id)
+      gid = ENV['GOKABOU_USER_ID']
+
+      unless user_id == gid && msg.length > 4 && msg.length <= 300
+        return false
+      end
+
+      return false if include_uri?(msg)
+      return !@dao.select_all_sentences.include?(msg)
+    end
+
+    def include_uri?(msg)
+      splited = msg.split(/[[:space:]]/)
+      splited.map! { |str| str =~ URI::DEFAULT_PARSER.regexp[:ABS_URI] }
+      return splited.any?
     end
   end
 end

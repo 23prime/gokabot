@@ -1,6 +1,6 @@
 require_relative '../core/gokabou/gen_msg'
-require_relative '../core/gokabou/update_db'
-require_relative './push'
+require_relative '../db/gokabous_dao'
+require_relative 'push'
 
 module Line
   class RamdomPush < Push
@@ -11,7 +11,7 @@ module Line
     end
 
     def send_push_msg(target)
-      msg = Gokabou::GenMsg.new(Gokabou::UpdateDB.new.all_sentences).sample
+      msg = Gokabou::GenMsg.new.sample
       return super(msg, target)
     end
   end
