@@ -1,6 +1,0 @@
-.bundle/
-vendor/
-test/
-.env
-get-log
-docs/ids.json

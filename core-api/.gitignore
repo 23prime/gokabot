@@ -1,0 +1,6 @@
+# Ruby
+.bundle
+vendor
+
+# Env files
+.env*
