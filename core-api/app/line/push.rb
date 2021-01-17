@@ -1,5 +1,6 @@
 require 'net/http'
 require 'json'
+require 'faraday'
 
 require_relative '../log_config'
 
@@ -22,34 +23,32 @@ module Line
         return 401
       end
 
-      uri = URI.parse('https://api.line.me/v2/bot/message/push')
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = uri.scheme === 'https'
-      response = http.post(uri.path, body(msg, target_id), headers)
-
-      @logger.info("Push response status: #{response.code}")
-      @logger.info("Push response body: #{response.body}")
-
-      return response.code
-    end
-
-    def headers
-      return {
-        'Content-type' => 'application/json',
-        'Authorization' => "Bearer #{ENV['LINE_CHANNEL_TOKEN']}"
-      }
-    end
-
-    def body(msg, target_id)
-      return {
-        'to' => target_id,
-        'messages' => [
-          {
-            'type' => 'text',
-            'text' => msg
+      begin
+        response = Faraday.new.post do |req|
+          req.url 'https://api.line.me/v2/bot/message/push'
+          req.body = {
+            'to' => target_id,
+            'messages' => [
+              {
+                'type' => 'text',
+                'text' => msg
+              }
+            ]
+          }.to_json
+          req.headers = {
+            'Content-type' => 'application/json',
+            'Authorization' => "Bearer #{ENV['LINE_CHANNEL_TOKEN']}"
           }
-        ]
-      }.to_json
+        end
+
+        @logger.info("Push response status: #{response.status}")
+        @logger.info("Push response body: #{response.body}")
+
+        return response.status
+      rescue => e
+        @logger.error(e)
+        return 500
+      end
     end
   end
 end

@@ -1,5 +1,4 @@
 require 'dotenv/load'
-require 'rest-client'
 require 'sinatra'
 require 'sinatra/cors'
 

@@ -1,4 +1,4 @@
-require 'rest-client'
+require 'faraday'
 
 require_relative '../../log_config'
 
@@ -17,17 +17,17 @@ module Line
       end
 
       def get_user_name(user_id)
-        token = ENV['LINE_CHANNEL_TOKEN']
-        uri = "https://api.line.me/v2/bot/profile/#{user_id}"
-
-        begin
-          res = RestClient.get uri, Authorization: "Bearer #{token}"
-          name = JSON.parse(res.body)['displayName']
-        rescue => e
-          name = e.message
+        response = Faraday.new.post do |req|
+          req.url "https://api.line.me/v2/bot/profile/#{user_id}"
+          req.headers = {
+            'Content-type' => 'application/json',
+            'Authorization' => "Bearer #{ENV['LINE_CHANNEL_TOKEN']}"
+          }
         end
 
-        return name
+        return JSON.parse(response.body)['displayName']
+      rescue => e
+        return e.message
       end
 
       def get_group(event)
