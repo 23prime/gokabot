@@ -1,8 +1,3 @@
-require 'active_record'
-require 'date'
-require 'dotenv/load'
-require 'uri'
-
 require_relative '../log_config'
 require_relative '../models/gokabous'
 

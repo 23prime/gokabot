@@ -1,4 +1,4 @@
-require_relative 'anime'
+require_relative '../../db/animes_dao'
 require_relative 'convert'
 
 module Season
@@ -10,7 +10,7 @@ module Season
     return SEASONS[(month - 1) / 3]
   end
 
-  def next_season(season)
+  def get_next_season(season)
     idx = (SEASONS.index(season) + 1) % 4
     return SEASONS[idx]
   end
@@ -22,26 +22,76 @@ module Anime
 
     def initialize
       now = Time.now.localtime('+05:00')
-      today = now.wday
-      month = now.month
       @year = now.year
-      @season = Season.get_season(month)
-      @anime = GetAnimes.new
+      @season = Season.get_season(now.month)
+      @animes_dao = AnimesDao.new
       @converts = [
         WeekDay.new,
-        Day.new(WDAYS, today),
-        Recommend.new(WDAYS, today)
+        Day.new(WDAYS, now.wday),
+        Recommend.new(WDAYS, now.wday)
       ]
     end
 
     def answer(*msg_data)
       initialize
       msg = msg_data[0]
-      ans = select_answer(msg)
-      return ans
+      return select_answer(msg)
     end
 
     private
+
+    def to_next_season
+      @year += 1 if @season == 'fall'
+      @season = Season.get_next_season(@season)
+    end
+
+    def select_answer(msg)
+      day = convert(msg)
+
+      case day
+      when /^all|今期#{ANIME_OF}/i
+        return format_animes(
+          @animes_dao.select_season_animes(@year, @season),
+          is_all: true,
+          only_rcm: false
+        )
+      when /^今期の(オススメ|おすすめ)$/i
+        return format_animes(
+          @animes_dao.select_season_recommend_animes(@year, @season),
+          is_all: true,
+          only_rcm: true
+        )
+      when /^next|来期#{ANIME_OF}/i
+        to_next_season
+        return format_animes(
+          @animes_dao.select_season_animes(@year, @season),
+          is_all: true,
+          only_rcm: false
+        )
+      when /^来期の(オススメ|おすすめ)$/i
+        to_next_season
+        return format_animes(
+          @animes_dao.select_season_recommend_animes(@year, @season),
+          is_all: true,
+          only_rcm: true
+        )
+      when WEEK
+        return format_animes(
+          @animes_dao.select_day_animes(@year, @season, day),
+          is_all: false,
+          only_rcm: false
+        )
+      when WEEK_RCM
+        day.capitalize!
+        return format_animes(
+          @animes_dao.select_day_recommend_animes(@year, @season, day),
+          is_all: false,
+          only_rcm: true
+        )
+      else
+        return nil
+      end
+    end
 
     def convert(msg)
       @converts.each do |cvt|
@@ -53,33 +103,35 @@ module Anime
       return msg
     end
 
-    def next_season
-      @year += 1 if @season == 'fall'
-      @season = Season.next_season(@season)
+    def format_animes(animes, is_all: true, only_rcm: true)
+      if animes.empty?
+        return 'ありませ〜んｗｗｗｗ' if only_rcm
+        return '早漏かよｗ'
+      end
+
+      sort_animes(animes, is_all)
+
+      ans = ''
+
+      animes.each do |anime|
+        ans << "#{anime.day}, " if is_all
+        ans << "#{anime.time}, #{anime.station}, #{anime.title}\n"
+      end
+
+      ans.strip!
+
+      return ans
     end
 
-    def select_answer(msg)
-      day = convert(msg)
+    def sort_animes(animes, is_all)
+      animes.sort_by { |a| day_to_int(a.day) } if is_all
+      animes.sort_by(&:time)
+    end
 
-      case day
-      when /^all|今期#{ANIME_OF}/i
-        return @anime.get_animes(@year, @season, day, true, false)
-      when /^今期の(オススメ|おすすめ)$/i
-        return @anime.get_animes(@year, @season, day, true, true)
-      when /^next|来期#{ANIME_OF}/i
-        next_season
-        return @anime.get_animes(@year, @season, day, true, false)
-      when /^来期の(オススメ|おすすめ)$/i
-        next_season
-        return @anime.get_animes(@year, @season, day, true, true)
-      when WEEK
-        return @anime.get_animes(@year, @season, day, false, false)
-      when WEEK_RCM
-        day.capitalize!
-        return @anime.get_animes(@year, @season, day, false, true)
-      else
-        return nil
-      end
+    def day_to_int(day)
+      result = WDAYS.index(day)
+      result = -1 if result.nil?
+      return result
     end
   end
 end
