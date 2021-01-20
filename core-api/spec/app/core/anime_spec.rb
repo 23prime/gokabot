@@ -12,13 +12,15 @@ describe Anime do
 
   test_cases.each do |msg|
     it msg do
+      puts '--------------------------------------------------'
       ans = animes_ans.answer(msg)
 
-      puts "> #{msg}"
-      puts "#{ans.slice(0, 100)}..."
       puts '--------------------------------------------------'
+      puts "> #{msg}"
+      puts ans.to_s
 
       expect(ans).not_to be_empty
+      puts '--------------------------------------------------'
     end
   end
 end

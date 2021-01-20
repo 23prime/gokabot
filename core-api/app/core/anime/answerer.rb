@@ -109,7 +109,7 @@ module Anime
         return '早漏かよｗ'
       end
 
-      sort_animes(animes, is_all)
+      animes = sort_animes(animes, is_all)
 
       ans = ''
 
@@ -124,8 +124,9 @@ module Anime
     end
 
     def sort_animes(animes, is_all)
-      animes.sort_by { |a| day_to_int(a.day) } if is_all
-      animes.sort_by(&:time)
+      animes = animes.sort_by(&:time)
+      animes = animes.sort_by { |a| day_to_int(a.day) } if is_all
+      return animes
     end
 
     def day_to_int(day)
