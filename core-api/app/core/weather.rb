@@ -4,6 +4,7 @@ require 'uri'
 require 'json'
 
 require_relative '../log_config'
+require_relative '../db/cities_dao'
 
 class CityId
   attr_reader :id, :name
@@ -17,16 +18,17 @@ end
 class Weather
   include LogConfig
 
-  @@default_city = 'tokyo'
-  @@city_ids = JSON.parse(File.open('./docs/city_id.json', 'r').read)
-                   .map { |hash| CityId.new(hash['id'], hash['name']) }
+  @@default_city_id = 1_850_147
+  @@default_city_name = 'tokyo'
 
   def initialize
     @logger = @@logger.clone
     @logger.progname = self.class.to_s
 
-    @city = @@default_city.clone
-    @city_id = get_city_id(@city)
+    @cities_dao = CitiesDao.new
+
+    @city_name = @@default_city_name.clone
+    @city_id = get_city_id(@city_name)
   end
 
   def answer(*msg_data)
@@ -47,36 +49,35 @@ class Weather
     change_city(msg1.strip.downcase) unless msg1.nil?
 
     ans = get_weather(date)
-    change_city(@@default_city)
+    change_city(@@default_city_name)
     return ans
   end
 
   def self.get_default_city
-    return @@default_city
+    return @@default_city_name
   end
 
   private
 
   def get_city_id(city_name)
-    result = @@city_ids.select { |city_id| city_id.name == city_name }
-    return nil if result.empty?
-    return result[0].id
+    city_ids = @cities_dao.select_cities_by_name(city_name)
+    return nil if city_ids.empty?
+    return city_ids[0] # fetch first 1
   end
 
   def change_city(city_name)
-    @city = city_name
-    @logger.debug("Set city: '#{@city}'")
-
+    @city_name = city_name
     @city_id = get_city_id(city_name)
+    @logger.debug("Set city: id => [#{@city_id}], name => [#{@city_name}]")
   end
 
   def get_weather_info
-    # Get weather infomation of the @city
+    # Get weather infomation of the @city_name
     base_uri = 'https://api.openweathermap.org/data/2.5/weather?'
     uri = URI.parse("#{base_uri}&appid=#{ENV['OPEN_WEATHER_API_KEY']}&id=#{@city_id}&units=metric")
 
     weather_json = Net::HTTP.get(uri)
-    @logger.info("Get weather info from: #{uri}")
+    @logger.info("Get weather info from: [#{uri}]")
 
     return JSON.parse(weather_json)
   end
@@ -95,7 +96,7 @@ class Weather
     min_temp = main['temp_min']
     max_temp = main['temp_max']
 
-    result = "> #{@city.capitalize}の現在の天気 <\n"
+    result = "> #{@city_name.capitalize}の現在の天気 <\n"
     result += "#{weather}\n"
     result += "現在の気温：#{now_temp}℃\n"
     result += "最高気温：#{max_temp}℃\n"
