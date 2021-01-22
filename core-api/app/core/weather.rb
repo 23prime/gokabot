@@ -1,7 +1,7 @@
 require 'dotenv/load'
-require 'net/http'
-require 'uri'
 require 'json'
+require 'faraday'
+require 'uri'
 
 require_relative '../log_config'
 require_relative '../db/cities_dao'
@@ -74,12 +74,13 @@ class Weather
   def get_weather_info
     # Get weather infomation of the @city_name
     base_uri = 'https://api.openweathermap.org/data/2.5/weather?'
-    uri = URI.parse("#{base_uri}&appid=#{ENV['OPEN_WEATHER_API_KEY']}&id=#{@city_id}&units=metric")
 
-    weather_json = Net::HTTP.get(uri)
-    @logger.info("Get weather info from: [#{uri}]")
+    response = Faraday.new.post do |req|
+      req.url "#{base_uri}&appid=#{ENV['OPEN_WEATHER_API_KEY']}&id=#{@city_id}&units=metric"
+    end
 
-    return JSON.parse(weather_json)
+    return nil unless response.status == 200
+    return JSON.parse(response.body)
   end
 
   def get_weather(_date)
