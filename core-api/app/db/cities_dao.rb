@@ -14,9 +14,11 @@ class CitiesDao
   end
 
   def select_cities_by_name(name)
-    Cities
-      .where(name: name)
-      .or(Cities.where(jp_name: name))
-      .pluck(:id)
+    result = Cities
+             .where(name: name)
+             .or(Cities.where(jp_name: name))
+             .pluck(:id)
+    @logger.info("Select #{result} by name [#{name}]")
+    return result
   end
 end

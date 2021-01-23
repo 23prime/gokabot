@@ -6,8 +6,9 @@ describe Weather do
     @name = 'SAMPLE_NAME'
     @weather = Weather.new
     @default_city = Weather.get_default_city
-    @changed_city1 = 'Tsukuba'
-    @changed_city2 = 'kofu'
+    @capitalized_city_name = 'Tsukuba'
+    @uncapitalized_city_name = 'kofu'
+    @jp_city_name = '八戸'
     @unavailable_city = 'ほげほげ'
   end
 
@@ -20,22 +21,32 @@ describe Weather do
     end
   end
 
-  context "Changed city-1: '#{@changed_city1}'" do
+  context "Changed city-1: '#{@capitalized_city_name}'" do
     base_msg_cases.each do |msg|
       it "[Base msg = #{msg}]" do
-        msg += ' ' + @changed_city1
+        msg = "#{msg} #{@capitalized_city_name}"
         ans = @weather.answer(msg, @user_id, @name)
-        expect(ans).to include @changed_city1.capitalize
+        expect(ans).to include @capitalized_city_name.capitalize
       end
     end
   end
 
-  context "Changed city-2: '#{@changed_city2}'" do
+  context "Changed city-2: '#{@uncapitalized_city_name}'" do
     base_msg_cases.each do |msg|
       it "[Base msg = #{msg}]" do
-        msg += ' ' + @changed_city2
+        msg = "#{msg} #{@uncapitalized_city_name}"
         ans = @weather.answer(msg, @user_id, @name)
-        expect(ans).to include @changed_city2.capitalize
+        expect(ans).to include @uncapitalized_city_name.capitalize
+      end
+    end
+  end
+
+  context "JP city name: '#{@jp_city_name}'" do
+    base_msg_cases.each do |msg|
+      it "[Base msg = #{msg}]" do
+        msg = "#{msg} #{@jp_city_name}"
+        ans = @weather.answer(msg, @user_id, @name)
+        expect(ans).to include @jp_city_name.capitalize
       end
     end
   end
@@ -43,7 +54,7 @@ describe Weather do
   context 'Unavailable city name' do
     base_msg_cases.each do |msg|
       it "[Base msg = #{msg}" do
-        msg += ' ' + @unavailable_city
+        msg = "#{msg} #{@unavailable_city}"
         ans = @weather.answer(msg, @user_id, @name)
         expect(ans).to eq '分かりませ〜んｗ'
       end
@@ -52,9 +63,9 @@ describe Weather do
 
   context 'Reset city to default' do
     it 'After changed' do
-      msg = '天気 ' + @changed_city1
+      msg = "天気 #{@capitalized_city_name}"
       ans = @weather.answer(msg, @user_id, @name)
-      expect(ans).to include @changed_city1.capitalize
+      expect(ans).to include @capitalized_city_name.capitalize
 
       msg = '天気'
       ans = @weather.answer(msg, @user_id, @name)
@@ -62,7 +73,7 @@ describe Weather do
     end
 
     it 'After unavailable' do
-      msg = '天気 ' + @unavailable_city
+      msg = "天気 #{@unavailable_city}"
       ans = @weather.answer(msg, @user_id, @name)
       expect(ans).to eq '分かりませ〜んｗ'
 
