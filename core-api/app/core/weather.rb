@@ -1,7 +1,6 @@
 require 'dotenv/load'
 require 'json'
 require 'faraday'
-require 'uri'
 
 require_relative '../log_config'
 require_relative '../db/cities_dao'
@@ -18,7 +17,6 @@ end
 class Weather
   include LogConfig
 
-  @@default_city_id = 1_850_147
   @@default_city_name = 'tokyo'
 
   def initialize
@@ -73,10 +71,13 @@ class Weather
 
   def get_weather_info
     # Get weather infomation of the @city_name
-    base_uri = 'https://api.openweathermap.org/data/2.5/weather?'
-
-    response = Faraday.new.post do |req|
-      req.url "#{base_uri}&appid=#{ENV['OPEN_WEATHER_API_KEY']}&id=#{@city_id}&units=metric"
+    response = Faraday.new.get do |req|
+      req.url 'https://api.openweathermap.org/data/2.5/weather'
+      req.params = {
+        'appid' => ENV['OPEN_WEATHER_API_KEY'],
+        'id' => @city_id,
+        'units' => 'metric'
+      }
     end
 
     return nil unless response.status == 200
