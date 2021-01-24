@@ -17,7 +17,7 @@ end
 class Weather
   include LogConfig
 
-  @@default_city_name = 'tokyo'
+  @@default_city_name = '東京'
 
   def initialize
     @logger = @@logger.clone
