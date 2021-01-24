@@ -1,11 +1,11 @@
-require 'faraday'
-
 require_relative '../../log_config'
+require_relative '../config'
 
 module Line
   module Callback
     class Reply
       include LogConfig
+      include Config
 
       def initialize
         @logger = @@logger.clone
@@ -17,15 +17,11 @@ module Line
       end
 
       def get_user_name(user_id)
-        response = Faraday.new.post do |req|
-          req.url "https://api.line.me/v2/bot/profile/#{user_id}"
-          req.headers = {
-            'Content-type' => 'application/json',
-            'Authorization' => "Bearer #{ENV['LINE_CHANNEL_TOKEN']}"
-          }
-        end
+        response = @@client.get_profile(user_id)
+        return JSON.parse(response.body)['displayName'] if response.code == 200
 
-        return JSON.parse(response.body)['displayName']
+        error_message = JSON.parse(response.body)['message']
+        return "#{response.code} #{error_message}"
       rescue => e
         return e.message
       end
