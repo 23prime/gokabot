@@ -24,7 +24,7 @@ module Line
       end
 
       begin
-        response = Faraday.new.post do |req|
+        response = Faraday.post do |req|
           req.url 'https://api.line.me/v2/bot/message/push'
           req.body = {
             'to' => target_id,

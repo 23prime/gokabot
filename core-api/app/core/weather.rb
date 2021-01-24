@@ -71,7 +71,7 @@ class Weather
 
   def get_weather_info
     # Get weather infomation of the @city_name
-    response = Faraday.new.get do |req|
+    response = Faraday.get do |req|
       req.url 'https://api.openweathermap.org/data/2.5/weather'
       req.params = {
         'appid' => ENV['OPEN_WEATHER_API_KEY'],
