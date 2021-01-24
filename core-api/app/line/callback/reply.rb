@@ -5,7 +5,7 @@ module Line
   module Callback
     class Reply
       include LogConfig
-      include Config
+      include Line::Config
 
       def initialize
         @logger = @@logger.clone

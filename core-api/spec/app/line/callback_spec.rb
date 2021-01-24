@@ -1,4 +1,11 @@
 describe 'LINE Callback test' do
+  let!(:client) {
+    Line::Bot::Client.new do |config|
+      config.channel_secret = ENV['LINE_CHANNEL_SECRET']
+      config.channel_token = ENV['LINE_CHANNEL_TOKEN']
+    end
+  }
+
   let(:body_message) {
     {
       'destination' => 'xxxxxxxxxx',
@@ -54,14 +61,14 @@ describe 'LINE Callback test' do
 
   it 'Callback for Message event' do
     body = JSON.dump(body_message)
-    events = Line::Callback.client.parse_events_from(body)
+    events = client.parse_events_from(body)
     reply = Line::Callback.respond_to_events(events)
     expect(reply).to eq result_message
   end
 
   it 'Callback for Follow event' do
     body = JSON.dump(body_follow)
-    events = Line::Callback.client.parse_events_from(body)
+    events = client.parse_events_from(body)
     reply = Line::Callback.respond_to_events(events)
     expect(reply).to eq result_follow
   end
