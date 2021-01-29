@@ -1,10 +1,10 @@
-require 'discordrb'
 require 'dotenv/load'
 
 require_relative '../log_config'
 
 module Discord
   class Push
+    include Discord::Config
     include LogConfig
 
     def initialize
@@ -13,8 +13,7 @@ module Discord
     end
 
     def send_message(msg)
-      bot = Discordrb::Bot.new token: ENV['DISCORD_BOT_TOKEN']
-      bot.send_message(ENV['DISCORD_TARGET_CHANNEL_ID'].to_i, msg, false, nil)
+      @@bot.send_message(ENV['DISCORD_TARGET_CHANNEL_ID'].to_i, msg, false, nil)
       @logger.info("Send a message '#{msg}' to Discord")
       return true
     rescue => e
