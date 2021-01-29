@@ -37,6 +37,8 @@ jobs:
           TAKENOKO_USER_ID: ${{ secrets.TAKENOKO_USER_ID }}
           OPEN_WEATHER_API_KEY: ${{ secrets.OPEN_WEATHER_API_KEY }}
           MY_USER_ID: ${{ secrets.MY_USER_ID }}
+          DISCORD_TARGET_CHANNEL_ID: ${{ secrets.DISCORD_TARGET_CHANNEL_ID }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
         run: |
           cd core-api
           gem install bundler -v 2.1.2
