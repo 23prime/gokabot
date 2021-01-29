@@ -48,3 +48,8 @@ post '/discord/push' do
   return 200 if Discord::Push.new.send_message(msg)
   return 500
 end
+
+post '/discord/push/random' do
+  return 200 if Discord::RamdomPush.new.send_message
+  return 500
+end
