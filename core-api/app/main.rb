@@ -33,13 +33,13 @@ post '/line/push' do
   msg = params[:msg]
   target = params[:target]
   return 401 if msg.nil? || target.nil?
-  return Line::Push.new.send_push_msg(msg, target)
+  return Line::Push.new.send_msg(msg, target)
 end
 
 post '/line/push/random' do
   target = params[:target]
   return 401 if target.nil?
-  return Line::RamdomPush.new.send_push_msg(target)
+  return Line::RamdomPush.new.send_msg(target)
 end
 
 post '/discord/push' do

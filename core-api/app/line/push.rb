@@ -13,7 +13,7 @@ module Line
       @logger.progname = self.class.to_s
     end
 
-    def send_push_msg(msg, target)
+    def send_msg(msg, target)
       @logger.info("Send push message: '#{msg}' to '#{target}'")
 
       target_id = ENV[target]
