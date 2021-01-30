@@ -13,15 +13,9 @@ module Line
       @logger.progname = self.class.to_s
     end
 
-    def send_msg(msg, target)
-      @logger.info("Send push message: '#{msg}' to '#{target}'")
-
-      target_id = ENV[target]
-
-      if target_id.nil?
-        @logger.error('Push target is nil.')
-        return 401
-      end
+    def send_msg(msg, target_id)
+      target_id = ENV.fetch(target_id, target_id)
+      @logger.info("Send push message: '#{msg}' to '#{target_id}'")
 
       begin
         response = Faraday.post do |req|
