@@ -13,9 +13,9 @@ module Discord
       @logger.progname = self.class.to_s
     end
 
-    def send_message
+    def send_message(target_id)
       msg = Gokabou::GenMsg.new.sample
-      return Push.new.send_message(msg)
+      return Push.new.send_message(msg, target_id)
     end
   end
 end
