@@ -15,6 +15,8 @@ require_relative 'log_config'
 class Controllers < Sinatra::Application
   include LogConfig
 
+  set :server, :puma
+
   register Sinatra::Cors
 
   @@logger = @@logger.clone
