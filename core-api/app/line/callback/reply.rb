@@ -18,9 +18,11 @@ module Line
 
       def get_user_name(user_id)
         response = @@client.get_profile(user_id)
-        return JSON.parse(response.body)['displayName'] if response.code == 200
+        body = JSON.parse(response.body)
+        @logger.info("Get #{user_id}'s profile: #{body}")
+        return body['displayName'] if response.code == 200
 
-        error_message = JSON.parse(response.body)['message']
+        error_message = body['message']
         return "#{response.code} #{error_message}"
       rescue => e
         return e.message
