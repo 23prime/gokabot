@@ -8,6 +8,10 @@ require_relative 'callback/reply_to_join'
 module Line
   module Callback
     include Line::Config
+    include LogConfig
+
+    @@logger = @@logger.clone
+    @@logger.progname = 'Line::Callback'
 
     @@event_types = [
       Line::Callback::ReplyToMsg.new,
@@ -17,11 +21,17 @@ module Line
 
     def self.response(body, signature)
       unless @@client.validate_signature(body, signature)
-        error 400 do 'Bad Request' end
+        return 400
       end
 
-      events = @@client.parse_events_from(body)
-      respond_to_events(events)
+      begin
+        events = @@client.parse_events_from(body)
+        respond_to_events(events)
+        return 200
+      rescue => e
+        @@logger.error("Failed to response to LINE\n#{e}")
+        return 500
+      end
     end
 
     def self.respond_to_events(events)
