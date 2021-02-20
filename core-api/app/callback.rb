@@ -11,7 +11,7 @@ class Callback
     user_id = body_parsed['user_id']
     user_name = body_parsed['user_name']
 
-    return 400 if msg.nil? || user_id.nil? || user_name.nil?
+    return nil if msg.nil? || user_id.nil? || user_name.nil?
 
     $reply_type = 'text'
     reply_to_text = Line::Callback::ReplyToText.new

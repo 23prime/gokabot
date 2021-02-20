@@ -32,14 +32,21 @@ class Controllers < Sinatra::Application
 
   post '/callback' do
     body = request.body.read
-    return Callback.response(body).to_json
+    result = Callback.response(body)
+
+    if result.nil?
+      status 400
+      return
+    end
+
+    return result.to_json
   end
 
   post '/line/callback' do
     body = request.body.read
     signature = request.env['HTTP_X_LINE_SIGNATURE']
-    Line::Callback.response(body, signature)
-    return 200
+    status Line::Callback.response(body, signature)
+    return
   end
 
   post '/line/push' do
@@ -49,15 +56,17 @@ class Controllers < Sinatra::Application
       target_id = body['target_id']
     rescue => e
       @@logger.error("Invalid request body\n#{e}")
-      return 400
+      status 400
+      return
     end
 
     if msg.nil? || target_id.nil?
       @@logger.error("The request does not include 'message' or 'target_id'")
-      return 400
+      status 400
+      return
     end
 
-    return Line::Push.new.send_msg(msg, target_id)
+    status Line::Push.new.send_msg(msg, target_id)
   end
 
   post '/line/push/random' do
@@ -66,15 +75,17 @@ class Controllers < Sinatra::Application
       target_id = body['target_id']
     rescue => e
       @@logger.error("Invalid request body\n#{e}")
-      return 400
+      status 400
+      return
     end
 
     if target_id.nil?
       @@logger.error("The request does not include 'target_id'")
-      return 400
+      status 400
+      return
     end
 
-    return Line::RamdomPush.new.send_msg(target_id)
+    status Line::RamdomPush.new.send_msg(target_id)
   end
 
   post '/discord/push' do
@@ -84,15 +95,17 @@ class Controllers < Sinatra::Application
       target_id = body['target_id']
     rescue => e
       @@logger.error("Invalid request body\n#{e}")
-      return 400
+      status 400
+      return
     end
 
     if msg.nil?
       @@logger.error("The request does not include 'message'")
-      return 400
+      status 400
+      return
     end
 
-    return Discord::Push.new.send_message(msg, target_id)
+    status Discord::Push.new.send_message(msg, target_id)
   end
 
   post '/discord/push/random' do
@@ -101,9 +114,14 @@ class Controllers < Sinatra::Application
       target_id = body['target_id']
     rescue => e
       @@logger.error("Invalid request body\n#{e}")
-      return 400
+      status 400
+      return
     end
 
-    return Discord::RamdomPush.new.send_message(target_id)
+    status Discord::RamdomPush.new.send_message(target_id)
+  end
+
+  error 404 do
+    'Not Found'
   end
 end
