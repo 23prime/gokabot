@@ -20,7 +20,7 @@ module Line
         response = @@client.get_profile(user_id)
         body = JSON.parse(response.body)
         @logger.info("Get #{user_id}'s profile: #{body}")
-        return body['displayName'] if response.code == 200
+        return body['displayName'] if response.code == '200'
 
         error_message = body['message']
         return "#{response.code} #{error_message}"
