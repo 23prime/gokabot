@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { Message } from "@/dto/message.ts";
+import { Message } from "@/dto/message";
 import Send from "@/components/Send.vue";
 import $ from "jquery";
 

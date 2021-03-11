@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue } from "vue-property-decorator";
-import { Message } from "@/dto/message.ts";
+import { Message } from "@/dto/message";
 
 @Component
 export default class Send extends Vue {
@@ -82,7 +82,7 @@ export default class Send extends Vue {
         }
 
         this.sendRequest(msgText)
-            .then(resJson => {
+            .then((resJson) => {
                 const reply = this.getReply(resJson);
 
                 if (reply) {
@@ -90,7 +90,7 @@ export default class Send extends Vue {
                     this.input(new Message(0, reply, "reply-message"));
                 }
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error(err);
             });
     }
@@ -117,9 +117,7 @@ export default class Send extends Vue {
 
         const reqBody = {
             msg: msgText,
-            // eslint-disable-next-line @typescript-eslint/camelcase
             user_id: "U0123456789abcdefghijklmnopqrstuv",
-            // eslint-disable-next-line @typescript-eslint/camelcase
             user_name: "gokabot-demo",
         };
 
