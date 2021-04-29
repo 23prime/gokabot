@@ -13,7 +13,7 @@ phases:
   build:
     commands:
       - echo "[`date`] Start build --------------------------------------------------------------------------------"
-      - docker compose build
+      - docker-compose build
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
       - echo "[`date`] Finish build --------------------------------------------------------------------------------"
   post_build:
