@@ -1,5 +1,10 @@
 version: 0.2
 
+env:
+  secrets-manager:
+    DOCKERHUB_ID: arn:aws:secretsmanager:$AWS_DEFAULT_REGION:$AWS_ACCOUNT_ID:secret:docker-hub-login:id
+    DOCKERHUB_PASS: arn:aws:secretsmanager:$AWS_DEFAULT_REGION:$AWS_ACCOUNT_ID:secret:docker-hub-login:pass
+
 phases:
   pre_build:
     commands:
@@ -10,6 +15,8 @@ phases:
       - echo IMAGE_REPO_NAME = $IMAGE_REPO_NAME
       - echo IMAGE_TAG = $IMAGE_TAG
       - echo REPOSITORY_URI = $REPOSITORY_URI
+      - echo DOCKERHUB_ID = $DOCKERHUB_ID
+      - echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_ID --password-stdin
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - echo "[`date`] Finish pre_build --------------------------------------------------------------------------------"
   build:
