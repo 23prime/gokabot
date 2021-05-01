@@ -41,14 +41,14 @@ $ terraform fmt -recursive -diff -write=true
 $ terraform plan
 ```
 
-```console
-$
-```
+リソース作成
 
 ```console
-$
+$ terraform destroy
 ```
 
+リソース削除
+
 ```console
-$
+$ terraform destroy
 ```
