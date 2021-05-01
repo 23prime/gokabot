@@ -33,5 +33,4 @@ module "security_group" {
   source   = "./modules/security_group"
   cost_tag = "gokabot"
   vpc_id   = module.vpc.gokabot-vpc.id
-  # vpc_cidr_block = module.vpc.gokabot-vpc.cidr_block
 }

@@ -27,7 +27,6 @@ resource "aws_security_group_rule" "gokabot-service-container-http" {
   security_group_id = aws_security_group.gokabot-service-sg.id
   type              = "ingress"
 
-  # cidr_blocks = [var.vpc_cidr_block]
   cidr_blocks = [data.aws_vpc.gokabot-vpc.cidr_block]
   from_port   = var.container-http-port
   to_port     = var.container-http-port
