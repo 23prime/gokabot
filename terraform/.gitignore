@@ -17,4 +17,4 @@ terraform.rc
 
 *.log
 
-import.tf
+import.*
