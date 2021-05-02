@@ -7,11 +7,13 @@ variable "aws_secret_access_key" {
 }
 
 variable "aws_region" {
-  type    = string
+  type = string
+
   default = "ap-northeast-1"
 }
 
 variable "cost_tag" {
-  type    = string
+  type = string
+
   default = "gokabot"
 }

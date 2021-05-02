@@ -34,3 +34,8 @@ module "security_group" {
   cost_tag = "gokabot"
   vpc_id   = module.vpc.gokabot-vpc.id
 }
+
+module "iam" {
+  source     = "./modules/iam"
+  cost_tag   = var.cost_tag
+}

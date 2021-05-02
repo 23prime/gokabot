@@ -52,3 +52,23 @@ $ terraform destroy
 ```console
 $ terraform destroy
 ```
+
+### 既存リソースを Terraform の管理下に置く
+
+インポート用のファイルに空のリソースを記述する。
+
+```terraform
+$ echo 'resource "aws_iam_policy" "GokabotSecretAccess" {}' >| import.tf
+```
+
+インポートする。
+
+```console
+$ terraform import aws_iam_policy.GokabotSecretAccess arn:aws:iam::678084882233:policy/GokabotSecretAccess
+```
+
+ファイルに書き出す。
+
+```console
+$ terraform state show aws_iam_policy.GokabotSecretAccess >> modules/iam/main.tf
+```
