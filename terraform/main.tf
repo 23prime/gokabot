@@ -8,7 +8,7 @@ terraform {
   }
 
   required_providers {
-    aws = "3.32.0"
+    aws = "3.38.0"
   }
 }
 
@@ -24,15 +24,29 @@ module "vpc" {
 }
 
 module "subnet" {
-  source   = "./modules/subnet"
+  source      = "./modules/subnet"
+  cost_tag    = "gokabot"
+  vpc         = module.vpc.gokabot-vpc
+  route_table = module.vpc.gokabot-route-table
+}
+
+module "sg" {
+  source   = "./modules/sg"
   cost_tag = "gokabot"
   vpc      = module.vpc.gokabot-vpc
 }
 
-module "security_group" {
-  source   = "./modules/security_group"
-  cost_tag = "gokabot"
-  vpc      = module.vpc.gokabot-vpc
+module "vpc_endpoint" {
+  source      = "./modules/vpc_endpoint"
+  cost_tag    = "gokabot"
+  region      = var.aws_region
+  vpc         = module.vpc.gokabot-vpc
+  route_table = module.vpc.gokabot-route-table
+  subnets = {
+    a = module.subnet.gokabot-private-subnet-a
+    c = module.subnet.gokabot-private-subnet-c
+  }
+  sg = module.sg.gokabot-vpc-endpoint-sg
 }
 
 module "iam" {
@@ -45,20 +59,22 @@ module "ssm" {
   cost_tag = var.cost_tag
 
   # SSM Parameters
-  database_url = var.database_url
-
-  line_channel_secret = var.line_channel_secret
-  line_channel_token  = var.line_channel_token
-  my_user_id          = var.my_user_id
-  gokabou_user_id     = var.gokabou_user_id
-  nga_group_id        = var.nga_group_id
-  kmt_group_id        = var.kmt_group_id
-
+  database_url                  = var.database_url
+  line_channel_secret           = var.line_channel_secret
+  line_channel_token            = var.line_channel_token
+  my_user_id                    = var.my_user_id
+  gokabou_user_id               = var.gokabou_user_id
+  nga_group_id                  = var.nga_group_id
+  kmt_group_id                  = var.kmt_group_id
   discord_bot_token             = var.discord_bot_token
   discord_target_channel_id     = var.discord_target_channel_id
   discord_target_channel_id_dev = var.discord_target_channel_id_dev
+  open_weather_api_key          = var.open_weather_api_key
+}
 
-  open_weather_api_key = var.open_weather_api_key
+module "s3" {
+  source   = "./modules/s3"
+  cost_tag = "gokabot"
 }
 
 module "lb" {
@@ -69,9 +85,38 @@ module "lb" {
     a = module.subnet.gokabot-public-subnet-a
     c = module.subnet.gokabot-public-subnet-c
   }
+  s3_bucket = module.s3.gokabot-nlb-logs
 }
 
 module "route53" {
   source = "./modules/route53"
   lb     = module.lb.gokabot-nlb
+}
+
+module "cw_logs" {
+  source   = "./modules/cw_logs"
+  cost_tag = var.cost_tag
+}
+
+module "ecr" {
+  source   = "./modules/ecr"
+  cost_tag = var.cost_tag
+}
+
+module "ecs" {
+  source         = "./modules/ecs"
+  cost_tag       = var.cost_tag
+  container_port = var.container_port
+  region         = var.aws_region
+  vpc            = module.vpc.gokabot-vpc
+  subnets = {
+    a = module.subnet.gokabot-private-subnet-a
+    c = module.subnet.gokabot-private-subnet-c
+  }
+  sg                  = module.sg.gokabot-service-sg
+  tg                  = module.lb.gokabot-tg-01
+  ssm_params          = module.ssm.gokabot-ssm-params
+  task_execution_role = module.iam.GokabotTaskExecutionRole
+  ecr_repo            = module.ecr.gokabot-core-api-repo
+  log_group           = module.cw_logs.gokabot-core-api-log-group
 }

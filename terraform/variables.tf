@@ -12,6 +12,14 @@ variable "aws_region" {
 
 variable "cost_tag" {
   type = string
+
+  default = "gokabot"
+}
+
+variable "container_port" {
+  type = number
+
+  default = 8080
 }
 
 variable "database_url" {

@@ -1,0 +1,16 @@
+{
+    "rules": [
+        {
+            "rulePriority": 1,
+            "description": "Default rule for delete image.",
+            "selection": {
+                "tagStatus": "any",
+                "countType": "imageCountMoreThan",
+                "countNumber": 4
+            },
+            "action": {
+                "type": "expire"
+            }
+        }
+    ]
+}

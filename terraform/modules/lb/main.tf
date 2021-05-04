@@ -13,6 +13,11 @@ resource "aws_lb" "gokabot-nlb" {
     var.subnets.c.id
   ]
 
+  access_logs {
+    enabled = true
+    bucket  = var.s3_bucket.id
+  }
+
   tags = {
     Name = "gokabot-nlb"
     cost = var.cost_tag
@@ -31,7 +36,6 @@ resource "aws_lb_target_group" "gokabot-tg-01" {
   health_check {
     enabled             = var.target.health_check.enabled
     interval            = var.target.health_check.interval
-    timeout             = var.target.health_check.timeout
     healthy_threshold   = var.target.health_check.healthy_threshold
     unhealthy_threshold = var.target.health_check.unhealthy_threshold
   }
@@ -59,7 +63,6 @@ resource "aws_lb_target_group" "gokabot-tg-02" {
   health_check {
     enabled             = var.target.health_check.enabled
     interval            = var.target.health_check.interval
-    timeout             = var.target.health_check.timeout
     healthy_threshold   = var.target.health_check.healthy_threshold
     unhealthy_threshold = var.target.health_check.unhealthy_threshold
   }
@@ -76,11 +79,11 @@ resource "aws_lb_target_group" "gokabot-tg-02" {
 }
 
 # Target
-resource "aws_lb_target_group_attachment" "gokabot-ecs-task" {
-  target_group_arn = aws_lb_target_group.gokabot-tg-01.arn
-  target_id        = "10.10.20.1" # ECS task's IP
-  port             = var.target.port
-}
+# resource "aws_lb_target_group_attachment" "gokabot-ecs-task" {
+#   target_group_arn = aws_lb_target_group.gokabot-tg-01.arn
+#   target_id        = "10.10.20.1" # ECS task's IP
+#   port             = var.target.port
+# }
 
 # Listener - HTTP
 resource "aws_lb_listener" "gokabot-nlb-listener-80" {

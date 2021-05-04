@@ -22,7 +22,6 @@ variable "target" {
     health_check = object({
       enabled             = bool
       interval            = number
-      timeout             = number
       healthy_threshold   = number
       unhealthy_threshold = number
     })
@@ -35,13 +34,12 @@ variable "target" {
 
   default = {
     port        = 8080
-    protocol    = "HTTP"
+    protocol    = "TCP"
     target_type = "ip"
 
     health_check = {
       enabled             = true
       interval            = 30
-      timeout             = 10
       healthy_threshold   = 3
       unhealthy_threshold = 3
     }
@@ -57,4 +55,8 @@ variable "domain" {
   type = string
 
   default = "dev.gokabot.com"
+}
+
+variable "s3_bucket" {
+  type = any
 }

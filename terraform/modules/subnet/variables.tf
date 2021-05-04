@@ -33,3 +33,7 @@ variable "az" {
     c = "ap-northeast-1c"
   }
 }
+
+variable "route_table" {
+  type = any
+}
