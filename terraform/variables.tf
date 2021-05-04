@@ -22,6 +22,12 @@ variable "container_port" {
   default = 8080
 }
 
+variable "domain" {
+  type = string
+
+  default = "dev.gokabot.com"
+}
+
 variable "database_url" {
   type = string
 }

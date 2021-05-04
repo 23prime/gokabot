@@ -86,11 +86,13 @@ module "lb" {
     c = module.subnet.gokabot-public-subnet-c
   }
   s3_bucket = module.s3.gokabot-nlb-logs
+  domain = var.domain
 }
 
 module "route53" {
   source = "./modules/route53"
   lb     = module.lb.gokabot-nlb
+  domain = var.domain
 }
 
 module "cw_logs" {

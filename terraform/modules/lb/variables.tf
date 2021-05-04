@@ -53,8 +53,6 @@ variable "target" {
 
 variable "domain" {
   type = string
-
-  default = "dev.gokabot.com"
 }
 
 variable "s3_bucket" {

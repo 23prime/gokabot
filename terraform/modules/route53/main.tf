@@ -4,7 +4,7 @@ data "aws_route53_zone" "gokabot-com" {
 
 resource "aws_route53_record" "dev-gokabot-com-a" {
   zone_id = data.aws_route53_zone.gokabot-com.zone_id
-  name    = "dev.gokabot.com"
+  name    = var.domain
   type    = "A"
 
   alias {
