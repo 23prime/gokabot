@@ -1,0 +1,3 @@
+variable "lb" {
+  type = any
+}

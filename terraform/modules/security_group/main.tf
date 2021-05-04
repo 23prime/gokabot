@@ -1,11 +1,7 @@
-data "aws_vpc" "gokabot-vpc" {
-  id = var.vpc_id
-}
-
 resource "aws_security_group" "gokabot-service-sg" {
   name        = "gokabot-service-sg"
   description = "For Gokabot ECS service"
-  vpc_id      = var.vpc_id
+  vpc_id      = var.vpc.id
 
   tags = {
     Name = "gokabot-service-sg"
@@ -27,7 +23,7 @@ resource "aws_security_group_rule" "gokabot-service-container-http" {
   security_group_id = aws_security_group.gokabot-service-sg.id
   type              = "ingress"
 
-  cidr_blocks = [data.aws_vpc.gokabot-vpc.cidr_block]
+  cidr_blocks = [var.vpc.cidr_block]
   from_port   = var.container-http-port
   to_port     = var.container-http-port
   protocol    = "tcp"

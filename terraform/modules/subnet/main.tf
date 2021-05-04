@@ -1,5 +1,5 @@
 resource "aws_subnet" "gokabot-public-subnet-a" {
-  vpc_id            = var.vpc_id
+  vpc_id            = var.vpc.id
   cidr_block        = var.cidr_block.public-a
   availability_zone = var.az.a
 
@@ -10,7 +10,7 @@ resource "aws_subnet" "gokabot-public-subnet-a" {
 }
 
 resource "aws_subnet" "gokabot-public-subnet-c" {
-  vpc_id            = var.vpc_id
+  vpc_id            = var.vpc.id
   cidr_block        = var.cidr_block.public-c
   availability_zone = var.az.c
 
@@ -21,7 +21,7 @@ resource "aws_subnet" "gokabot-public-subnet-c" {
 }
 
 resource "aws_subnet" "gokabot-private-subnet-a" {
-  vpc_id            = var.vpc_id
+  vpc_id            = var.vpc.id
   cidr_block        = var.cidr_block.private-a
   availability_zone = var.az.a
 
@@ -32,7 +32,7 @@ resource "aws_subnet" "gokabot-private-subnet-a" {
 }
 
 resource "aws_subnet" "gokabot-private-subnet-c" {
-  vpc_id            = var.vpc_id
+  vpc_id            = var.vpc.id
   cidr_block        = var.cidr_block.private-c
   availability_zone = var.az.c
 

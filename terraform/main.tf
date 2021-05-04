@@ -26,13 +26,13 @@ module "vpc" {
 module "subnet" {
   source   = "./modules/subnet"
   cost_tag = "gokabot"
-  vpc_id   = module.vpc.gokabot-vpc.id
+  vpc      = module.vpc.gokabot-vpc
 }
 
 module "security_group" {
   source   = "./modules/security_group"
   cost_tag = "gokabot"
-  vpc_id   = module.vpc.gokabot-vpc.id
+  vpc      = module.vpc.gokabot-vpc
 }
 
 module "iam" {
@@ -59,4 +59,19 @@ module "ssm" {
   discord_target_channel_id_dev = var.discord_target_channel_id_dev
 
   open_weather_api_key = var.open_weather_api_key
+}
+
+module "lb" {
+  source   = "./modules/lb"
+  cost_tag = "gokabot"
+  vpc      = module.vpc.gokabot-vpc
+  subnets = {
+    a = module.subnet.gokabot-public-subnet-a
+    c = module.subnet.gokabot-public-subnet-c
+  }
+}
+
+module "route53" {
+  source = "./modules/route53"
+  lb     = module.lb.gokabot-nlb
 }
