@@ -20,9 +20,26 @@ resource "aws_internet_gateway" "gokabot-igw" {
   }
 }
 
-# Public route table
-resource "aws_route" "name" {
+# Internet access for public
+resource "aws_route" "public-igw-route" {
   route_table_id         = aws_vpc.gokabot-vpc.main_route_table_id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.gokabot-igw.id
+}
+
+# Private route table
+resource "aws_route_table" "gokabot-route-table" {
+  vpc_id = aws_vpc.gokabot-vpc.id
+
+  tags = {
+    Name = "gokabot-route-table"
+    cost = var.cost_tag
+  }
+}
+
+# Internet access for private
+resource "aws_route" "private-igw-route" {
+  route_table_id         = aws_route_table.gokabot-route-table.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.gokabot-igw.id
 }
@@ -47,17 +64,7 @@ resource "aws_vpc_peering_connection" "gokabot-vpc-peering-rds" {
   }
 }
 
-# Private route table
-resource "aws_route_table" "gokabot-route-table" {
-  vpc_id = aws_vpc.gokabot-vpc.id
-
-  tags = {
-    Name = "gokabot-route-table"
-    cost = var.cost_tag
-  }
-}
-
-resource "aws_route" "route" {
+resource "aws_route" "vpc-peering-route" {
   route_table_id            = aws_route_table.gokabot-route-table.id
   destination_cidr_block    = data.aws_vpc.default.cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.gokabot-vpc-peering-rds.id

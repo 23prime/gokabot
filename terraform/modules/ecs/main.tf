@@ -134,7 +134,7 @@ resource "aws_ecs_service" "gokabot-service" {
   }
 
   network_configuration {
-    assign_public_ip = false
+    assign_public_ip = true
     security_groups  = [var.sg.id]
     subnets = [
       var.subnets.a.id,
@@ -145,5 +145,13 @@ resource "aws_ecs_service" "gokabot-service" {
   tags = {
     Name = "gokabot-service"
     cost = var.cost_tag
+  }
+
+  lifecycle {
+    ignore_changes = [
+      load_balancer,
+      task_definition,
+      network_configuration
+    ]
   }
 }
