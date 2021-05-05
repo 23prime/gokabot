@@ -9,3 +9,7 @@ output "GokabotCodeBuildServiceRole" {
 output "GokabotCodeDeployServiceRole" {
   value = aws_iam_role.GokabotCodeDeployServiceRole
 }
+
+output "GokabotCodePipelineServiceRole" {
+  value = aws_iam_role.GokabotCodePipelineServiceRole
+}

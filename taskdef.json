@@ -6,9 +6,9 @@
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
-                    "awslogs-group": "gokabot",
+                    "awslogs-group": "gokabot-core-api",
                     "awslogs-region": "ap-northeast-1",
-                    "awslogs-stream-prefix": "gokabot-core"
+                    "awslogs-stream-prefix": "gokabot-core-api"
                 }
             },
             "portMappings": [
@@ -76,12 +76,12 @@
                 }
             ],
             "image": "<IMAGE1_NAME>",
-            "name": "gokabot-core"
+            "name": "gokabot-core-api"
         }
     ],
     "memory": "512",
-    "family": "gokabot-gokabot-core",
-    "requiresCompatibilities": ["EC2", "FARGATE"],
+    "family": "gokabot-core-api",
+    "requiresCompatibilities": ["FARGATE"],
     "networkMode": "awsvpc",
     "cpu": "256"
 }

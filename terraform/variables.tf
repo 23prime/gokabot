@@ -32,6 +32,12 @@ variable "domain" {
   default = "dev.gokabot.com"
 }
 
+variable "codecommit_repository_name" {
+  type = string
+
+  default = "gokabot"
+}
+
 variable "database_url" {
   type = string
 }

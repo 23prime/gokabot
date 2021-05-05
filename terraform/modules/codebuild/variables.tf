@@ -17,3 +17,7 @@ variable "codebuild_role" {
 variable "ecr_repo" {
   type = any
 }
+
+variable "codecommit_repository_name" {
+  type = string
+}

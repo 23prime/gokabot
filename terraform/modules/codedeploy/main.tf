@@ -12,7 +12,7 @@ data "aws_sns_topic" "notification-by-gokabot" {
   name = "notification-by-gokabot"
 }
 
-resource "aws_codedeploy_deployment_group" "gokabot-ecs-service-deploy" {
+resource "aws_codedeploy_deployment_group" "gokabot-ecs-service-deploy-group" {
   deployment_group_name = "gokabot-ecs-service-deploy-group"
 
   app_name               = aws_codedeploy_app.gokabot-ecs-service-deploy.name

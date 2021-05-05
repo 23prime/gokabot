@@ -5,7 +5,7 @@ data "aws_kms_key" "s3_key" {
 
 # Get source repository data
 data "aws_codecommit_repository" "gokabot" {
-  repository_name = "gokabot"
+  repository_name = var.codecommit_repository_name
 }
 
 resource "aws_codebuild_project" "gokabot-build-project" {

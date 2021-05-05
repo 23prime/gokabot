@@ -132,12 +132,13 @@ module "ecs" {
 }
 
 module "codebuild" {
-  source         = "./modules/codebuild"
-  account_id     = var.aws_account_id
-  region         = var.aws_region
-  cost_tag       = var.cost_tag
-  codebuild_role = module.iam.GokabotCodeBuildServiceRole
-  ecr_repo       = module.ecr.gokabot-core-api-repo
+  source                     = "./modules/codebuild"
+  account_id                 = var.aws_account_id
+  region                     = var.aws_region
+  cost_tag                   = var.cost_tag
+  codebuild_role             = module.iam.GokabotCodeBuildServiceRole
+  ecr_repo                   = module.ecr.gokabot-core-api-repo
+  codecommit_repository_name = var.codecommit_repository_name
 }
 
 module "codedeploy" {
@@ -148,4 +149,16 @@ module "codedeploy" {
   codedeploy_role = module.iam.GokabotCodeDeployServiceRole
   nlb_listener    = module.lb.gokabot-nlb-listener-443
   tgs             = [module.lb.gokabot-tg-01, module.lb.gokabot-tg-02]
+}
+
+module "codepipeline" {
+  source                     = "./modules/codepipeline"
+  region                     = var.aws_region
+  cost_tag                   = var.cost_tag
+  codepipeline_role          = module.iam.GokabotCodePipelineServiceRole
+  s3_bucket                  = module.s3.gokabot-codepipeline-artifacts
+  codecommit_repository_name = var.codecommit_repository_name
+  build_project              = module.codebuild.gokabot-build-project
+  deploy_app                 = module.codedeploy.gokabot-ecs-service-deploy
+  deploy_group               = module.codedeploy.gokabot-ecs-service-deploy-group
 }

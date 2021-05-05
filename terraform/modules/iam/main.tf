@@ -119,3 +119,32 @@ resource "aws_iam_role" "GokabotCodeDeployServiceRole" {
     cost = var.cost_tag
   }
 }
+
+# For GokabotCodePipelineBasePolicy
+resource "aws_iam_policy" "GokabotCodePipelineBasePolicy" {
+  name = "GokabotCodePipelineBasePolicy"
+  path = "/service-role/"
+
+  policy = file("${path.module}/codepipeline_base_policy.json")
+
+  tags = {
+    Name = "GokabotCodePipelineBasePolicy"
+    cost = var.cost_tag
+  }
+}
+
+resource "aws_iam_role" "GokabotCodePipelineServiceRole" {
+  name = "GokabotCodePipelineServiceRole"
+  path = "/service-role/"
+
+  assume_role_policy = file("${path.module}/assume_role_policy_codepipeline.json")
+
+  managed_policy_arns = [
+    aws_iam_policy.GokabotCodePipelineBasePolicy.arn
+  ]
+
+  tags = {
+    Name = "GokabotCodePipelineServiceRole"
+    cost = var.cost_tag
+  }
+}
