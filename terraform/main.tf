@@ -130,3 +130,12 @@ module "ecs" {
   ecr_repo            = module.ecr.gokabot-core-api-repo
   log_group           = module.cw_logs.gokabot-core-api-log-group
 }
+
+module "codebuild" {
+  source         = "./modules/codebuild"
+  account_id     = var.aws_account_id
+  region         = var.aws_region
+  cost_tag       = var.cost_tag
+  codebuild_role = module.iam.GokabotCodeBuildServiceRole
+  ecr_repo       = module.ecr.gokabot-core-api-repo
+}
