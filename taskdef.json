@@ -1,6 +1,6 @@
 {
     "ipcMode": null,
-    "executionRoleArn": "arn:aws:iam::678084882233:role/GokabotTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::678084882233:role/service-role/GokabotTaskExecutionRole",
     "containerDefinitions": [
         {
             "logConfiguration": {
