@@ -104,3 +104,18 @@ resource "aws_iam_role" "GokabotCodeBuildServiceRole" {
     cost = var.cost_tag
   }
 }
+
+# For GokabotCodeDeployServiceRole
+resource "aws_iam_role" "GokabotCodeDeployServiceRole" {
+  name = "GokabotCodeDeployServiceRole"
+  path = "/service-role/"
+
+  assume_role_policy = file("${path.module}/assume_role_policy_codedeploy.json")
+
+  managed_policy_arns = ["arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS"]
+
+  tags = {
+    Name = "GokabotCodeDeployServiceRole"
+    cost = var.cost_tag
+  }
+}

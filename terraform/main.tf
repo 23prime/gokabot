@@ -124,7 +124,7 @@ module "ecs" {
     c = module.subnet.gokabot-private-subnet-c
   }
   sg                  = module.sg.gokabot-service-sg
-  tg                  = module.lb.gokabot-tg-01
+  tg                  = module.lb.gokabot-tg-02
   ssm_params          = module.ssm.gokabot-ssm-params
   task_execution_role = module.iam.GokabotTaskExecutionRole
   ecr_repo            = module.ecr.gokabot-core-api-repo
@@ -138,4 +138,14 @@ module "codebuild" {
   cost_tag       = var.cost_tag
   codebuild_role = module.iam.GokabotCodeBuildServiceRole
   ecr_repo       = module.ecr.gokabot-core-api-repo
+}
+
+module "codedeploy" {
+  source          = "./modules/codedeploy"
+  cost_tag        = var.cost_tag
+  ecs_cluster     = module.ecs.gokabot-cluster
+  ecs_service     = module.ecs.gokabot-service
+  codedeploy_role = module.iam.GokabotCodeDeployServiceRole
+  nlb_listener    = module.lb.gokabot-nlb-listener-443
+  tgs             = [module.lb.gokabot-tg-01, module.lb.gokabot-tg-02]
 }
