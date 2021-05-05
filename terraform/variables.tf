@@ -71,3 +71,11 @@ variable "discord_target_channel_id_dev" {
 variable "open_weather_api_key" {
   type = string
 }
+
+variable "docker_hub_id" {
+  type = string
+}
+
+variable "docker_hub_pass" {
+  type = string
+}

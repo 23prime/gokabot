@@ -50,8 +50,9 @@ module "vpc_endpoint" {
 }
 
 module "iam" {
-  source   = "./modules/iam"
-  cost_tag = var.cost_tag
+  source          = "./modules/iam"
+  cost_tag        = var.cost_tag
+  dockerhub_login = module.secret.dockerhub-login
 }
 
 module "ssm" {
@@ -72,6 +73,13 @@ module "ssm" {
   open_weather_api_key          = var.open_weather_api_key
 }
 
+module "secret" {
+  source          = "./modules/secret"
+  cost_tag        = var.cost_tag
+  docker_hub_id   = var.docker_hub_id
+  docker_hub_pass = var.docker_hub_pass
+}
+
 module "s3" {
   source   = "./modules/s3"
   cost_tag = "gokabot"
@@ -86,7 +94,7 @@ module "lb" {
     c = module.subnet.gokabot-public-subnet-c
   }
   s3_bucket = module.s3.gokabot-nlb-logs
-  domain = var.domain
+  domain    = var.domain
 }
 
 module "route53" {

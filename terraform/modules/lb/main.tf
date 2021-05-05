@@ -78,13 +78,6 @@ resource "aws_lb_target_group" "gokabot-tg-02" {
   }
 }
 
-# Target
-# resource "aws_lb_target_group_attachment" "gokabot-ecs-task" {
-#   target_group_arn = aws_lb_target_group.gokabot-tg-01.arn
-#   target_id        = "10.10.20.1" # ECS task's IP
-#   port             = var.target.port
-# }
-
 # Listener - HTTP
 resource "aws_lb_listener" "gokabot-nlb-listener-80" {
   load_balancer_arn = aws_lb.gokabot-nlb.arn

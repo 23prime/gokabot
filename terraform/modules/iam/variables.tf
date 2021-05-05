@@ -7,3 +7,7 @@ variable "ssm_parameter_gokabot_all" {
 
   default = "arn:aws:ssm:ap-northeast-1:678084882233:parameter/gokabot*"
 }
+
+variable "dockerhub_login" {
+  type = any
+}
