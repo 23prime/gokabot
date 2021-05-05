@@ -69,3 +69,17 @@ resource "aws_vpc_endpoint" "gokabot-ssm" {
     cost = var.cost_tag
   }
 }
+
+resource "aws_vpc_endpoint" "gokabot-codedeploy" {
+  vpc_id              = var.vpc.id
+  service_name        = "com.amazonaws.${var.region}.codedeploy"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = [var.subnets.a.id, var.subnets.c.id]
+  security_group_ids  = [var.sg.id]
+  private_dns_enabled = true
+
+  tags = {
+    Name = "gokabot-codedeploy"
+    cost = var.cost_tag
+  }
+}
