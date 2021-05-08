@@ -29,7 +29,7 @@ variable "container_port" {
 variable "domain" {
   type = string
 
-  default = "dev.gokabot.com"
+  default = "gokabot.com"
 }
 
 variable "codecommit_repository_name" {
