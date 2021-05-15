@@ -9,7 +9,7 @@
                     "awslogs-group": "gokabot-core-api",
                     "awslogs-region": "ap-northeast-1",
                     "awslogs-stream-prefix": "gokabot-core-api",
-                    "awslogs-datetime-format": "\\[%Y-%m-%d %H:%M:%S %z\\]"
+                    "awslogs-datetime-format": "\\[%Y-%m-%d %H:%M:%S\\]"
                 }
             },
             "portMappings": [
