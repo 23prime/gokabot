@@ -36,19 +36,6 @@ module "sg" {
   vpc      = module.vpc.gokabot-vpc
 }
 
-module "vpc_endpoint" {
-  source      = "./modules/vpc_endpoint"
-  cost_tag    = "gokabot"
-  region      = var.aws_region
-  vpc         = module.vpc.gokabot-vpc
-  route_table = module.vpc.gokabot-route-table
-  subnets = {
-    a = module.subnet.gokabot-private-subnet-a
-    c = module.subnet.gokabot-private-subnet-c
-  }
-  sg = module.sg.gokabot-vpc-endpoint-sg
-}
-
 module "iam" {
   source          = "./modules/iam"
   cost_tag        = var.cost_tag

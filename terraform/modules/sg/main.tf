@@ -30,38 +30,6 @@ resource "aws_security_group_rule" "gokabot-service-container-http" {
   protocol    = "tcp"
 }
 
-# VPC Endpoints
-resource "aws_security_group" "gokabot-vpc-endpoint-sg" {
-  name   = "gokabot-vpc-endpoint-sg"
-  vpc_id = var.vpc.id
-
-  tags = {
-    Name = "gokabot-vpc-endpoint-sg"
-    cost = var.cost_tag
-  }
-}
-
-resource "aws_security_group_rule" "gokabot-vpc-endpoint-egress" {
-  security_group_id = aws_security_group.gokabot-vpc-endpoint-sg.id
-  type              = "egress"
-
-  cidr_blocks = [var.vpc.cidr_block]
-  from_port   = 443
-  to_port     = 443
-  protocol    = "tcp"
-
-}
-
-resource "aws_security_group_rule" "gokabot-vpc-endpoint-ingress" {
-  security_group_id = aws_security_group.gokabot-vpc-endpoint-sg.id
-  type              = "ingress"
-
-  cidr_blocks = [var.vpc.cidr_block]
-  from_port   = 443
-  to_port     = 443
-  protocol    = "tcp"
-}
-
 # RDS
 resource "aws_security_group" "gokabot-rds-sg" {
   name        = "gokabot-rds-sg"

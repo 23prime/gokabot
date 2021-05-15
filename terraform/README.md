@@ -72,3 +72,26 @@ $ terraform import aws_iam_policy.GokabotSecretAccess arn:aws:iam::678084882233:
 ```console
 $ terraform state show aws_iam_policy.GokabotSecretAccess >> modules/iam/main.tf
 ```
+
+## 手動対応しないといけないヤツ
+
+### CodeCommit のリポジトリ作成
+
+混ぜることも不可能ではないが、Terraform のソース自体も置いているので、別で作っておくのが無難な気がする。
+
+### KMS 系
+
+デフォルトの名前のものを使うので。
+
+### ドメイン・証明書の取得
+
+簡単に削除したり作り直したりできるわけではないので。
+ただし、DNS は Terraform で管理する。
+
+### Secrets Manager のリソース削除
+
+AWS CLI で強制削除オプション付きで削除しないと、即座に削除できない。
+
+```console
+$ aws secretsmanager delete-secret --secret-id dockerhub-login --force-delete-without-recovery
+```
