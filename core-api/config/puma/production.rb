@@ -11,7 +11,7 @@ before_fork do
     config.frequency = 60
     config.percent_usage = 0.95
     config.rolling_restart_frequency = 60 * 60 * 24
-    config.reaper_status_logs = true
+    config.reaper_status_logs = false
   end
 
   PumaWorkerKiller.start

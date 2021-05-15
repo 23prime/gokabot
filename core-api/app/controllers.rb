@@ -12,6 +12,40 @@ require_relative 'line/push'
 require_relative 'line/ramdom_push'
 require_relative 'log_config'
 
+# Override Rack default logger
+module Rack
+  class CommonLogger
+    include LogConfig
+
+    @@logger = @@logger.clone
+    @@logger.progname = 'Controllers'
+
+    def call(env)
+      began_at = Time.now.to_f
+      status, headers, body = @app.call(env)
+      log(env, status, headers, body, began_at) if @app.is_a?(Rack::Logger)
+      return [status, headers, body]
+    end
+
+    def log(env, status, headers, body, began_at)
+      addr = env['HTTP_X_FORWARDED_FOR'] || env['REMOTE_ADDR'] || '-'
+      user = env['REMOTE_USER'] || '-'
+      method = env['REQUEST_METHOD']
+      script = env['SCRIPT_NAME']
+      path = env['PATH_INFO'] + (env['QUERY_STRING'].empty? ? '' : "?#{env['QUERY_STRING']}")
+      protocol = env['SERVER_PROTOCOL']
+      status = status.to_s[0..3]
+      length = extract_content_length(headers)
+      duration = (Time.now.to_f - began_at).round(3)
+
+      msg = "#{addr} - #{user} \"#{method} #{script}#{path} #{protocol}\" #{status} #{length} #{duration}"
+
+      @@logger.info(msg)
+      @@logger.debug("Response Body => #{body}")
+    end
+  end
+end
+
 class Controllers < Sinatra::Application
   include LogConfig
 
@@ -27,7 +61,7 @@ class Controllers < Sinatra::Application
   set :allow_headers, 'Content-Type, Accept'
 
   get '/' do
-    'Hello, gokabot!'
+    "Hello, gokabot!\n"
   end
 
   post '/callback' do

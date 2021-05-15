@@ -50,17 +50,16 @@ module Gokabou
     def gen_text(all_blocks)
       # Select a first block randomly
       result = all_blocks.select { |b| b[0].nil? }.sample
-      @logger.debug("Current block: #{result}")
 
       @@upper_bound_of_block_connection.times do
         break if result[-1].nil?
 
         block = all_blocks.select { |b| b[0] == result[-1] }.sample
         break if block.nil? # Not found next word
-        @logger.debug("Current block: #{block}")
         result.concat(block[1..])
       end
 
+      @logger.info("Markov block result: #{result}")
       return result.join
     end
   end

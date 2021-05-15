@@ -1,3 +1,5 @@
+require 'json'
+
 require_relative '../../log_config'
 require_relative '../config'
 
@@ -33,10 +35,13 @@ module Line
       end
 
       def monitor(msg: 'No message', reply_text: '', user_id: '', user_name: '', group: '')
-        @logger.info("From:    [#{user_id} (#{user_name})]")
-        @logger.info("Group:   [#{group}]")
-        @logger.info("Message: [#{msg}]")
-        @logger.info("Reply:   [#{reply_text}]")
+        hash = {
+          'From' => "#{user_id} (#{user_name})",
+          'Group' => group,
+          'Message' => msg,
+          'Reply' => reply_text
+        }
+        @logger.info(JSON.pretty_generate(hash))
       end
 
       def hello
