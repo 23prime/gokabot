@@ -148,3 +148,32 @@ resource "aws_iam_role" "GokabotCodePipelineServiceRole" {
     cost = var.cost_tag
   }
 }
+
+# For GokabotEventTargetRole
+resource "aws_iam_policy" "GokabotEventTargetPolicy" {
+  name = "GokabotEventTargetPolicy"
+  path = "/service-role/"
+
+  policy = file("${path.module}/event_target_policy.json")
+
+  tags = {
+    Name = "GokabotEventTargetPolicy"
+    cost = var.cost_tag
+  }
+}
+
+resource "aws_iam_role" "GokabotEventTargetRole" {
+  name = "GokabotEventTargetRole"
+  path = "/service-role/"
+
+  assume_role_policy = file("${path.module}/assume_role_policy_events.json")
+
+  managed_policy_arns = [
+    aws_iam_policy.GokabotEventTargetPolicy.arn
+  ]
+
+  tags = {
+    Name = "GokabotEventTargetRole"
+    cost = var.cost_tag
+  }
+}

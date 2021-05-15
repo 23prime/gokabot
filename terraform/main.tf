@@ -149,3 +149,11 @@ module "codepipeline" {
   deploy_app                 = module.codedeploy.gokabot-ecs-service-deploy
   deploy_group               = module.codedeploy.gokabot-ecs-service-deploy-group
 }
+
+module "events" {
+  source                     = "./modules/events"
+  cost_tag                   = var.cost_tag
+  event_target_role          = module.iam.GokabotEventTargetRole
+  codecommit_repository_name = var.codecommit_repository_name
+  codepipeline               = module.codepipeline.gokabot-pipeline
+}
