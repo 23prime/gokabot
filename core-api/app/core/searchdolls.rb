@@ -20,7 +20,7 @@ class DflSearch
 
   def fetchable(url)
     begin
-      open(url)
+      URI.open(url)
     rescue OpenURI::HTTPError
       return false
     end

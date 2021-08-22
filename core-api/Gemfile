@@ -16,7 +16,7 @@ gem 'puma_worker_killer'
 gem 'rexml'
 gem 'sinatra'
 gem 'sinatra-cors'
-gem 'zen_to_i', '0.0.2'
+gem 'zen_to_i'
 
 group :test do
   gem 'rspec'

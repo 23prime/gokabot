@@ -32,5 +32,9 @@
         "prettier": "^2.2.1",
         "typescript": "~4.2.3",
         "vue-template-compiler": "^2.6.11"
+    },
+    "volta": {
+        "node": "14.17.5",
+        "yarn": "1.22.11"
     }
 }
