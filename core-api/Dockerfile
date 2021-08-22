@@ -1,4 +1,4 @@
-FROM ruby:2.7.2
+FROM ruby:2.7.4
 ENV RUBYOPT -EUTF-8
 
 LABEL Name=gokabot-core-api Version=1.0.0
