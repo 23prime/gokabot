@@ -1,0 +1,13 @@
+version: "2.1"
+
+services:
+  gokabot-demo:
+    image: gokabot-demo
+    container_name: gokabot-demo
+    environment:
+      TZ: Asia/Tokyo
+    build:
+      context: gokabot-demo
+    ports:
+      - "3000:3000"
+    command: ["yarn", "serve"]

@@ -1,0 +1,35 @@
+version: "2.1"
+
+services:
+  gokabot-core-local:
+    image: gokabot-core-local
+    container_name: gokabot-core-local
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: Asia/Tokyo
+      RACK_ENV: development
+      DATABASE_URL: ${DATABASE_URL}
+      LINE_CHANNEL_TOKEN: ${LINE_CHANNEL_TOKEN}
+      LINE_CHANNEL_SECRET: ${LINE_CHANNEL_SECRET}
+      MY_USER_ID: ${MY_USER_ID}
+      GOKABOU_USER_ID: ${GOKABOU_USER_ID}
+      TAKENOKO_USER_ID: ${TAKENOKO_USER_ID}
+      OPEN_WEATHER_API_KEY: ${OPEN_WEATHER_API_KEY}
+      DISCORD_TARGET_CHANNEL_ID: ${DISCORD_TARGET_CHANNEL_ID}
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
+    build:
+      context: core-api
+    ports:
+      - "8080:8080"
+    command:
+      [
+        "bundle",
+        "exec",
+        "rackup",
+        "app/config.ru",
+        "-o",
+        "0.0.0.0",
+        "-p",
+        "8080",
+      ]
