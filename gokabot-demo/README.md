@@ -13,7 +13,7 @@ If want to switch another URL, send message `dev` or `local` in chat.
 
 ### Serve for local development
 
-```sh
+```console
 $ yarn serve
 ```
 
@@ -21,7 +21,7 @@ And access to <http://localhost:3000>.
 
 ### Build
 
-```sh
+```console
 $ yarn build
 ```
 
@@ -29,7 +29,7 @@ $ yarn build
 
 Check generated files:
 
-```sh
+```console
 $ ls dist
 css/
 js/
@@ -39,6 +39,6 @@ index.html
 
 Run deploy shell:
 
-```sh
+```console
 $ ./deploy-to-s3.sh
 ```

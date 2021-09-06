@@ -72,13 +72,13 @@ Add Gokabot to your friends from the QR code below, and invite to your groups.
 
 Build image for local.
 
-```sh
+```console
 $ docker compose local -f docker-compose.local.yml
 ```
 
 Run.
 
-```sh
+```console
 $ docker compose up -f docker-compose.local.yml
 ```
 
@@ -86,13 +86,13 @@ $ docker compose up -f docker-compose.local.yml
 
 Build image for deploy.
 
-```sh
+```console
 $ docker compose build
 ```
 
 Push Docker image to ECR.
 
-```sh
+```console
 $ aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 678084882233.dkr.ecr.ap-northeast-1.amazonaws.com
 $ docker tag gokabot-core-api:latest 678084882233.dkr.ecr.ap-northeast-1.amazonaws.com/gokabot-core-api:latest
 $ docker push 678084882233.dkr.ecr.ap-northeast-1.amazonaws.com/gokabot-core-api:latest
@@ -100,12 +100,12 @@ $ docker push 678084882233.dkr.ecr.ap-northeast-1.amazonaws.com/gokabot-core-api
 
 Create Docker Context on your local.
 
-```sh
+```console
 $ docker context create ecs aws/ecs
 ```
 
 Deploy.
 
-```sh
+```console
 $ docker compose up -c aws/ecs -f docker-compose.prod.yml
 ```
