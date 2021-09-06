@@ -1,12 +1,22 @@
-node_modules
-npm-debug.log
-Dockerfile*
-docker-compose*
-.dockerignore
-.git
-.gitignore
+# Common
 */bin
 */obj
 README.md
 LICENSE
 .vscode
+
+# Env files
+.env*
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Git
+.git
+.gitignore
+
+# Ruby
+.bundle
+vendor
