@@ -6,7 +6,7 @@ LABEL Name=gokabot-core-api Version=1.0.0
 RUN apt update 
 RUN apt install -y mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8
 
-RUN gem install bundler -v 2.1.2
+RUN gem install bundler -v 2.1.4
 RUN bundle config set without development
 RUN bundle config --global frozen 1
 
