@@ -1,0 +1,36 @@
+name: core-api
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - "core-api/**"
+      - "!**.md"
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - "core-api/**"
+      - "!**.md"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: RSpec in Docker Container
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          LINE_CHANNEL_TOKEN: ${{ secrets.LINE_CHANNEL_TOKEN }}
+          LINE_CHANNEL_SECRET: ${{ secrets.LINE_CHANNEL_SECRET }}
+          MY_USER_ID: ${{ secrets.MY_USER_ID }}
+          GOKABOU_USER_ID: ${{ secrets.GOKABOU_USER_ID }}
+          TAKENOKO_USER_ID: ${{ secrets.TAKENOKO_USER_ID }}
+          OPEN_WEATHER_API_KEY: ${{ secrets.OPEN_WEATHER_API_KEY }}
+          DISCORD_TARGET_CHANNEL_ID: ${{ secrets.DISCORD_TARGET_CHANNEL_ID }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+        run: |
+          docker-compose -f docker-compose.local.yml up -d
+          docker-compose -f docker-compose.local.yml exec -T gokabot-core-local rspec

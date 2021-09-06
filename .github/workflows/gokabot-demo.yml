@@ -1,0 +1,26 @@
+name: gokabot-demo
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - "gokabot-demo/**"
+      - "!**.md"
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - "gokabot-demo/**"
+      - "!**.md"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: ESLint in Docker Container
+        run: |
+          docker-compose -f docker-compose.local.yml up -d
+          docker-compose -f docker-compose.local.yml exec -T gokabot-demo yarn lint
