@@ -1,6 +1,3 @@
-require_relative '../../db/animes_dao'
-require_relative 'convert'
-
 module Season
   module_function
 
@@ -24,7 +21,6 @@ module Anime
       now = Time.now.localtime('+05:00')
       @year = now.year
       @season = Season.get_season(now.month)
-      @animes_dao = AnimesDao.new
       @converts = [
         WeekDay.new,
         Day.new(WDAYS, now.wday),
@@ -51,41 +47,41 @@ module Anime
       case day
       when /^all|今期#{ANIME_OF}/i
         return format_animes(
-          @animes_dao.select_season_animes(@year, @season),
-          is_all: true,
+          Animes.select_season_animes(@year, @season),
+          all: true,
           only_rcm: false
         )
       when /^今期の(オススメ|おすすめ)$/i
         return format_animes(
-          @animes_dao.select_season_recommend_animes(@year, @season),
-          is_all: true,
+          Animes.select_season_recommend_animes(@year, @season),
+          all: true,
           only_rcm: true
         )
       when /^next|来期#{ANIME_OF}/i
         to_next_season
         return format_animes(
-          @animes_dao.select_season_animes(@year, @season),
-          is_all: true,
+          Animes.select_season_animes(@year, @season),
+          all: true,
           only_rcm: false
         )
       when /^来期の(オススメ|おすすめ)$/i
         to_next_season
         return format_animes(
-          @animes_dao.select_season_recommend_animes(@year, @season),
-          is_all: true,
+          Animes.select_season_recommend_animes(@year, @season),
+          all: true,
           only_rcm: true
         )
       when WEEK
         return format_animes(
-          @animes_dao.select_day_animes(@year, @season, day),
-          is_all: false,
+          Animes.select_day_animes(@year, @season, day),
+          all: false,
           only_rcm: false
         )
       when WEEK_RCM
         day.capitalize!
         return format_animes(
-          @animes_dao.select_day_recommend_animes(@year, @season, day),
-          is_all: false,
+          Animes.select_day_recommend_animes(@year, @season, day),
+          all: false,
           only_rcm: true
         )
       else
@@ -103,18 +99,18 @@ module Anime
       return msg
     end
 
-    def format_animes(animes, is_all: true, only_rcm: true)
+    def format_animes(animes, all: true, only_rcm: true)
       if animes.empty?
         return 'ありませ〜んｗｗｗｗ' if only_rcm
         return '早漏かよｗ'
       end
 
-      animes = sort_animes(animes, is_all)
+      animes = sort_animes(animes, all)
 
       ans = ''
 
       animes.each do |anime|
-        ans << "#{anime.day}, " if is_all
+        ans << "#{anime.day}, " if all
         ans << "#{anime.time}, #{anime.station}, #{anime.title}\n"
       end
 
@@ -123,9 +119,9 @@ module Anime
       return ans
     end
 
-    def sort_animes(animes, is_all)
+    def sort_animes(animes, all)
       animes = animes.sort_by(&:time)
-      animes = animes.sort_by { |a| day_to_int(a.day) } if is_all
+      animes = animes.sort_by { |a| day_to_int(a.day) } if all
       return animes
     end
 

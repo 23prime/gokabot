@@ -9,10 +9,7 @@ module Line
       include LogConfig
       include Line::Config
 
-      def initialize
-        @logger = @@logger.clone
-        @logger.progname = self.class.to_s
-      end
+      LOGGER = LogConfig.get_logger(name)
 
       def get_user_id(event)
         return event['source']['userId']
@@ -21,7 +18,7 @@ module Line
       def get_user_name(user_id)
         response = @@client.get_profile(user_id)
         body = JSON.parse(response.body)
-        @logger.info("Get #{user_id}'s profile: #{body}")
+        LOGGER.info("Get #{user_id}'s profile: #{body}")
         return body['displayName'] if response.code == '200'
 
         error_message = body['message']
@@ -41,7 +38,7 @@ module Line
           'Message' => msg,
           'Reply' => reply_text
         }
-        @logger.info(JSON.pretty_generate(hash))
+        LOGGER.info(JSON.pretty_generate(hash))
       end
 
       def hello

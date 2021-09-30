@@ -1,4 +1,3 @@
-dao = Gokabou::GokabousDao.new
 gm = Gokabou::GenMsg.new
 
 gokabou_id = ENV['GOKABOU_USER_ID']
@@ -16,6 +15,10 @@ describe 'Generate dict' do
 end
 
 describe 'Update dict' do
+  before do
+    Gokabous.delete(test_msg)
+  end
+
   it 'Success' do
     init_count = gm.markov_dict.length
 
@@ -27,7 +30,7 @@ describe 'Update dict' do
     p count
     expect(count).to be > init_count
 
-    dao.delete(test_msg)
+    Gokabous.delete(test_msg)
   end
 
   it 'Message includes URL' do

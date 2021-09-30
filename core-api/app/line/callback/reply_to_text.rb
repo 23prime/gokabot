@@ -35,7 +35,7 @@ module Line
           end
         rescue => e
           e.message
-          @logger.error(e.backtrace)
+          LOGGER.error(e.backtrace)
           return "エラーおつｗｗｗｗｗｗ\n\n> #{e}"
         end
 

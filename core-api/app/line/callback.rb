@@ -10,8 +10,7 @@ module Line
     include Line::Config
     include LogConfig
 
-    @@logger = @@logger.clone
-    @@logger.progname = 'Line::Callback'
+    LOGGER = LogConfig.get_logger(name)
 
     @@event_types = [
       Line::Callback::ReplyToMsg.new,
@@ -29,7 +28,7 @@ module Line
         respond_to_events(events)
         return 200
       rescue => e
-        @@logger.error("Failed to response to LINE\n#{e}")
+        LOGGER.error("Failed to response to LINE\n#{e}")
         return 500
       end
     end

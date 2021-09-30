@@ -1,9 +1,6 @@
 require 'dotenv/load'
 require 'natto'
 
-require_relative '../../log_config'
-require_relative '../../db/gokabous_dao'
-
 module Gokabou
   class NattoParser
     attr_accessor :nm
@@ -26,12 +23,9 @@ module Gokabou
   class Markov
     include LogConfig
 
-    @@upper_bound_of_block_connection = 9
+    LOGGER = LogConfig.get_logger(name)
 
-    def initialize
-      @logger = @@logger.clone
-      @logger.progname = self.class.to_s
-    end
+    @@upper_bound_of_block_connection = 9
 
     def gen_markov_block(words)
       # Insert nil begin and end
@@ -59,7 +53,7 @@ module Gokabou
         result.concat(block[1..])
       end
 
-      @logger.info("Markov block result: #{result}")
+      LOGGER.info("Markov block result: #{result}")
       return result.join
     end
   end
@@ -69,11 +63,9 @@ module Gokabou
 
     attr_accessor :markov_dict
 
-    def initialize
-      @logger = @@logger.clone
-      @logger.progname = self.class.to_s
+    LOGGER = LogConfig.get_logger(name)
 
-      @dao = GokabousDao.new
+    def initialize
       @np = NattoParser.new
       @markov = Markov.new
 
@@ -81,18 +73,19 @@ module Gokabou
     end
 
     def mk_dict
-      return @dao
-             .select_all_sentences.map { |s| @np.parse_sentence(s) }
-             .map { |ws| @markov.gen_markov_block(ws) }
-             .flatten!(1)
+      return Gokabous.pluck(:sentence)
+                     .map { |s| @np.parse_sentence(s) }
+                     .map { |ws| @markov.gen_markov_block(ws) }
+                     .flatten!(1)
     end
 
     def update_dict(msg, user_id)
-      return unless updatable(msg, user_id)
+      LOGGER.debug("updatable(#{msg}, #{user_id}) => #{updatable?(msg, user_id)}")
+      return unless updatable?(msg, user_id)
 
-      @dao.insert(Date.today.strftime('%Y-%m-%d'), msg)
+      Gokabous.insert(Date.today.strftime('%Y-%m-%d'), msg)
       @markov_dict = mk_dict
-      @logger.info('Dictionary updated')
+      LOGGER.info('Dictionary updated')
     end
 
     def sample
@@ -101,7 +94,7 @@ module Gokabou
 
     private
 
-    def updatable(msg, user_id)
+    def updatable?(msg, user_id)
       gid = ENV['GOKABOU_USER_ID']
 
       unless user_id == gid && msg.length > 4 && msg.length <= 300
@@ -109,7 +102,7 @@ module Gokabou
       end
 
       return false if include_uri?(msg)
-      return !@dao.select_all_sentences.include?(msg)
+      return !Gokabous.pluck(:sentence).include?(msg)
     end
 
     def include_uri?(msg)

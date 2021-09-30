@@ -17,8 +17,7 @@ module Rack
   class CommonLogger
     include LogConfig
 
-    @@logger = @@logger.clone
-    @@logger.progname = 'Controllers'
+    LOGGER = LogConfig.get_logger(name)
 
     def call(env)
       began_at = Time.now.to_f
@@ -40,8 +39,8 @@ module Rack
 
       msg = "#{addr} - #{user} \"#{method} #{script}#{path} #{protocol}\" #{status} #{length} #{duration}"
 
-      @@logger.info(msg)
-      @@logger.debug("Response Body => #{body}")
+      LOGGER.info(msg)
+      LOGGER.debug("Response Body => #{body}")
     end
   end
 end
@@ -49,12 +48,11 @@ end
 class Controllers < Sinatra::Application
   include LogConfig
 
+  LOGGER = LogConfig.get_logger(name)
+
   set :server, :puma
 
   register Sinatra::Cors
-
-  @@logger = @@logger.clone
-  @@logger.progname = 'Controllers'
 
   set :allow_origin, '*'
   set :allow_methods, 'GET,POST'
@@ -89,13 +87,13 @@ class Controllers < Sinatra::Application
       msg = body['message']
       target_id = body['target_id']
     rescue => e
-      @@logger.error("Invalid request body\n#{e}")
+      LOGGER.error("Invalid request body\n#{e}")
       status 400
       return
     end
 
     if msg.nil? || target_id.nil?
-      @@logger.error("The request does not include 'message' or 'target_id'")
+      LOGGER.error("The request does not include 'message' or 'target_id'")
       status 400
       return
     end
@@ -108,13 +106,13 @@ class Controllers < Sinatra::Application
       body = JSON.parse(request.body.read)
       target_id = body['target_id']
     rescue => e
-      @@logger.error("Invalid request body\n#{e}")
+      LOGGER.error("Invalid request body\n#{e}")
       status 400
       return
     end
 
     if target_id.nil?
-      @@logger.error("The request does not include 'target_id'")
+      LOGGER.error("The request does not include 'target_id'")
       status 400
       return
     end
@@ -128,13 +126,13 @@ class Controllers < Sinatra::Application
       msg = body['message']
       target_id = body['target_id']
     rescue => e
-      @@logger.error("Invalid request body\n#{e}")
+      LOGGER.error("Invalid request body\n#{e}")
       status 400
       return
     end
 
     if msg.nil?
-      @@logger.error("The request does not include 'message'")
+      LOGGER.error("The request does not include 'message'")
       status 400
       return
     end
@@ -147,7 +145,7 @@ class Controllers < Sinatra::Application
       body = JSON.parse(request.body.read)
       target_id = body['target_id']
     rescue => e
-      @@logger.error("Invalid request body\n#{e}")
+      LOGGER.error("Invalid request body\n#{e}")
       status 400
       return
     end

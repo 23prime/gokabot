@@ -8,14 +8,11 @@ module Line
   class Push
     include LogConfig
 
-    def initialize
-      @logger = @@logger.clone
-      @logger.progname = self.class.to_s
-    end
+    LOGGER = LogConfig.get_logger(name)
 
     def send_msg(msg, target_id)
       target_id = ENV.fetch(target_id, target_id)
-      @logger.info("Send push message: '#{msg}' to '#{target_id}'")
+      LOGGER.info("Send push message: '#{msg}' to '#{target_id}'")
 
       begin
         response = Faraday.post do |req|
@@ -35,12 +32,12 @@ module Line
           }
         end
 
-        @logger.info("Push response status: #{response.status}")
-        @logger.info("Push response body: #{response.body}")
+        LOGGER.info("Push response status: #{response.status}")
+        LOGGER.info("Push response body: #{response.body}")
 
         return response.status
       rescue => e
-        @logger.error(e)
+        LOGGER.error(e)
         return 500
       end
     end

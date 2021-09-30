@@ -7,7 +7,9 @@ module LogConfig
     "[#{datetime.strftime(datetime_format)}] [#{severity}] [#{progname}] #{msg}\n"
   end
 
-  def self.get_logger
-    return @@logger
+  def self.get_logger(progname)
+    logger = @@logger.clone
+    logger.progname = progname
+    return logger
   end
 end

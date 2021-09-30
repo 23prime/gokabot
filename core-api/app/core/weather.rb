@@ -1,10 +1,3 @@
-require 'dotenv/load'
-require 'json'
-require 'faraday'
-
-require_relative '../log_config'
-require_relative '../db/cities_dao'
-
 class CityId
   attr_reader :id, :name
 
@@ -17,14 +10,11 @@ end
 class Weather
   include LogConfig
 
+  LOGGER = LogConfig.get_logger(name)
+
   @@default_city_name = '東京'
 
   def initialize
-    @logger = @@logger.clone
-    @logger.progname = self.class.to_s
-
-    @cities_dao = CitiesDao.new
-
     @city_name = @@default_city_name.clone
     @city_id = get_city_id(@city_name)
   end
@@ -58,7 +48,7 @@ class Weather
   private
 
   def get_city_id(city_name)
-    city_ids = @cities_dao.select_cities_by_name(city_name)
+    city_ids = Cities.select_cities_by_name(city_name)
     return nil if city_ids.empty?
     return city_ids[0] # fetch first 1
   end
@@ -66,7 +56,7 @@ class Weather
   def change_city(city_name)
     @city_name = city_name
     @city_id = get_city_id(city_name)
-    @logger.debug("Set city: id => [#{@city_id}], name => [#{@city_name}]")
+    LOGGER.debug("Set city: id => [#{@city_id}], name => [#{@city_name}]")
   end
 
   def get_weather_info
