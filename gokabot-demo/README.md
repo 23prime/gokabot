@@ -40,5 +40,5 @@ index.html
 Run deploy shell:
 
 ```console
-$ ./deploy-to-s3.sh
+$ aws s3 cp dist s3://gokabot-demo --recursive
 ```
