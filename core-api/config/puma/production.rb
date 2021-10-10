@@ -7,8 +7,8 @@ preload_app!
 
 before_fork do
   PumaWorkerKiller.config do |config|
-    config.ram = 512
-    config.frequency = 60
+    config.ram = 2**10
+    config.frequency = 60 * 60
     config.percent_usage = 0.95
     config.rolling_restart_frequency = 60 * 60 * 24
     config.reaper_status_logs = false
