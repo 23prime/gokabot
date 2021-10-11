@@ -1,6 +1,7 @@
 # Gokabot for LINE
 
-[![GitHub Actions Status - core-api](https://github.com/23prime/gokabot/workflows/main/badge.svg)](https://github.com/23prime/gokabot/actions)
+[![GitHub Actions Status - core-api](https://github.com/23prime/gokabot/workflows/core-api/badge.svg)](https://github.com/23prime/gokabot/actions/workflows/core-api.yml)
+[![GitHub Actions Status - gokabot-demo](https://github.com/23prime/gokabot/workflows/gokabot-demo/badge.svg)](https://github.com/23prime/gokabot/actions/workflows/gokabot-demo.yml)
 
 ## What
 
