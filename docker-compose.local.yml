@@ -37,3 +37,15 @@ services:
     ports:
       - "3000:3000"
     command: ["yarn", "serve"]
+
+  metabase:
+    # see: https://www.metabase.com/docs/latest/operations-guide/running-metabase-on-docker.html
+    image: metabase/metabase
+    container_name: gokabot-metabase
+    volumes:
+      - ~/.metabase:/metabase-data
+    environment:
+      TZ: Asia/Tokyo
+      MB_DB_FILE: /metabase-data/metabase.db
+    ports:
+      - "5000:3000"
