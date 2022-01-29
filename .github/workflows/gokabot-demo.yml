@@ -22,5 +22,4 @@ jobs:
       - uses: actions/checkout@v2
       - name: ESLint in Docker Container
         run: |
-          docker-compose -f docker-compose.front-test.yml up -d
-          docker-compose -f docker-compose.front-test.yml exec -T gokabot-demo yarn lint
+          docker-compose -f docker-compose.front-test.yml run --rm gokabot-demo yarn lint

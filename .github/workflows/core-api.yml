@@ -32,5 +32,4 @@ jobs:
           DISCORD_TARGET_CHANNEL_ID: ${{ secrets.DISCORD_TARGET_CHANNEL_ID }}
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
         run: |
-          docker-compose -f docker-compose.api-test.yml up -d
-          docker-compose -f docker-compose.api-test.yml exec -T gokabot-core-local rspec
+          docker-compose -f docker-compose.api-test.yml run --rm gokabot-core-local rspec
