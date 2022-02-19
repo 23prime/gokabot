@@ -2,7 +2,7 @@ version: "2.1"
 
 services:
   gokabot-core:
-    image: gokabot-core-api
+    image: public.ecr.aws/m0z8x5y6/gokabot-core-api:latest
     container_name: gokabot-core-api
     build:
       context: core-api
