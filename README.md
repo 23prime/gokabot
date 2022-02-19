@@ -74,13 +74,13 @@ Add Gokabot to your friends from the QR code below, and invite to your groups.
 Build image for local.
 
 ```console
-$ docker compose local -f docker-compose.local.yml
+$ docker-compose -f docker-compose.local.yml build
 ```
 
 Run.
 
 ```console
-$ docker compose up -f docker-compose.local.yml
+$ docker-compose -f docker-compose.local.yml up
 ```
 
 ### Deploy to ECS
@@ -88,7 +88,7 @@ $ docker compose up -f docker-compose.local.yml
 Build image for deploy.
 
 ```console
-$ docker compose build
+$ docker-compose build
 ```
 
 Push Docker image to ECR.
@@ -108,5 +108,5 @@ $ docker context create ecs aws/ecs
 Deploy.
 
 ```console
-$ docker compose up -c aws/ecs -f docker-compose.prod.yml
+$ docker-compose -c aws/ecs -f docker-compose.prod.yml up
 ```
