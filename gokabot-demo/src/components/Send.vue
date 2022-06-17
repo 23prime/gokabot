@@ -29,7 +29,7 @@ interface Emits {
 const emit = defineEmits<Emits>();
 
 const local_url = "http://localhost:8080/callback";
-const dev_url = "https://gokabot.com/callback";
+const dev_url = "https://api.gokabot.com/callback";
 const url = ref(dev_url);
 const buttonColor = ref("gray");
 const inputText = ref("");
