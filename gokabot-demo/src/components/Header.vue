@@ -2,12 +2,7 @@
     <header>ごかぼっと</header>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-
-@Component
-export default class Header extends Vue {}
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 header {

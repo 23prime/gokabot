@@ -12,130 +12,123 @@
             <div
                 class="send-button"
                 @click="send()"
-                v-bind:style="{ 'border-left-color': this.buttonColor }"
+                v-bind:style="{ 'border-left-color': buttonColor }"
             ></div>
         </form>
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Emit, Prop, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { ref } from "vue";
 import { Message } from "@/dto/message";
 
-@Component
-export default class Send extends Vue {
-    private local_url = "http://localhost:8080/callback";
-    private dev_url = "https://gokabot.com/callback";
-    private url = this.dev_url;
-
-    private buttonColor = "gray";
-
-    private inputText = "";
-
-    @Prop()
-    private value?: Message;
-
-    @Emit()
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-    private input(value: Message) {}
-
-    private activateButton() {
-        this.buttonColor = this.isActive() ? "royalblue" : "gray";
-    }
-
-    private isActive() {
-        return this.inputText.length > 0;
-    }
-
-    private switchUrl(msgText: string) {
-        if (msgText != "dev" && msgText != "local") {
-            return false;
-        }
-
-        if (msgText == "dev" && this.url != this.dev_url) {
-            this.url = this.local_url;
-        }
-
-        if (msgText == "local" && this.url != this.local_url) {
-            this.url = this.local_url;
-        }
-
-        return true;
-    }
-
-    private send() {
-        if (!this.isActive()) {
-            return;
-        }
-
-        const msgText = this.inputText;
-        this.inputText = "";
-
-        // send myself message to super-component
-        this.input(new Message(0, msgText, "my-message"));
-        console.info("Message: " + msgText);
-
-        // send switching URL info as reply message to super-component
-        if (this.switchUrl(msgText)) {
-            this.input(new Message(0, "Switch URL to " + this.url, "reply-message"));
-            return;
-        }
-
-        this.sendRequest(msgText)
-            .then((resJson) => {
-                const reply = this.getReply(resJson);
-
-                if (reply) {
-                    console.info("Reply: " + reply);
-                    this.input(new Message(0, reply, "reply-message"));
-                }
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    }
-
-    private async sendRequest(msgText: string) {
-        console.debug(this.mkRequest(msgText));
-        const response = await fetch(this.mkRequest(msgText));
-        console.info(response);
-
-        if (response.ok) {
-            const resJson = await response.json();
-            console.info(resJson);
-            return resJson;
-        }
-
-        throw new Error("Response error");
-    }
-
-    private mkRequest(msgText: string) {
-        const reqHeaders = {
-            Accept: "application/json",
-            "Content-Type": "application/json; charset=utf-8",
-        };
-
-        const reqBody = {
-            msg: msgText,
-            user_id: "U0123456789abcdefghijklmnopqrstuv",
-            user_name: "gokabot-demo",
-        };
-
-        return new Request(this.url, {
-            method: "POST",
-            mode: "cors",
-            headers: reqHeaders,
-            body: JSON.stringify(reqBody),
-        });
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private getReply(resJson: any) {
-        if (resJson["type"] == "text") {
-            return resJson["text"];
-        }
-    }
+interface Emits {
+    (e: "input", value: Message): void;
 }
+
+const emit = defineEmits<Emits>();
+
+const local_url = "http://localhost:8080/callback";
+const dev_url = "https://api.gokabot.com/callback";
+const url = ref(dev_url);
+const buttonColor = ref("gray");
+const inputText = ref("");
+
+const activateButton = () => {
+    buttonColor.value = isActive() ? "royalblue" : "gray";
+};
+
+const isActive = () => {
+    return inputText.value.length > 0;
+};
+
+const switchUrl = (msgText: string) => {
+    if (msgText != "dev" && msgText != "local") {
+        return false;
+    }
+
+    if (msgText == "dev" && url.value != dev_url) {
+        url.value = local_url;
+    }
+
+    if (msgText == "local" && url.value != local_url) {
+        url.value = local_url;
+    }
+
+    return true;
+};
+
+const send = async () => {
+    if (!isActive()) return;
+
+    const msgText = inputText.value;
+    inputText.value = "";
+
+    // send myself message to super-component
+    console.info("Message: " + msgText);
+    emit("input", new Message(0, msgText, "my-message"));
+
+    // send switching URL info as reply message to super-component
+    if (switchUrl(msgText)) {
+        emit("input", new Message(0, "Switch URL to " + url.value, "reply-message"));
+        return;
+    }
+
+    sendRequest(msgText)
+        .then((resJson) => {
+            console.debug("sendRequest");
+            const reply = getReply(resJson);
+
+            if (reply) {
+                console.info("Reply: " + reply);
+                emit("input", new Message(0, reply, "reply-message"));
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+};
+
+const sendRequest = async (msgText: string) => {
+    console.debug(mkRequest(msgText));
+    const response = await fetch(mkRequest(msgText));
+    console.info(response);
+
+    if (response.ok) {
+        const resJson = await response.json();
+        console.info(resJson);
+        return resJson;
+    }
+
+    throw new Error("Response error");
+};
+
+const mkRequest = (msgText: string) => {
+    const reqHeaders = {
+        Accept: "application/json",
+        "Content-Type": "application/json; charset=utf-8",
+    };
+
+    const reqBody = {
+        msg: msgText,
+        user_id: "U0123456789abcdefghijklmnopqrstuv",
+        user_name: "gokabot-demo",
+    };
+
+    return new Request(url.value, {
+        method: "POST",
+        mode: "cors",
+        headers: reqHeaders,
+        body: JSON.stringify(reqBody),
+    });
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getReply = (resJson: any) => {
+    if (resJson["type"] == "text") {
+        return resJson["text"];
+    }
+};
 </script>
 
 <style scoped>
