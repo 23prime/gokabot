@@ -9,46 +9,34 @@
                 </div>
             </div>
         </div>
-        <Send v-model="newMsg" />
+        <Send @input="printMsg($event)" />
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+<script setup lang="ts">
+import { Ref, ref } from "vue";
 import { Message } from "@/dto/message";
 import Send from "@/components/Send.vue";
 import $ from "jquery";
 
-@Component({
-    components: {
-        Send,
-    },
-})
-export default class Messages extends Vue {
-    private msgId = 0;
+let msgId = 0;
+const msgs: Ref<Message[]> = ref([]);
 
-    private newMsg: Message = new Message(this.msgId, "こん", "reply-message");
+const printMsg = (msg: Message) => {
+    msg.id = msgId;
+    console.info(msg);
+    console.info(msgs);
+    msgId++;
+    msgs.value.push(msg);
+    scrollBottom();
+};
 
-    private msgs: Message[] = [];
+const scrollBottom = () => {
+    $("html, body").animate({ scrollTop: $(document).height() }, "fast");
+};
 
-    private created() {
-        // print initial message
-        this.printMsg();
-    }
-
-    @Watch("newMsg")
-    private printMsg() {
-        this.newMsg.id = this.msgId;
-        console.info(this.newMsg);
-        this.msgId++;
-        this.msgs.push(this.newMsg);
-        this.scrollBottom();
-    }
-
-    private scrollBottom() {
-        $("html, body").animate({ scrollTop: $(document).height() }, "fast");
-    }
-}
+const initialMsg = new Message(msgId, "こん", "reply-message");
+printMsg(initialMsg);
 </script>
 
 <style scoped>
