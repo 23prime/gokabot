@@ -9,22 +9,18 @@
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
-    "javascript.validate.enable": false,
-    "javascript.format.enable": false,
 
     // TypeScript
     "[typescript]": {
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
-    "typescript.format.enable": false,
 
     // Vue
     "[vue]": {
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
-    "vetur.format.enable": false,
 
     // JSON
     "[json]": {
