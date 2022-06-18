@@ -13,7 +13,7 @@
     // TypeScript
     "[typescript]": {
         "editor.formatOnSave": true,
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+        "editor.defaultFormatter": "Vue.volar"
     },
 
     // Vue
