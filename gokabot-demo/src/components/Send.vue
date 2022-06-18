@@ -20,6 +20,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+
 import { Message } from "@/dto/message";
 
 interface Emits {

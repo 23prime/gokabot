@@ -14,10 +14,11 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref } from "vue";
-import { Message } from "@/dto/message";
-import Send from "@/components/Send.vue";
 import $ from "jquery";
+import { ref, Ref } from "vue";
+
+import Send from "@/components/Send.vue";
+import { Message } from "@/dto/message";
 
 let msgId = 0;
 const msgs: Ref<Message[]> = ref([]);
