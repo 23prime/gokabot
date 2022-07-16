@@ -1,31 +1,31 @@
-# gokabot-demo
+# gokabot-demo #
 
-## Usage
+## Usage ##
 
-### Switch localhost or deployed (development)
+### Switch localhost or deployed (development) ###
 
 `gokabot-demo` support localhost and development environment.
 
-In Default, it is setting AWS/development.  
+In Default, it is setting AWS/development.\
 If want to switch another URL, send message `dev` or `local` in chat.
 
-## Development
+## Development ##
 
-### Serve for local development
+### Serve for local development ###
 
 ```console
-$ yarn serve
+$ yarn vite
 ```
 
 And access to <http://localhost:3000>.
 
-### Build
+### Build ###
 
 ```console
-$ yarn build
+$ yarn vite build
 ```
 
-### Deploy
+### Deploy ###
 
 Check generated files:
 
