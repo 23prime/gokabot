@@ -210,7 +210,7 @@ DEPENDENCIES
   zen_to_i
 
 RUBY VERSION
-   ruby 2.7.4p191
+   ruby 2.7.6p191
 
 BUNDLED WITH
    2.1.4
