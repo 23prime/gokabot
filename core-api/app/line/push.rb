@@ -11,7 +11,6 @@ module Line
     LOGGER = LogConfig.get_logger(name)
 
     def send_msg(msg, target_id)
-      target_id = ENV.fetch(target_id, target_id)
       LOGGER.info("Send push message: '#{msg}' to '#{target_id}'")
 
       begin
