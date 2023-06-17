@@ -1,22 +1,35 @@
-require 'spec_helper'
-
-test_cases = [
-  ['Ak 5', 'https://cdn.wikiwiki.jp/to/w/dolls-fl/Ak%205/::ref/Ak%205.jpg'],
-  ['03式', 'https://cdn.wikiwiki.jp/to/w/dolls-fl/03%E5%BC%8F/::ref/03%E5%BC%8F.jpg'],
-  %w[BGM 該当するドールが見つかりません],
-  %w[hoge 該当するドールが見つかりません]
-]
-
 describe DflSearch do
-  let(:dfl_search) { DflSearch.new }
+  subject { described_class.new.answer(msg) }
 
-  test_cases.each do |test_case|
-    msg = 'doll ' + test_case[0]
-    exp_ans = test_case[1]
+  context 'Success' do
+    let(:msg) { 'doll Ak 5' }
 
-    it msg do
-      ans = dfl_search.answer(msg)
-      expect(ans).to eq exp_ans
+    before do
+      stub_request(:get, /cdn.wikiwiki.jp/).to_return(status: 200)
+    end
+
+    it do
+      expect(subject).to eq 'https://cdn.wikiwiki.jp/to/w/dolls-fl/Ak%205/::ref/Ak%205.jpg'
+    end
+  end
+
+  context 'Unfetchable URL' do
+    let(:msg) { 'doll foo' }
+
+    before do
+      stub_request(:get, /cdn.wikiwiki.jp/).to_return(status: 404)
+    end
+
+    it do
+      expect(subject).to eq '該当するドールが見つかりません'
+    end
+  end
+
+  context 'Invalid message' do
+    let(:msg) { 'foo' }
+
+    it do
+      expect(subject).to eq nil
     end
   end
 end
