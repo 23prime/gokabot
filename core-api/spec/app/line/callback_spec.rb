@@ -59,6 +59,11 @@ describe 'LINE Callback test' do
     }
   }
 
+  before do
+    stub_request(:post, 'https://api.line.me/v2/bot/message/reply').to_return(status: 200)
+    stub_request(:get, 'https://api.line.me/v2/bot/profile/Ue0000000000000000000000000000000').to_return(status: 200)
+  end
+
   it 'Callback for Message event' do
     body = JSON.dump(body_message)
     events = client.parse_events_from(body)

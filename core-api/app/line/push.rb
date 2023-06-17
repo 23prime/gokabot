@@ -8,15 +8,15 @@ module Line
   class Push
     include LogConfig
 
+    URL = 'https://api.line.me/v2/bot/message/push'
     LOGGER = LogConfig.get_logger(name)
 
     def send_msg(msg, target_id)
-      target_id = ENV.fetch(target_id, target_id)
       LOGGER.info("Send push message: '#{msg}' to '#{target_id}'")
 
       begin
         response = Faraday.post do |req|
-          req.url 'https://api.line.me/v2/bot/message/push'
+          req.url URL
           req.body = {
             'to' => target_id,
             'messages' => [

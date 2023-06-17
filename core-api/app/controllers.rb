@@ -85,15 +85,17 @@ class Controllers < Sinatra::Application
     begin
       body = JSON.parse(request.body.read)
       msg = body['message']
-      target_id = body['target_id']
+      target_id_alias = body['target_id']
     rescue => e
       LOGGER.error("Invalid request body\n#{e}")
       status 400
       return
     end
 
+    target_id = ENV.fetch(target_id_alias, nil)
+
     if msg.nil? || target_id.nil?
-      LOGGER.error("The request does not include 'message' or 'target_id'")
+      LOGGER.error("Invalid message or target => message: #{msg}, target_id_alias => #{target_id_alias}")
       status 400
       return
     end
@@ -104,15 +106,17 @@ class Controllers < Sinatra::Application
   post '/line/push/random' do
     begin
       body = JSON.parse(request.body.read)
-      target_id = body['target_id']
+      target_id_alias = body['target_id']
     rescue => e
       LOGGER.error("Invalid request body\n#{e}")
       status 400
       return
     end
 
+    target_id = ENV.fetch(target_id_alias, nil)
+
     if target_id.nil?
-      LOGGER.error("The request does not include 'target_id'")
+      LOGGER.error("Invalid target => message: #{msg}, target => #{target_id_alias}")
       status 400
       return
     end

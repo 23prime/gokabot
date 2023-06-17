@@ -12,7 +12,26 @@ describe Weather do
     @unavailable_city = 'ほげほげ'
   end
 
+  let(:default_response_body) do
+    {
+      weather: [
+        {
+          main: {
+            temp: 0,
+            temp_min: 1,
+            temp_max: 2
+          }
+        }
+      ],
+      main: 'Rain'
+    }.to_json
+  end
+
   context "Default city: '#{@default_city}'" do
+    before do
+      stub_request(:get, /api.openweathermap.org/).to_return(status: 200, body: default_response_body)
+    end
+
     base_msg_cases.each do |msg|
       it "[Base msg = #{msg}]" do
         ans = @weather.answer(msg, @user_id, @name)
@@ -22,6 +41,10 @@ describe Weather do
   end
 
   context "Changed city-1: '#{@capitalized_city_name}'" do
+    before do
+      stub_request(:get, /api.openweathermap.org/).to_return(status: 200, body: default_response_body)
+    end
+
     base_msg_cases.each do |msg|
       it "[Base msg = #{msg}]" do
         msg = "#{msg} #{@capitalized_city_name}"
@@ -32,6 +55,10 @@ describe Weather do
   end
 
   context "Changed city-2: '#{@uncapitalized_city_name}'" do
+    before do
+      stub_request(:get, /api.openweathermap.org/).to_return(status: 200, body: default_response_body)
+    end
+
     base_msg_cases.each do |msg|
       it "[Base msg = #{msg}]" do
         msg = "#{msg} #{@uncapitalized_city_name}"
@@ -42,6 +69,10 @@ describe Weather do
   end
 
   context "JP city name: '#{@jp_city_name}'" do
+    before do
+      stub_request(:get, /api.openweathermap.org/).to_return(status: 200, body: default_response_body)
+    end
+
     base_msg_cases.each do |msg|
       it "[Base msg = #{msg}]" do
         msg = "#{msg} #{@jp_city_name}"
@@ -52,6 +83,10 @@ describe Weather do
   end
 
   context 'Unavailable city name' do
+    before do
+      stub_request(:get, /api.openweathermap.org/).to_return(status: 200, body: default_response_body)
+    end
+
     base_msg_cases.each do |msg|
       it "[Base msg = #{msg}" do
         msg = "#{msg} #{@unavailable_city}"
@@ -62,6 +97,10 @@ describe Weather do
   end
 
   context 'Reset city to default' do
+    before do
+      stub_request(:get, /api.openweathermap.org/).to_return(status: 200, body: default_response_body)
+    end
+
     it 'After changed' do
       msg = "天気 #{@capitalized_city_name}"
       ans = @weather.answer(msg, @user_id, @name)

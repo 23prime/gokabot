@@ -12,7 +12,7 @@ Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
 
 Layout/LineLength:
-  Max: 100
+  Max: 120
 
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
@@ -52,6 +52,10 @@ Lint/UnmodifiedReduceAccumulator:
 
 Metrics/AbcSize:
   Max: 30
+
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*"
 
 Metrics/CyclomaticComplexity:
   Max: 10
