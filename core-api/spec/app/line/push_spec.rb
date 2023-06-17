@@ -1,5 +1,3 @@
-require 'webmock/rspec'
-
 describe 'LINE Push test' do
   before do
     stub_request(:post, Line::Push::URL).to_return(status: 200)
