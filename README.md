@@ -74,13 +74,13 @@ Add Gokabot to your friends from the QR code below, and invite to your groups.
 Build image for local.
 
 ```console
-$ docker-compose -f docker-compose.local.yml build
+docker compose -f docker compose.local.yml build
 ```
 
 Run.
 
 ```console
-$ docker-compose -f docker-compose.local.yml up
+docker compose -f docker compose.local.yml up
 ```
 
 ### Push to ECR
@@ -88,5 +88,5 @@ $ docker-compose -f docker-compose.local.yml up
 Build image and push.
 
 ```console
-$ ./deploy.sh
+./deploy.sh
 ```

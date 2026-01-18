@@ -1,0 +1,45 @@
+# See: https://golangci-lint.run/docs/configuration/file/
+version: "2"
+
+linters:
+  enable:
+    - govet
+    - staticcheck
+    - errcheck
+    - unparam
+    - unused
+    - ineffassign
+  exclusions:
+    rules:
+      - path: _test\.go
+        linters:
+          - errcheck
+  settings:
+    staticcheck:
+      checks:
+        - "all"
+        - "-ST1000"
+    errcheck:
+      check-type-assertions: true
+      check-blank: true
+      exclude-functions:
+        - os.Setenv
+        - os.Unsetenv
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    goimports:
+      local-prefixes:
+        - github.com/23prime/gokabot
+
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+  tests: false
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
