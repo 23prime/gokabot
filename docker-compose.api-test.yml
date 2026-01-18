@@ -1,5 +1,3 @@
-version: "2.1"
-
 services:
   gokabot-core-local:
     image: gokabot-core-local
