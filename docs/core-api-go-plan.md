@@ -12,7 +12,7 @@ Tools are managed via mise. Add to `.mise.toml` (repository root):
 
 ```toml
 [tools]
-go = "1.23"
+go = "1.25"
 golangci-lint = "2"
 hurl = "latest"
 dbmate = "latest"
