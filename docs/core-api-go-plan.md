@@ -15,6 +15,7 @@ Tools are managed via mise. Add to `.mise.toml` (repository root):
 go = "1.23"
 golangci-lint = "2"
 hurl = "latest"
+dbmate = "latest"
 ```
 
 Setup:
@@ -22,6 +23,37 @@ Setup:
 ```bash
 mise install
 ```
+
+## Database Migrations (dbmate)
+
+Migration files location: `db/migrations/`
+
+```
+db/
+├── migrations/
+│   ├── 20240101000000_create_animes.sql
+│   ├── 20240101000001_create_cities.sql
+│   └── 20240101000002_create_gokabous.sql
+└── schema.sql                    # Auto-generated schema dump
+```
+
+Commands:
+
+```bash
+# Create new migration
+dbmate new create_users
+
+# Run migrations
+dbmate up
+
+# Rollback last migration
+dbmate down
+
+# Dump schema
+dbmate dump
+```
+
+Environment variable: `DATABASE_URL=postgres://postgres:password@localhost:5432/GKBDB?sslmode=disable`
 
 ## Linting
 
@@ -142,8 +174,11 @@ hurl --test --variable host=http://localhost:8081 tests/api/*.hurl
 
 ## Implementation Phases
 
-### Phase 0: API Test Setup
+### Phase 0: Setup
 
+- [ ] Create `.mise.toml` at repository root
+- [ ] Create `db/migrations/` directory
+- [ ] Write initial migrations for animes, cities, gokabous tables
 - [ ] Create `tests/api/` directory structure
 - [ ] Write hurl tests for `/callback` endpoint
 - [ ] Write hurl tests for each answerer
