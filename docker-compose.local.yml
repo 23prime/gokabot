@@ -9,7 +9,7 @@ services:
     environment:
       TZ: Asia/Tokyo
       RACK_ENV: development
-      DATABASE_URL: postgres://postgres:password@postgres:5432/GKBDB
+      DATABASE_URL: postgres://postgres:password@postgres:5432/gokabot_db
     env_file:
       - core-api/.env
     build:
@@ -37,7 +37,7 @@ services:
       TZ: Asia/Tokyo
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: GKBDB
+      POSTGRES_DB: gokabot_db
     ports:
       - "5432:5432"
 
