@@ -74,6 +74,37 @@ CREATE TABLE gokabot.cities (
 
 
 --
+-- Name: gokabous; Type: TABLE; Schema: gokabot; Owner: -
+--
+
+CREATE TABLE gokabot.gokabous (
+    id integer NOT NULL,
+    reg_date date NOT NULL,
+    sentence character varying(300) NOT NULL
+);
+
+
+--
+-- Name: gokabous_id_seq; Type: SEQUENCE; Schema: gokabot; Owner: -
+--
+
+CREATE SEQUENCE gokabot.gokabous_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: gokabous_id_seq; Type: SEQUENCE OWNED BY; Schema: gokabot; Owner: -
+--
+
+ALTER SEQUENCE gokabot.gokabous_id_seq OWNED BY gokabot.gokabous.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -87,6 +118,13 @@ CREATE TABLE public.schema_migrations (
 --
 
 ALTER TABLE ONLY gokabot.animes ALTER COLUMN id SET DEFAULT nextval('gokabot.animes_id_seq'::regclass);
+
+
+--
+-- Name: gokabous id; Type: DEFAULT; Schema: gokabot; Owner: -
+--
+
+ALTER TABLE ONLY gokabot.gokabous ALTER COLUMN id SET DEFAULT nextval('gokabot.gokabous_id_seq'::regclass);
 
 
 --
@@ -111,6 +149,14 @@ ALTER TABLE ONLY gokabot.animes
 
 ALTER TABLE ONLY gokabot.cities
     ADD CONSTRAINT cities_pk PRIMARY KEY (id);
+
+
+--
+-- Name: gokabous gokabous_pkey; Type: CONSTRAINT; Schema: gokabot; Owner: -
+--
+
+ALTER TABLE ONLY gokabot.gokabous
+    ADD CONSTRAINT gokabous_pkey PRIMARY KEY (id);
 
 
 --
@@ -149,4 +195,5 @@ CREATE INDEX cities_name_idx ON gokabot.cities USING btree (name);
 INSERT INTO public.schema_migrations (version) VALUES
     ('20260121140511'),
     ('20260121233325'),
-    ('20260121234520');
+    ('20260121234520'),
+    ('20260121234833');

@@ -184,7 +184,7 @@ hurl --test --variable host=http://localhost:8081 tests/api/*.hurl
   - [x] Run `mise dm-new create_schema_gokabot`
   - [x] Run `mise dm-new create_table_animes`
   - [x] Run `mise dm-new create_table_cities`
-  - [ ] Run `mise dm-new create_table_gokabous`
+  - [x] Run `mise dm-new create_table_gokabous`
 - [ ] Create `tests/api/` directory structure
 - [ ] Write hurl tests for `/callback` endpoint
 - [ ] Write hurl tests for each answerer
