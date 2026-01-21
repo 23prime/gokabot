@@ -53,7 +53,7 @@ dbmate down
 dbmate dump
 ```
 
-Environment variable: `DATABASE_URL=postgres://postgres:password@localhost:5432/GKBDB?sslmode=disable`
+Environment variable: `DATABASE_URL=postgres://postgres:password@localhost:5432/gokabot_db?sslmode=disable`
 
 ## Linting
 
@@ -176,9 +176,15 @@ hurl --test --variable host=http://localhost:8081 tests/api/*.hurl
 
 ### Phase 0: Setup
 
-- [ ] Create `.mise.toml` at repository root
-- [ ] Create `db/migrations/` directory
+- [x] Create `.mise.toml` at repository root
+  - [x] Run `mise use dbmate@2`
+- [x] Create `db/migrations/` directory
+- [x] Add mise tasks for DB migration.
 - [ ] Write initial migrations for animes, cities, gokabous tables
+  - [ ] Run `mise dm-new create_schema_gokabot`
+  - [ ] Run `mise dm-new create_table_animes`
+  - [ ] Run `mise dm-new create_table_cities`
+  - [ ] Run `mise dm-new create_table_gokabous`
 - [ ] Create `tests/api/` directory structure
 - [ ] Write hurl tests for `/callback` endpoint
 - [ ] Write hurl tests for each answerer

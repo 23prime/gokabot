@@ -1,0 +1,27 @@
+[tools]
+dbmate = "2"
+
+[env]
+DATABASE_URL = "postgres://postgres:password@localhost:5432/gokabot_db?sslmode=disable"
+
+[tasks.dev]
+run = "docker compose -f docker-compose.local.yml up"
+
+[tasks.up-db]
+run = "docker compose -f docker-compose.local.yml up postgres"
+
+[tasks.db-migrate-new]
+run = "dbmate new"
+alias = "dm-new"
+
+[tasks.db-migrate]
+run = "dbmate migrate"
+alias = "dm"
+
+[tasks.db-migrate-rollback]
+run = "dbmate rollback"
+alias = "dm-rb"
+
+[tasks.db-migrate-status]
+run = "dbmate status"
+alias = "dm-st"

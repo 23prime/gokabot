@@ -69,24 +69,60 @@ Add Gokabot to your friends from the QR code below, and invite to your groups.
 
 ## Development
 
-### At local
+### Pre-required
 
-Build image for local.
+- [mise](https://mise.jdx.dev): manage tools and tasks
+- [Docker](https://www.docker.com)
+- [Docker Compose](https://docs.docker.com/compose/)
 
-```console
-docker compose -f docker compose.local.yml build
+### Setup
+
+Trust project directory and install tools.
+
+```sh
+mise trust -q && mise install
 ```
 
-Run.
+### Run development server
 
-```console
-docker compose -f docker compose.local.yml up
+```sh
+mise dev
 ```
 
-### Push to ECR
+### DB Migration
 
-Build image and push.
+Use [Dbmate](https://github.com/amacneil/dbmate) for DB schema migration.
 
-```console
-./deploy.sh
-```
+Dbmate is managed by mise.
+
+- Prepare: Up DB
+
+    ```sh
+    mise up-db
+    ```
+
+- Generate a new migration file
+
+    ```sh
+    mise dm-new <migration-name>
+    ```
+
+- Run any pending migrations
+
+    ```sh
+    mise dm
+    ```
+
+- Roll back the most recent migration
+
+    ```sh
+    mise dm-rb
+    ```
+
+- Show the status of all migrations
+
+    ```sh
+    mise dm-st
+    ```
+
+For more commands, see [Commands](https://github.com/amacneil/dbmate?tab=readme-ov-file#commands).
