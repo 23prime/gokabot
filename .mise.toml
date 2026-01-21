@@ -25,3 +25,6 @@ alias = "dm-rb"
 [tasks.db-migrate-status]
 run = "dbmate status"
 alias = "dm-st"
+
+[tasks.psql]
+run = "docker compose -f docker-compose.local.yml exec postgres psql $DATABASE_URL"
