@@ -63,6 +63,17 @@ ALTER SEQUENCE gokabot.animes_id_seq OWNED BY gokabot.animes.id;
 
 
 --
+-- Name: cities; Type: TABLE; Schema: gokabot; Owner: -
+--
+
+CREATE TABLE gokabot.cities (
+    id integer NOT NULL,
+    name character varying(300) NOT NULL,
+    jp_name character varying(300)
+);
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -95,11 +106,33 @@ ALTER TABLE ONLY gokabot.animes
 
 
 --
+-- Name: cities cities_pk; Type: CONSTRAINT; Schema: gokabot; Owner: -
+--
+
+ALTER TABLE ONLY gokabot.cities
+    ADD CONSTRAINT cities_pk PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: cities_jp_name_idx; Type: INDEX; Schema: gokabot; Owner: -
+--
+
+CREATE INDEX cities_jp_name_idx ON gokabot.cities USING btree (jp_name);
+
+
+--
+-- Name: cities_name_idx; Type: INDEX; Schema: gokabot; Owner: -
+--
+
+CREATE INDEX cities_name_idx ON gokabot.cities USING btree (name);
 
 
 --
@@ -115,4 +148,5 @@ ALTER TABLE ONLY public.schema_migrations
 
 INSERT INTO public.schema_migrations (version) VALUES
     ('20260121140511'),
-    ('20260121233325');
+    ('20260121233325'),
+    ('20260121234520');

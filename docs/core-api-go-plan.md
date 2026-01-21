@@ -183,7 +183,7 @@ hurl --test --variable host=http://localhost:8081 tests/api/*.hurl
 - [ ] Write initial migrations for animes, cities, gokabous tables
   - [x] Run `mise dm-new create_schema_gokabot`
   - [x] Run `mise dm-new create_table_animes`
-  - [ ] Run `mise dm-new create_table_cities`
+  - [x] Run `mise dm-new create_table_cities`
   - [ ] Run `mise dm-new create_table_gokabous`
 - [ ] Create `tests/api/` directory structure
 - [ ] Write hurl tests for `/callback` endpoint
