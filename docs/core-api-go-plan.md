@@ -181,7 +181,7 @@ hurl --test --variable host=http://localhost:8081 tests/api/*.hurl
 - [x] Create `db/migrations/` directory
 - [x] Add mise tasks for DB migration.
 - [ ] Write initial migrations for animes, cities, gokabous tables
-  - [ ] Run `mise dm-new create_schema_gokabot`
+  - [x] Run `mise dm-new create_schema_gokabot`
   - [ ] Run `mise dm-new create_table_animes`
   - [ ] Run `mise dm-new create_table_cities`
   - [ ] Run `mise dm-new create_table_gokabous`
