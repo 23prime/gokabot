@@ -55,6 +55,55 @@ dbmate dump
 
 Environment variable: `DATABASE_URL=postgres://postgres:password@localhost:5432/gokabot_db?sslmode=disable`
 
+## Seed Data
+
+Seed files location: `db/seeds/`
+
+```
+db/
+├── migrations/
+├── seeds/
+│   ├── development.sql   # Development data
+│   └── test.sql          # Minimal test data (for hurl tests)
+└── schema.sql
+```
+
+### test.sql Guidelines
+
+- Keep minimal data needed for each answerer test
+- Make idempotent (`TRUNCATE` + `INSERT` or `ON CONFLICT DO NOTHING`)
+
+```sql
+-- Example: db/seeds/test.sql
+TRUNCATE gokabot.animes, gokabot.cities, gokabot.gokabous RESTART IDENTITY;
+
+INSERT INTO gokabot.cities (id, name, jp_name) VALUES
+(1850147, 'Tokyo', '東京');
+
+INSERT INTO gokabot.animes (year, season, day, time, station, title, recommend) VALUES
+(2026, 'winter', 'Mon', '24:00', 'TOKYO MX', 'Test Anime', true);
+```
+
+### mise Tasks for Seeds
+
+```toml
+[tasks.db-seed]
+run = "psql $DATABASE_URL -f db/seeds/development.sql"
+alias = "dm-sd"
+
+[tasks.db-seed-test]
+run = "psql $DATABASE_URL -f db/seeds/test.sql"
+alias = "dm-sd-test"
+
+[tasks.test-api]
+run = """
+dbmate up
+psql $DATABASE_URL -f db/seeds/test.sql
+hurl --test --variable host=http://localhost:8080 tests/api/**/*.hurl
+"""
+alias = "ta"
+```
+
 ## Linting
 
 golangci-lint is configured in `.golangci.yml`:
@@ -185,7 +234,11 @@ hurl --test --variable host=http://localhost:8081 tests/api/*.hurl
   - [x] Run `mise dm-new create_table_animes`
   - [x] Run `mise dm-new create_table_cities`
   - [x] Run `mise dm-new create_table_gokabous`
+- [x] Create `db/seeds/` directory
+  - [x] Write `db/seeds/test.sql` for hurl tests
+  - [x] Add mise tasks for seeding (`db-seed`, `db-seed-test`)
 - [ ] Create `tests/api/` directory structure
+- - [ ] Add mise tasks for testing (`test-api`)
 - [ ] Write hurl tests for `/callback` endpoint
 - [ ] Write hurl tests for each answerer
 - [ ] Verify tests pass against Ruby implementation

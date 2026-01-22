@@ -28,3 +28,11 @@ alias = "dm-st"
 
 [tasks.psql]
 run = "docker compose -f docker-compose.local.yml exec postgres psql $DATABASE_URL"
+
+[tasks.db-seed]
+run = "psql $DATABASE_URL -f db/seeds/development.sql"
+alias = "dm-sd"
+
+[tasks.db-seed-test]
+run = "psql $DATABASE_URL -f db/seeds/test.sql"
+alias = "dm-sd-t"
