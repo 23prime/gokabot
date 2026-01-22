@@ -4,11 +4,14 @@ dbmate = "2"
 [env]
 DATABASE_URL = "postgres://postgres:password@localhost:5432/gokabot_db?sslmode=disable"
 
+[vars]
+dc = "docker compose -f docker-compose.local.yml"
+
 [tasks.dev]
-run = "docker compose -f docker-compose.local.yml up"
+run = "{{vars.dc}} up"
 
 [tasks.up-db]
-run = "docker compose -f docker-compose.local.yml up postgres"
+run = "{{vars.dc}} up postgres"
 
 [tasks.db-migrate-new]
 run = "dbmate new"
@@ -27,12 +30,12 @@ run = "dbmate status"
 alias = "dm-st"
 
 [tasks.psql]
-run = "docker compose -f docker-compose.local.yml exec postgres psql $DATABASE_URL"
+run = "{{vars.dc}} exec postgres psql $DATABASE_URL"
 
 [tasks.db-seed]
-run = "psql $DATABASE_URL -f db/seeds/development.sql"
+run = "{{vars.dc}} exec -T postgres psql $DATABASE_URL < db/seeds/development.sql"
 alias = "dm-sd"
 
 [tasks.db-seed-test]
-run = "psql $DATABASE_URL -f db/seeds/test.sql"
+run = "{{vars.dc}} exec -T postgres psql $DATABASE_URL < db/seeds/test.sql"
 alias = "dm-sd-t"
