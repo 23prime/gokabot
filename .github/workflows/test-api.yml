@@ -27,21 +27,26 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Pull
-        run: |
-          docker compose -f docker-compose.local.yml pull postgres hurl
+        run: mise pull
 
       - name: Build
-        run: |
-          docker compose -f docker-compose.local.yml build gokabot-core-local
+        run: mise build
 
-      - name: Start services
-        run: |
-          docker compose -f docker-compose.local.yml up -d --wait postgres gokabot-core-local
+      - name: Start DB
+        run: mise up-db-d
+
+      - name: DB Migrations
+        run: mise db-migrate
+
+      - name: Seeding
+        run: mise db-seed
+
+      - name: Start API
+        run: mise up-api-d
 
       - name: Run API tests
         run: mise test-api
 
       - name: Show logs on failure
         if: failure()
-        run: |
-          docker compose -f docker-compose.local.yml logs gokabot-core-local
+        run: docker compose -f docker-compose.local.yml logs gokabot-core-local

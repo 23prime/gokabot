@@ -7,11 +7,28 @@ DATABASE_URL = "postgres://postgres:password@localhost:5432/gokabot_db?sslmode=d
 [vars]
 dc = "docker compose -f docker-compose.local.yml"
 
+[tasks.pull]
+run = "{{vars.dc}} pull postgres hurl"
+alias = "pl"
+
+[tasks.build]
+run = "{{vars.dc}} build"
+alias = "bd"
+
 [tasks.dev]
 run = "{{vars.dc}} up"
 
 [tasks.up-db]
 run = "{{vars.dc}} up postgres"
+
+[tasks.up-db-d]
+run = "{{vars.dc}}  up -d --wait postgres"
+
+[tasks.up-api]
+run = "{{vars.dc}} up gokabot-core-local"
+
+[tasks.up-api-d]
+run = "{{vars.dc}} up -d --wait gokabot-core-local"
 
 [tasks.down]
 run = "{{vars.dc}} down"
