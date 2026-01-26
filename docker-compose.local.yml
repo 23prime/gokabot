@@ -11,9 +11,15 @@ services:
       TZ: Asia/Tokyo
       RACK_ENV: development
       DATABASE_URL: postgres://postgres:password@postgres:5432/gokabot_db
+      LINE_CHANNEL_TOKEN: test_channel_token
       LINE_CHANNEL_SECRET: test_channel_secret
-    env_file:
-      - core-api/.env
+      GOKABOU_USER_ID: test_gokabou_user
+      TAKENOKO_USER_ID: test_takenoko_user
+      NGA_GROUP_ID: test_nga_group
+      KMT_GROUP_ID: test_kmt_group
+      OPEN_WEATHER_API_KEY: test_api_keyu
+      DISCORD_TARGET_CHANNEL_ID: test_discord_channel
+      DISCORD_BOT_TOKEN: test_discord_token
     build:
       context: core-api
     ports:
