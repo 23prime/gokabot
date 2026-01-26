@@ -130,8 +130,9 @@ core-api-go/
 ├── internal/
 │   ├── answerer/
 │   │   ├── answerer.go           # Interface definition
+│   │   ├── answerer_test.go      # Unit tests
 │   │   └── registry.go           # Answerer chain (first non-nil wins)
-│   ├── answerers/                # All 10 answerers
+│   ├── answerers/                # All 10 answerers (each with *_test.go)
 │   │   ├── nyokki/
 │   │   ├── gokabou/
 │   │   ├── anime/
@@ -146,11 +147,9 @@ core-api-go/
 │   │   ├── db.go
 │   │   └── models/               # animes, cities, gokabous
 │   ├── handler/                  # HTTP handlers
-│   ├── line/                     # LINE Bot client
-│   ├── discord/                  # Discord client
+│   ├── line/                     # LINE Bot client (signature validation, reply/push)
 │   ├── markov/                   # Markov chain for Gokabou
 │   └── config/
-├── docs/                         # Copy from core-api/docs
 ├── go.mod
 └── Dockerfile
 ```
@@ -188,37 +187,25 @@ type Answerer interface {
 }
 ```
 
-## API Testing (hurl)
+## Testing Strategy
 
-Test files location: `tests/api/`
+**Unit tests (primary):** Go の標準テストで各 answerer のロジックを網羅
+
+```bash
+go test ./...
+```
+
+**E2E tests (minimal):** hurl で LINE 署名検証のみ確認
 
 ```
 tests/
 └── api/
-    ├── callback.hurl           # Generic callback tests
-    ├── answerers/
-    │   ├── nyokki.hurl
-    │   ├── gokabou.hurl
-    │   ├── anime.hurl
-    │   ├── weather.hurl
-    │   ├── webdict.hurl
-    │   ├── denippi.hurl
-    │   ├── tex.hurl
-    │   ├── pigeons.hurl
-    │   ├── dflsearch.hurl
-    │   └── baseballnews.hurl
     └── line/
-        └── callback.hurl       # LINE webhook tests
+        └── callback.hurl       # LINE webhook signature validation
 ```
 
-Run tests against both implementations:
-
 ```bash
-# Test Ruby implementation (default port 8080)
-hurl --test --variable host=http://localhost:8080 tests/api/*.hurl
-
-# Test Go implementation (port 8081)
-hurl --test --variable host=http://localhost:8081 tests/api/*.hurl
+mise test-api
 ```
 
 ## Implementation Phases
@@ -237,11 +224,10 @@ hurl --test --variable host=http://localhost:8081 tests/api/*.hurl
 - [x] Create `db/seeds/` directory
   - [x] Write `db/seeds/test.sql` for hurl tests
   - [x] Add mise tasks for seeding (`db-seed`, `db-seed-test`)
-- [ ] Create `tests/api/` directory structure
-- - [ ] Add mise tasks for testing (`test-api`)
-- [ ] Write hurl tests for `/callback` endpoint
-- [ ] Write hurl tests for each answerer
-- [ ] Verify tests pass against Ruby implementation
+- [x] Create `tests/api/` directory structure
+  - [x] Config Hurl with Docker Compose
+  - [x] Add mise tasks for testing (`test-api`)
+- [x] Write hurl test for LINE signature validation
 
 ### Phase 1: Foundation
 
@@ -277,11 +263,11 @@ hurl --test --variable host=http://localhost:8081 tests/api/*.hurl
 - [ ] Markov chain builder/generator
 - [ ] Gokabou answerer (patterns + Markov)
 
-### Phase 6: API Integrations
+### Phase 6: LINE Integration
 
 - [ ] LINE webhook signature validation (HMAC-SHA256)
-- [ ] LINE reply/push message
-- [ ] Discord push message
+- [ ] LINE reply message
+- [ ] LINE push message
 
 ### Phase 7: Finalization
 
@@ -290,12 +276,10 @@ hurl --test --variable host=http://localhost:8081 tests/api/*.hurl
 - [ ] Dockerfile
 - [ ] README
 
-## API Endpoints (same as Ruby)
+## API Endpoints
 
-- `POST /callback` - Generic callback `{msg, user_id, user_name}`
-- `POST /line/callback` - LINE webhook
-- `POST /line/push` - LINE push message
-- `POST /discord/push` - Discord push message
+- `POST /line/callback` - LINE webhook (with X-Line-Signature validation)
+- `POST /line/push` - LINE push message (internal use)
 
 ## Key Files to Reference
 
@@ -307,13 +291,9 @@ hurl --test --variable host=http://localhost:8081 tests/api/*.hurl
 
 ## Environment Variables
 
-Same as Ruby version:
-
 - `DATABASE_URL`
 - `LINE_CHANNEL_SECRET`
 - `LINE_CHANNEL_TOKEN`
-- `DISCORD_BOT_TOKEN`
-- `DISCORD_TARGET_CHANNEL_ID`
 - `OPEN_WEATHER_API_KEY`
 
 ## Verification
@@ -321,5 +301,4 @@ Same as Ruby version:
 1. Run `golangci-lint run` - No lint errors
 2. Run `go build ./cmd/gokabot` - Build succeeds
 3. Run `go test ./...` - All unit tests pass
-4. Run `hurl --test tests/api/*.hurl` against Go implementation - All API tests pass
-5. Compare hurl test results between Ruby and Go implementations
+4. Run `mise test-api` - LINE signature validation test passes

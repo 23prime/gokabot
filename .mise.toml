@@ -39,3 +39,11 @@ alias = "dm-sd"
 [tasks.db-seed-test]
 run = "{{vars.dc}} exec -T postgres psql $DATABASE_URL < db/seeds/test.sql"
 alias = "dm-sd-t"
+
+[tasks.test-api]
+run = [
+  { task = "db-migrate" },
+  { task = "db-seed-test" },
+  "{{vars.dc}} run --rm hurl",
+]
+alias = "ta"
