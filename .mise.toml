@@ -22,7 +22,7 @@ run = "{{vars.dc}} up"
 run = "{{vars.dc}} up postgres"
 
 [tasks.up-db-d]
-run = "{{vars.dc}}  up -d --wait postgres"
+run = "{{vars.dc}} up -d --wait postgres"
 
 [tasks.up-api]
 run = "{{vars.dc}} up gokabot-core-local"
