@@ -1,23 +1,22 @@
 package main
 
 import (
-	"fmt"
+	"log/slog"
+	"os"
 
 	"github.com/23prime/gokabot-api/internal/config"
+	"github.com/23prime/gokabot-api/internal/logger"
 )
 
 func main() {
-	fmt.Println("Reading...")
-
-	config, err := config.Load()
-
+	cfg, err := config.Load()
 	if err != nil {
-		fmt.Println("Error loading config:", err)
-		return
+		slog.Error("Failed to load config", "error", err)
+		os.Exit(1)
 	}
 
-	// For debug
-	fmt.Println("Database URL:", config.DBURL)
+	slog.SetDefault(logger.NewEmojiLogger(os.Stdout, cfg.LogLevel))
 
-	fmt.Println("🚀 Gokabot API started successfully")
+	slog.Debug("Config loaded")
+	slog.Info("Gokabot API started")
 }

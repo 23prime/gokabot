@@ -13,7 +13,8 @@ Gokabot is a LINE/Discord chatbot written in Ruby with a Vue.js demo frontend. I
 
 ## Repository Structure
 
-- `core-api/` - Ruby/Sinatra backend API (main codebase)
+- `core-api/` - Ruby/Sinatra backend API (legacy)
+- `gokabot-api-go/` - Go backend API (new)
 - `gokabot-demo/` - Vue.js 3 + TypeScript frontend demo
 - `terraform/` - Experimental (can be ignored)
 
@@ -59,6 +60,24 @@ yarn lint
 # Type check
 yarn tsc
 ```
+
+### gokabot-api-go (Go Backend)
+
+```bash
+# Run tests
+mise go-test
+
+# Lint
+mise go-lint
+
+# Build
+mise go-build
+```
+
+#### Testing Rules
+
+- Test public interfaces only (exported functions/types)
+- Use table-driven tests where appropriate
 
 ## Architecture
 

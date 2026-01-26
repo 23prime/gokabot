@@ -5,6 +5,7 @@ golangci-lint = "2"
 
 [env]
 DATABASE_URL = "postgres://postgres:password@localhost:5432/gokabot_db?sslmode=disable"
+LOG_LEVEL = "DEBUG"
 
 [vars]
 dc = "docker compose -f docker-compose.local.yml"
