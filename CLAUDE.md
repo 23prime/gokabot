@@ -35,11 +35,11 @@ cd core-api && bundle exec rubocop
 cd core-api && bundle exec rubocop -a
 
 # Run locally with Docker
-docker compose -f docker compose.local.yml build
-docker compose -f docker compose.local.yml up
+mise build
+mise dev
 
 # Run tests in Docker (used by CI)
-docker compose -f docker compose.api-test.yml run --rm gokabot-core-local rspec
+docker compose -f docker-compose.api-test.yml run --rm gokabot-core-local rspec
 ```
 
 ### gokabot-demo (Vue Frontend)
