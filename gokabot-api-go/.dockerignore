@@ -1,0 +1,6 @@
+bin/
+Dockerfile
+.dockerignore
+.gitignore
+.golangci.yml
+*.md
