@@ -20,6 +20,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Pull
+        run: |
+          docker compose -f docker-compose.local.yml pull
+
       - name: Build
         run: |
           docker compose -f docker-compose.local.yml build gokabot-core-local
