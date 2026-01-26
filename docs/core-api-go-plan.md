@@ -234,7 +234,7 @@ mise test-api
 - [x] Go module setup (`go mod init`)
 - [x] Config linter and formatter and unit testing
 - [x] Dockerize
-- [ ] Config loading from environment variables
+- [x] Config loading from environment variables
 - [ ] Logger setup
 - [ ] Database connection (`database/sql` + `lib/pq`)
 - [ ] 3 models: Anime, City, Gokabou
