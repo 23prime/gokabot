@@ -17,7 +17,7 @@ services:
       TAKENOKO_USER_ID: test_takenoko_user
       NGA_GROUP_ID: test_nga_group
       KMT_GROUP_ID: test_kmt_group
-      OPEN_WEATHER_API_KEY: test_api_keyu
+      OPEN_WEATHER_API_KEY: test_api_key
       DISCORD_TARGET_CHANNEL_ID: test_discord_channel
       DISCORD_BOT_TOKEN: test_discord_token
     build:
