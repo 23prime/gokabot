@@ -1,11 +1,14 @@
 [tools]
 dbmate = "2"
+go = "1.25"
+golangci-lint = "2"
 
 [env]
 DATABASE_URL = "postgres://postgres:password@localhost:5432/gokabot_db?sslmode=disable"
 
 [vars]
 dc = "docker compose -f docker-compose.local.yml"
+go_api_dir = "gokabot-api-go"
 
 [tasks.pull]
 run = "{{vars.dc}} pull postgres hurl"
@@ -67,3 +70,28 @@ run = [
   "{{vars.dc}} run --rm hurl",
 ]
 alias = "ta"
+
+[tasks.go-build]
+run = "go build -o bin/gokabot-api ./cmd/gokabot/main.go"
+alias = "gb"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-run]
+run = "go run ./cmd/gokabot/main.go"
+alias = "gr"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-lint]
+run = "golangci-lint run ./..."
+alias = "gl"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-test]
+run = "go test -v ./..."
+alias = "gt"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-clean]
+run = "go clean && rm -f bin/gokabot-api"
+alias = "gc"
+dir = "{{vars.go_api_dir}}"

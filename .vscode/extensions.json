@@ -1,5 +1,6 @@
 {
   "recommendations": [
-    "JacobPfeifer.pfeifer-hurl"
+    "JacobPfeifer.pfeifer-hurl",
+    "golang.Go"
   ]
 }

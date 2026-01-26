@@ -4,7 +4,7 @@
 
 Ruby/Sinatra の core-api を Go で書き直す。標準ライブラリベースで実装。
 
-**New Directory:** `core-api-go/`
+**New Directory:** `gokabot-api-go/`
 
 ## Prerequisites
 
@@ -124,7 +124,7 @@ golangci-lint run --fix
 ## Project Structure
 
 ```
-core-api-go/
+gokabot-api-go/
 ├── .golangci.yml                 # Linter config
 ├── cmd/gokabot/main.go           # Entry point
 ├── internal/
@@ -231,7 +231,8 @@ mise test-api
 
 ### Phase 1: Foundation
 
-- [ ] Go module setup (`go mod init`)
+- [x] Go module setup (`go mod init`)
+- [x] Config linter and formatter and unit testing
 - [ ] Config loading from environment variables
 - [ ] Logger setup
 - [ ] Database connection (`database/sql` + `lib/pq`)

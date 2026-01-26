@@ -1,23 +1,36 @@
 {
-    // Ruby
-    "[ruby]": {
-        "editor.formatOnSave": true,
-        "editor.tabSize": 2
-    },
-    "ruby.rubocop.useBundler": true,
-    "solargraph.useBundler": true,
-    "solargraph.autoformat": true,
+  // Ruby
+  "[ruby]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  },
+  "ruby.rubocop.useBundler": true,
+  "solargraph.useBundler": true,
+  "solargraph.autoformat": true,
 
-    // JSON
-    "[json]": {
-        "editor.formatOnSave": true,
-        "editor.tabSize": 2
-    },
+  // JSON
+  "[json]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  },
 
-    // YAML
-    "[yaml]": {
-        "editor.formatOnSave": true,
-        "editor.tabSize": 2,
-        "editor.defaultFormatter": "redhat.vscode-yaml"
-    }
+  // YAML
+  "[yaml]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+
+  // Go
+  "[go]": {
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "golang.Go"
+  },
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": ["--path-mode=abs", "--fast-only"],
+  "go.formatTool": "custom",
+  "go.alternateTools": {
+  "customFormatter": "golangci-lint"
+  },
+  "go.formatFlags": ["fmt", "--stdin"]
 }
