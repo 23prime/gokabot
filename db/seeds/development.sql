@@ -1,5 +1,5 @@
--- Test seed data for hurl API tests
--- Run: psql $DATABASE_URL -f db/seeds/test.sql
+-- Development seed data
+-- Run: psql $DATABASE_URL -f db/seeds/development.sql
 
 TRUNCATE gokabot.animes, gokabot.cities, gokabot.gokabous RESTART IDENTITY;
 
