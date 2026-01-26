@@ -13,6 +13,9 @@ run = "{{vars.dc}} up"
 [tasks.up-db]
 run = "{{vars.dc}} up postgres"
 
+[tasks.down]
+run = "{{vars.dc}} down"
+
 [tasks.db-migrate-new]
 run = "dbmate new"
 alias = "dm-new"
