@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mise go-build:*)",
+      "Bash(mise go-lint:*)",
+      "Bash(mise go-test:*)",
+      "Bash(mise go-run:*)"
+    ]
+  }
+}
