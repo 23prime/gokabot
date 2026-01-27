@@ -235,10 +235,10 @@ mise test-api
 - [x] Config linter and formatter and unit testing
 - [x] Dockerize
 - [x] Config loading from environment variables
-- [ ] Logger setup
+- [x] Logger setup
+- [x] Basic HTTP server with `net/http`
 - [ ] Database connection (`database/sql` + `lib/pq`)
 - [ ] 3 models: Anime, City, Gokabou
-- [ ] Basic HTTP server with `net/http`
 - [ ] Answerer interface and Registry
 
 ### Phase 2: Simple Answerers

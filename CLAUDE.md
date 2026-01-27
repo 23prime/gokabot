@@ -72,12 +72,27 @@ mise go-lint
 
 # Build
 mise go-build
+
+# Run server
+mise go-run
+
+# Run server with auto-reload (watches .go, go.mod, go.sum)
+mise go-watch
 ```
 
 #### Testing Rules
 
 - Test public interfaces only (exported functions/types)
 - Use table-driven tests where appropriate
+- Use `want`/`got` naming convention (not `expected`/`actual`)
+- Error message format: `got X, want Y`
+
+#### Project Structure
+
+- `cmd/gokabot/main.go` - Application entry point
+- `internal/config/` - Configuration loading from environment
+- `internal/handler/` - HTTP handlers and middleware
+- `internal/logger/` - Custom slog logger with emoji
 
 ## Architecture
 

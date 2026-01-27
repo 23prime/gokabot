@@ -4,13 +4,20 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"strconv"
 	"strings"
 )
 
 type Config struct {
 	DBURL    string
 	LogLevel slog.Level
+	Port     int
 }
+
+const (
+	defaultLogLevel = slog.LevelInfo
+	defaultPort     = 8080
+)
 
 func Load() (*Config, error) {
 	dbURL := os.Getenv("DATABASE_URL")
@@ -23,6 +30,7 @@ func Load() (*Config, error) {
 	cfg := &Config{
 		DBURL:    dbURL,
 		LogLevel: logLevel,
+		Port:     parsePort(os.Getenv("PORT")),
 	}
 	return cfg, nil
 }
@@ -36,6 +44,19 @@ func parseLogLevel(s string) slog.Level {
 	case "error":
 		return slog.LevelError
 	default:
-		return slog.LevelInfo
+		return defaultLogLevel
 	}
+}
+
+func parsePort(s string) int {
+	if s == "" {
+		return defaultPort
+	}
+
+	port, err := strconv.Atoi(s)
+	if err != nil {
+		return defaultPort
+	}
+
+	return port
 }
