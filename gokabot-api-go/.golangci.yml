@@ -25,6 +25,7 @@ linters:
       exclude-functions:
         - os.Setenv
         - os.Unsetenv
+        - (*database/sql.DB).Close
 
 formatters:
   enable:

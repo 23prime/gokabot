@@ -237,7 +237,7 @@ mise test-api
 - [x] Config loading from environment variables
 - [x] Logger setup
 - [x] Basic HTTP server with `net/http`
-- [ ] Database connection (`database/sql` + `lib/pq`)
+- [x] Database connection (`database/sql` + `lib/pq`)
 - [ ] 3 models: Anime, City, Gokabou
 - [ ] Answerer interface and Registry
 
