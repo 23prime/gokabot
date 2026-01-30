@@ -75,19 +75,25 @@ Add Gokabot to your friends from the QR code below, and invite to your groups.
 - [Docker](https://www.docker.com)
 - [Docker Compose](https://docs.docker.com/compose/)
 
-### Setup
+### Setup and run development server
 
-Trust project directory and install tools.
+1. Trust project directory and install tools.
 
-```sh
-mise trust -q && mise install
-```
+    ```sh
+    mise trust -q && mise install
+    ```
 
-### Run development server
+2. Run DB migration and seeding
 
-```sh
-mise dev
-```
+    ```sh
+    mise setup-db
+    ```
+
+3. Run development server with hot-reloading
+
+    ```sh
+    mise dev
+    ```
 
 ### DB Migration
 

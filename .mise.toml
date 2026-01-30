@@ -30,6 +30,17 @@ run = "{{vars.dc}} up postgres"
 [tasks.up-db-d]
 run = "{{vars.dc}} up -d --wait postgres"
 
+[tasks.down-db]
+run = "{{vars.dc}} down postgres"
+
+[tasks.setup-db]
+run = [
+  { task = "up-db-d" },
+  { task = "db-migrate" },
+  { task = "db-seed" },
+  { task = "down-db" },
+]
+
 [tasks.up-api]
 run = "{{vars.dc}} up gokabot-core-local"
 
