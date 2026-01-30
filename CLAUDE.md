@@ -76,7 +76,8 @@ mise go-build
 # Run server
 mise go-run
 
-# Run server with auto-reload (watches .go, go.mod, go.sum)
+# Run server with auto-reload (Air, watches .go, go.mod, go.sum)
+# Runs lint and tests before each rebuild
 mise go-watch
 ```
 
@@ -91,6 +92,7 @@ mise go-watch
 
 - `cmd/gokabot/main.go` - Application entry point
 - `internal/config/` - Configuration loading from environment
+- `internal/database/` - Database connection (PostgreSQL)
 - `internal/handler/` - HTTP handlers and middleware
 - `internal/logger/` - Custom slog logger with emoji
 
