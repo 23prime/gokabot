@@ -2,7 +2,7 @@
 dbmate = "2"
 go = "1.25"
 golangci-lint = "2"
-watchexec = "latest"
+air = "latest"
 
 [env]
 DATABASE_URL = "postgres://postgres:password@localhost:5432/gokabot_db?sslmode=disable"
@@ -22,7 +22,7 @@ run = "{{vars.dc}} build"
 alias = "bd"
 
 [tasks.dev]
-run = "{{vars.dc}} up"
+run = [{ tasks = ["up-db", "go-watch"] }]
 
 [tasks.up-db]
 run = "{{vars.dc}} up postgres"
@@ -85,7 +85,7 @@ alias = "gr"
 dir = "{{vars.go_api_dir}}"
 
 [tasks.go-watch]
-run = "watchexec -w . -e go,mod,sum -r -- go run ./cmd/gokabot/main.go"
+run = "air"
 alias = "gw"
 dir = "{{vars.go_api_dir}}"
 
