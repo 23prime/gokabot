@@ -14,7 +14,7 @@ dc = "docker compose -f docker-compose.local.yml"
 go_api_dir = "gokabot-api-go"
 
 [tasks.pull]
-run = "{{vars.dc}} pull postgres hurl"
+run = "{{vars.dc}} pull postgres hurl hurl-go"
 alias = "pl"
 
 [tasks.build]
@@ -84,6 +84,21 @@ run = [
   "{{vars.dc}} run --rm hurl",
 ]
 alias = "ta"
+
+[tasks.go-build-docker]
+run = "{{vars.dc}} build gokabot-api-go-local"
+alias = "gbd"
+
+[tasks.go-up-api-d]
+run = "{{vars.dc}} up -d --wait gokabot-api-go-local"
+
+[tasks.test-go-api]
+run = [
+  { task = "db-migrate" },
+  { task = "db-seed-test" },
+  "{{vars.dc}} run --rm hurl-go",
+]
+alias = "tg"
 
 [tasks.go-build]
 run = "go build -o bin/gokabot-api ./cmd/gokabot/main.go"

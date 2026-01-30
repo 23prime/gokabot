@@ -60,6 +60,28 @@ services:
       timeout: 5s
       retries: 30
 
+  gokabot-api-go-local:
+    image: gokabot-api-go-local
+    container_name: gokabot-api-go-local
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/gokabot_db?sslmode=disable
+      PORT: 8081
+      LOG_LEVEL: DEBUG
+    build:
+      context: gokabot-api-go
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8081/healthCheck"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+
   hurl:
     image: ghcr.io/orange-opensource/hurl:7.1.0
     container_name: gokabot-hurl
@@ -76,6 +98,23 @@ services:
       ]
     profiles:
       - test
+
+  hurl-go:
+    image: ghcr.io/orange-opensource/hurl:7.1.0
+    container_name: gokabot-hurl-go
+    volumes:
+      - ./gokabot-api-go/tests:/tests:ro
+    working_dir: /tests
+    command:
+      [
+        "--test",
+        "--glob",
+        "**/*.hurl",
+        "--variable",
+        "host=http://gokabot-api-go-local:8081",
+      ]
+    profiles:
+      - test-go
 
   gokabot-demo:
     image: gokabot-demo
