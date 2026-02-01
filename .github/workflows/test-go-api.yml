@@ -41,13 +41,13 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Pull
-        run: mise pull
+        run: mise dc-pull
 
       - name: Build Go API
-        run: mise go-build-docker
+        run: mise dc-go-build
 
       - name: Start DB
-        run: mise up-db-d
+        run: mise dc-up-db-d
 
       - name: DB Migrations
         run: mise db-migrate
@@ -56,7 +56,7 @@ jobs:
         run: mise db-seed-test
 
       - name: Start Go API
-        run: mise go-up-api-d
+        run: mise dc-go-up-d
 
       - name: Run Go API tests
         run: mise test-go-api

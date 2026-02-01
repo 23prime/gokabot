@@ -31,13 +31,13 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Pull
-        run: mise pull
+        run: mise dc-pull
 
       - name: Build
-        run: mise build
+        run: mise dc-build
 
       - name: Start DB
-        run: mise up-db-d
+        run: mise dc-up-db-d
 
       - name: DB Migrations
         run: mise db-migrate
@@ -46,7 +46,7 @@ jobs:
         run: mise db-seed
 
       - name: Start API
-        run: mise up-api-d
+        run: mise dc-up-api-d
 
       - name: Run API tests
         run: mise test-api

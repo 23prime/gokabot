@@ -45,7 +45,7 @@ cd core-api && bundle exec rubocop
 cd core-api && bundle exec rubocop -a
 
 # Run locally with Docker
-mise build
+mise dc-build
 mise dev
 
 # Run tests in Docker (used by CI)
@@ -88,6 +88,9 @@ mise go-run
 # Run server with auto-reload (Air, watches .go, go.mod, go.sum)
 # Runs lint and tests before each rebuild
 mise go-watch
+
+# Integration test
+mise integration-test
 ```
 
 #### Testing Rules

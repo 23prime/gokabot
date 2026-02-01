@@ -104,7 +104,7 @@ Dbmate is managed by mise.
 - Prepare: Up DB
 
     ```sh
-    mise up-db
+    mise dc-up-db
     ```
 
 - Generate a new migration file

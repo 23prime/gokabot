@@ -13,42 +13,52 @@ PORT = 8081
 dc = "docker compose -f docker-compose.local.yml"
 go_api_dir = "gokabot-api-go"
 
-[tasks.pull]
+# =============================================================================
+# Docker Compose tasks (dc- prefix)
+# =============================================================================
+
+[tasks.dc-pull]
 run = "{{vars.dc}} pull postgres hurl hurl-go"
 alias = "pl"
 
-[tasks.build]
+[tasks.dc-build]
 run = "{{vars.dc}} build"
 alias = "bd"
 
-[tasks.dev]
-run = [{ tasks = ["up-db", "go-watch"] }]
-
-[tasks.up-db]
+[tasks.dc-up-db]
 run = "{{vars.dc}} up postgres"
 
-[tasks.up-db-d]
+[tasks.dc-up-db-d]
 run = "{{vars.dc}} up -d --wait postgres"
 
-[tasks.down-db]
+[tasks.dc-down-db]
 run = "{{vars.dc}} down postgres"
 
-[tasks.setup-db]
-run = [
-  { task = "up-db-d" },
-  { task = "db-migrate" },
-  { task = "db-seed" },
-  { task = "down-db" },
-]
-
-[tasks.up-api]
+[tasks.dc-up-api]
 run = "{{vars.dc}} up gokabot-core-local"
 
-[tasks.up-api-d]
+[tasks.dc-up-api-d]
 run = "{{vars.dc}} up -d --wait gokabot-core-local"
 
-[tasks.down]
+[tasks.dc-down]
 run = "{{vars.dc}} down"
+
+[tasks.dc-psql]
+run = "{{vars.dc}} exec postgres psql $DATABASE_URL"
+
+[tasks.dc-go-build]
+run = "{{vars.dc}} build gokabot-api-go-local"
+alias = "gbd"
+
+[tasks.dc-go-up-d]
+run = "{{vars.dc}} up -d --wait gokabot-api-go-local"
+
+[tasks.dc-go-logs]
+run = "{{vars.dc}} logs gokabot-api-go-local"
+
+# =============================================================================
+# Database tasks
+# =============================================================================
 
 [tasks.db-migrate-new]
 run = "dbmate new"
@@ -66,9 +76,6 @@ alias = "dm-rb"
 run = "dbmate status"
 alias = "dm-st"
 
-[tasks.psql]
-run = "{{vars.dc}} exec postgres psql $DATABASE_URL"
-
 [tasks.db-seed]
 run = "{{vars.dc}} exec -T postgres psql $DATABASE_URL < db/seeds/development.sql"
 alias = "dm-sd"
@@ -77,20 +84,20 @@ alias = "dm-sd"
 run = "{{vars.dc}} exec -T postgres psql $DATABASE_URL < db/seeds/test.sql"
 alias = "dm-sd-t"
 
-[tasks.test-api]
+[tasks.setup-db]
 run = [
+  { task = "dc-up-db-d" },
   { task = "db-migrate" },
-  { task = "db-seed-test" },
-  "{{vars.dc}} run --rm hurl",
+  { task = "db-seed" },
+  { task = "dc-down-db" },
 ]
-alias = "ta"
 
-[tasks.go-build-docker]
-run = "{{vars.dc}} build gokabot-api-go-local"
-alias = "gbd"
+# =============================================================================
+# Composite tasks (dev, test, etc.)
+# =============================================================================
 
-[tasks.go-up-api-d]
-run = "{{vars.dc}} up -d --wait gokabot-api-go-local"
+[tasks.dev]
+run = [{ tasks = ["dc-up-db", "go-watch"] }]
 
 [tasks.test-go-api]
 run = [
@@ -99,6 +106,20 @@ run = [
   "{{vars.dc}} run --rm hurl-go",
 ]
 alias = "tg"
+
+[tasks.integration-test]
+run = [
+  { task = "dc-go-build" },
+  { task = "dc-up-db-d" },
+  { task = "dc-go-up-d" },
+  { task = "test-go-api" },
+  { task = "dc-down" },
+]
+alias = "it"
+
+# =============================================================================
+# Go local tasks
+# =============================================================================
 
 [tasks.go-build]
 run = "go build -o bin/gokabot-api ./cmd/gokabot/main.go"
