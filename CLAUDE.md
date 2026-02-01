@@ -2,10 +2,19 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Language Rules
+## General agent rules
+
+- When users ask questions, answer them instead of doing the work.
+
+### Language Rules
 
 - Claude prompts and responses: Japanese or English
 - Code, comments, commit messages, and documentation: English
+
+### Shell Rules
+
+- Always use `rm -f` (never bare `rm`)
+- Run `git` commands in the current directory (do not use the `-C` option)
 
 ## Project Overview
 
