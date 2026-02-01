@@ -210,72 +210,64 @@ mise test-api
 
 ## Implementation Phases
 
-### Phase 0: Setup
+### Phase 0: Setup (DONE)
 
-- [x] Create `.mise.toml` at repository root
-  - [x] Run `mise use dbmate@2`
-- [x] Create `db/migrations/` directory
-- [x] Add mise tasks for DB migration.
-- [ ] Write initial migrations for animes, cities, gokabous tables
-  - [x] Run `mise dm-new create_schema_gokabot`
-  - [x] Run `mise dm-new create_table_animes`
-  - [x] Run `mise dm-new create_table_cities`
-  - [x] Run `mise dm-new create_table_gokabous`
-- [x] Create `db/seeds/` directory
-  - [x] Write `db/seeds/test.sql` for hurl tests
-  - [x] Add mise tasks for seeding (`db-seed`, `db-seed-test`)
-- [x] Create `tests/api/` directory structure
-  - [x] Config Hurl with Docker Compose
-  - [x] Add mise tasks for testing (`test-api`)
-- [x] Write hurl test for LINE signature validation
+- [x] `.mise.toml` with Go, golangci-lint, hurl, dbmate
+- [x] DB migrations (`db/migrations/`) for schema, animes, cities, gokabous
+- [x] DB seeds (`db/seeds/test.sql`) with mise tasks
+- [x] Hurl integration test framework (`tests/api/`)
 
-### Phase 1: Foundation
+### Phase 1: Foundation (DONE)
 
-- [x] Go module setup (`go mod init`)
-- [x] Config linter and formatter and unit testing
-- [x] Dockerize
+- [x] Go module, linter, formatter, unit test config
+- [x] Dockerfile + Dockerfile.dev + Docker Compose
+- [x] CI/CD (`test-go-api.yml`) with Docker-based integration tests
+- [x] Air hot-reload (`mise go-watch`)
 - [x] Config loading from environment variables
-- [x] Logger setup
-- [x] Basic HTTP server with `net/http`
+- [x] Logger setup (slog with emoji)
+- [x] Basic HTTP server with `net/http` + health check
 - [x] Database connection (`database/sql` + `lib/pq`)
-- [ ] 3 models: Anime, City, Gokabou
-- [ ] Answerer interface and Registry
 
-### Phase 2: Simple Answerers
+### Phase 2: LINE Integration
+
+- [ ] LINE webhook signature validation (HMAC-SHA256)
+- [ ] LINE reply message (HTTP client)
+- [ ] LINE push message (HTTP client)
+- [ ] `POST /line/callback` handler (signature validation + echo reply)
+- [ ] `POST /line/push` handler
+
+### Phase 3: Core Framework
+
+- [ ] Answerer interface and Registry
+- [ ] 3 models: Anime, City, Gokabou
+- [ ] Wire answerer chain into `/line/callback`
+
+### Phase 4: Simple Answerers
 
 - [ ] Nyokki - counting game
 - [ ] Denippi - word chain game
 - [ ] Tex - LaTeX URL builder
 - [ ] Pigeons - CSV random picker
 
-### Phase 3: Database Answerers
+### Phase 5: Database Answerers
 
 - [ ] Anime - schedule queries
 - [ ] Weather - OpenWeatherMap API + Cities DB
 
-### Phase 4: Web Scraping Answerers
+### Phase 6: Web Scraping Answerers
 
 - [ ] DflSearch - Wikiwiki CDN URL builder
 - [ ] WebDict - Niconico, Pixiv, Wikipedia scraping
 - [ ] BaseballNews - Yahoo Baseball scraping
 
-### Phase 5: Markov Chain
+### Phase 7: Markov Chain
 
 - [ ] Kagome tokenizer integration
 - [ ] Markov chain builder/generator
 - [ ] Gokabou answerer (patterns + Markov)
 
-### Phase 6: LINE Integration
+### Phase 8: Finalization
 
-- [ ] LINE webhook signature validation (HMAC-SHA256)
-- [ ] LINE reply message
-- [ ] LINE push message
-
-### Phase 7: Finalization
-
-- [ ] Unit tests for all answerers
-- [ ] Integration tests
-- [ ] Dockerfile
 - [ ] README
 
 ## API Endpoints
