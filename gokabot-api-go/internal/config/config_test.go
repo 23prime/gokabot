@@ -7,6 +7,7 @@ import (
 
 func TestLoad_Success(t *testing.T) {
 	t.Setenv("DATABASE_URL", "postgres://localhost/test")
+	t.Setenv("LINE_CHANNEL_SECRET", "test-secret")
 	t.Setenv("LOG_LEVEL", "DEBUG")
 	t.Setenv("PORT", "8081")
 
@@ -18,6 +19,9 @@ func TestLoad_Success(t *testing.T) {
 	if cfg.DBURL != "postgres://localhost/test" {
 		t.Errorf("DBURL = %q, want %q", cfg.DBURL, "postgres://localhost/test")
 	}
+	if cfg.LineChannelSecret != "test-secret" {
+		t.Errorf("LineChannelSecret = %q, want %q", cfg.LineChannelSecret, "test-secret")
+	}
 	if cfg.LogLevel != slog.LevelDebug {
 		t.Errorf("LogLevel = %v, want %v", cfg.LogLevel, slog.LevelDebug)
 	}
@@ -28,6 +32,19 @@ func TestLoad_Success(t *testing.T) {
 
 func TestLoad_ErrorWhenDatabaseURLNotSet(t *testing.T) {
 	t.Setenv("DATABASE_URL", "")
+	t.Setenv("LINE_CHANNEL_SECRET", "test-secret")
+	t.Setenv("LOG_LEVEL", "DEBUG")
+	t.Setenv("PORT", "8081")
+
+	_, err := Load()
+	if err == nil {
+		t.Fatalf("Load() error = nil, want error")
+	}
+}
+
+func TestLoad_ErrorWhenLineChannelSecretNotSet(t *testing.T) {
+	t.Setenv("DATABASE_URL", "postgres://localhost/test")
+	t.Setenv("LINE_CHANNEL_SECRET", "")
 	t.Setenv("LOG_LEVEL", "DEBUG")
 	t.Setenv("PORT", "8081")
 
@@ -39,6 +56,7 @@ func TestLoad_ErrorWhenDatabaseURLNotSet(t *testing.T) {
 
 func TestLoad_Default(t *testing.T) {
 	t.Setenv("DATABASE_URL", "postgres://localhost/test")
+	t.Setenv("LINE_CHANNEL_SECRET", "test-secret")
 	t.Setenv("LOG_LEVEL", "")
 	t.Setenv("PORT", "")
 

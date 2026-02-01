@@ -70,6 +70,7 @@ services:
       DATABASE_URL: postgres://postgres:password@postgres:5432/gokabot_db?sslmode=disable
       PORT: 8081
       LOG_LEVEL: DEBUG
+      LINE_CHANNEL_SECRET: test_channel_secret
     build:
       context: gokabot-api-go
       dockerfile: Dockerfile.dev

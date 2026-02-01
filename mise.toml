@@ -8,6 +8,7 @@ air = "latest"
 DATABASE_URL = "postgres://postgres:password@localhost:5432/gokabot_db?sslmode=disable"
 LOG_LEVEL = "DEBUG"
 PORT = 8081
+LINE_CHANNEL_SECRET = "test_channel_secret"
 
 [vars]
 dc = "docker compose -f docker-compose.local.yml"

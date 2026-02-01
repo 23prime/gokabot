@@ -32,6 +32,7 @@ func main() {
 
 	// Set up HTTP handlers
 	http.HandleFunc("/healthCheck", handler.RequestLog(handler.HealthCheck(db)))
+	http.HandleFunc("/line/callback", handler.RequestLog(handler.LineCallback(cfg.LineChannelSecret)))
 
 	slog.Info(fmt.Sprintf("Gokabot API started on port %d", cfg.Port))
 

@@ -9,9 +9,10 @@ import (
 )
 
 type Config struct {
-	DBURL    string
-	LogLevel slog.Level
-	Port     int
+	DBURL             string
+	LineChannelSecret string
+	LogLevel          slog.Level
+	Port              int
 }
 
 const (
@@ -25,12 +26,18 @@ func Load() (*Config, error) {
 		return nil, fmt.Errorf("DATABASE_URL must be set")
 	}
 
+	lineChannelSecret := os.Getenv("LINE_CHANNEL_SECRET")
+	if lineChannelSecret == "" {
+		return nil, fmt.Errorf("LINE_CHANNEL_SECRET must be set")
+	}
+
 	logLevel := parseLogLevel(os.Getenv("LOG_LEVEL"))
 
 	cfg := &Config{
-		DBURL:    dbURL,
-		LogLevel: logLevel,
-		Port:     parsePort(os.Getenv("PORT")),
+		DBURL:             dbURL,
+		LineChannelSecret: lineChannelSecret,
+		LogLevel:          logLevel,
+		Port:              parsePort(os.Getenv("PORT")),
 	}
 	return cfg, nil
 }
