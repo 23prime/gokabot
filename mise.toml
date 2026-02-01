@@ -113,8 +113,8 @@ run = [
   { task = "dc-up-db-d" },
   { task = "dc-go-up-d" },
   { task = "test-go-api" },
-  { task = "dc-down" },
 ]
+depends_post = ["dc-down"]
 alias = "it"
 
 # =============================================================================
