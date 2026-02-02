@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-type Response struct {
+type HealthResponse struct {
 	Healthy bool `json:"healthy"`
 	DB      bool `json:"db"`
 }
@@ -16,7 +16,7 @@ func HealthCheck(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		resp := Response{Healthy: true, DB: true}
+		resp := HealthResponse{Healthy: true, DB: true}
 
 		ctx := r.Context()
 

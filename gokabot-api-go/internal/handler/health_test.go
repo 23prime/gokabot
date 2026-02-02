@@ -61,7 +61,7 @@ func TestHealthCheck(t *testing.T) {
 				t.Errorf("Content-Type = %q, want %q", contentType, "application/json")
 			}
 
-			var got Response
+			var got HealthResponse
 			if err := json.NewDecoder(rec.Body).Decode(&got); err != nil {
 				t.Fatalf("failed to decode response: %v", err)
 			}
