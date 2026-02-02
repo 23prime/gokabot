@@ -34,7 +34,7 @@ func main() {
 	http.HandleFunc("/healthCheck", handler.RequestLog(handler.HealthCheck(db)))
 	http.HandleFunc("/line/callback", handler.RequestLog(handler.LineCallback(cfg.LineChannelSecret)))
 
-	slog.Info(fmt.Sprintf("Gokabot API started on port %d", cfg.Port))
+	slog.Info("Gokabot API started", "port", cfg.Port)
 
 	// Start the HTTP server
 	slog.Error(
