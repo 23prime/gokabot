@@ -10,6 +10,8 @@ import (
 	"github.com/23prime/gokabot-api/internal/logger"
 )
 
+var _ http.ResponseWriter = (*responseWriter)(nil)
+
 type responseWriter struct {
 	http.ResponseWriter
 	statusCode int
