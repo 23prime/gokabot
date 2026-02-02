@@ -48,6 +48,14 @@ func (h *emojiHandler) Handle(ctx context.Context, r slog.Record) error {
 	return h.Handler.Handle(ctx, r)
 }
 
+func (h *emojiHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
+	return &emojiHandler{Handler: h.Handler.WithAttrs(attrs)}
+}
+
+func (h *emojiHandler) WithGroup(name string) slog.Handler {
+	return &emojiHandler{Handler: h.Handler.WithGroup(name)}
+}
+
 func NewEmojiLogger(w io.Writer, level slog.Level) *slog.Logger {
 	return slog.New(&emojiHandler{
 		Handler: slog.NewJSONHandler(w, &slog.HandlerOptions{
