@@ -25,9 +25,13 @@ func HealthCheck(db *sql.DB) http.HandlerFunc {
 			resp.Healthy = false
 			resp.DB = false
 			w.WriteHeader(http.StatusInternalServerError)
-		} else {
-			slog.InfoContext(ctx, "Database is healthy")
+			if err := json.NewEncoder(w).Encode(resp); err != nil {
+				slog.ErrorContext(ctx, "Failed to encode health status", "error", err)
+			}
+			return
 		}
+
+		slog.InfoContext(ctx, "Database is healthy")
 
 		if err := json.NewEncoder(w).Encode(resp); err != nil {
 			slog.ErrorContext(ctx, "Failed to encode health status", "error", err)
