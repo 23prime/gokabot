@@ -9,6 +9,8 @@ import (
 
 func LineCallback(channelSecret string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+
 		if r.Method != http.MethodPost {
 			w.WriteHeader(http.StatusMethodNotAllowed)
 			return
@@ -16,12 +18,12 @@ func LineCallback(channelSecret string) http.HandlerFunc {
 
 		cb, err := webhook.ParseRequest(channelSecret, r)
 		if err != nil {
-			slog.Warn("Failed to parse LINE webhook request", "error", err)
+			slog.WarnContext(ctx, "Failed to parse LINE webhook request", "error", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
-		slog.Info("LINE callback received", "events", len(cb.Events))
+		slog.InfoContext(ctx, "LINE callback received", "events", len(cb.Events))
 		w.WriteHeader(http.StatusOK)
 	}
 }

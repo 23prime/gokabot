@@ -36,3 +36,31 @@ func TestNewEmojiLogger(t *testing.T) {
 		})
 	}
 }
+
+func TestEmojiLoggerWithRequestID(t *testing.T) {
+	var buf bytes.Buffer
+	logger := NewEmojiLogger(&buf, slog.LevelDebug)
+
+	ctx := WithRequestID(context.Background(), "test-request-id-123")
+	logger.InfoContext(ctx, "test message")
+
+	output := buf.String()
+	if !strings.Contains(output, "test-request-id-123") {
+		t.Errorf("output %q does not contain request_id", output)
+	}
+	if !strings.Contains(output, "request_id") {
+		t.Errorf("output %q does not contain request_id key", output)
+	}
+}
+
+func TestEmojiLoggerWithoutRequestID(t *testing.T) {
+	var buf bytes.Buffer
+	logger := NewEmojiLogger(&buf, slog.LevelDebug)
+
+	logger.InfoContext(context.Background(), "test message")
+
+	output := buf.String()
+	if strings.Contains(output, "request_id") {
+		t.Errorf("output %q should not contain request_id", output)
+	}
+}

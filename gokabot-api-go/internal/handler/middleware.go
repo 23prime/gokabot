@@ -4,6 +4,10 @@ import (
 	"log/slog"
 	"net/http"
 	"time"
+
+	"github.com/google/uuid"
+
+	"github.com/23prime/gokabot-api/internal/logger"
 )
 
 type responseWriter struct {
@@ -21,14 +25,18 @@ func RequestLog(next http.HandlerFunc) http.HandlerFunc {
 		start := time.Now()
 		rw := &responseWriter{ResponseWriter: w, statusCode: http.StatusOK}
 
-		slog.Info("Request started",
+		requestID := uuid.New().String()
+		ctx := logger.WithRequestID(r.Context(), requestID)
+		r = r.WithContext(ctx)
+
+		slog.InfoContext(ctx, "Request started",
 			"method", r.Method,
 			"path", r.URL.Path,
 		)
 
 		next(rw, r)
 
-		slog.Info("Request completed",
+		slog.InfoContext(ctx, "Request completed",
 			"method", r.Method,
 			"path", r.URL.Path,
 			"status", rw.statusCode,

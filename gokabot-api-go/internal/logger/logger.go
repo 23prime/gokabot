@@ -6,6 +6,23 @@ import (
 	"log/slog"
 )
 
+type contextKey string
+
+const requestIDKey contextKey = "request_id"
+
+// WithRequestID returns a new context with the given request ID.
+func WithRequestID(ctx context.Context, id string) context.Context {
+	return context.WithValue(ctx, requestIDKey, id)
+}
+
+// RequestIDFromContext extracts the request ID from context.
+func RequestIDFromContext(ctx context.Context) string {
+	if id, ok := ctx.Value(requestIDKey).(string); ok {
+		return id
+	}
+	return ""
+}
+
 type emojiHandler struct {
 	slog.Handler
 }
@@ -23,6 +40,11 @@ func (h *emojiHandler) Handle(ctx context.Context, r slog.Record) error {
 		prefix = "🔍 "
 	}
 	r.Message = prefix + r.Message
+
+	if id := RequestIDFromContext(ctx); id != "" {
+		r.AddAttrs(slog.String("request_id", id))
+	}
+
 	return h.Handler.Handle(ctx, r)
 }
 

@@ -18,17 +18,19 @@ func HealthCheck(db *sql.DB) http.HandlerFunc {
 
 		resp := Response{Healthy: true, DB: true}
 
-		if err := db.PingContext(r.Context()); err != nil {
-			slog.Error("Database is unhealthy", "error", err)
+		ctx := r.Context()
+
+		if err := db.PingContext(ctx); err != nil {
+			slog.ErrorContext(ctx, "Database is unhealthy", "error", err)
 			resp.Healthy = false
 			resp.DB = false
 			w.WriteHeader(http.StatusInternalServerError)
 		} else {
-			slog.Info("Database is healthy")
+			slog.InfoContext(ctx, "Database is healthy")
 		}
 
 		if err := json.NewEncoder(w).Encode(resp); err != nil {
-			slog.Error("Failed to encode health status", "error", err)
+			slog.ErrorContext(ctx, "Failed to encode health status", "error", err)
 		}
 	}
 }
