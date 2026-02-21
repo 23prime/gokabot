@@ -24,6 +24,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Create .env from secrets
+        run: |
+          echo "LINE_CHANNEL_TOKEN=${{ secrets.LINE_CHANNEL_TOKEN }}" >> .env
+          echo "LINE_PUSH_TARGET_ID=${{ secrets.LINE_PUSH_TARGET_ID }}" >> .env
+
       - name: Set up mise
         uses: jdx/mise-action@v3
         with:
