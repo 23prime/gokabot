@@ -3,17 +3,26 @@ version: "2"
 
 linters:
   enable:
+    # Defaults
     - govet
     - staticcheck
     - errcheck
-    - unparam
     - unused
-    - ineffassign
+    # Additional
+    - gosec
+    - bidichk
+    - errorlint
+    - bodyclose
+    - unconvert
+    - usestdlibvars
+    - modernize
+    - exhaustive
   exclusions:
     rules:
       - path: _test\.go
         linters:
           - errcheck
+          - gosec
   settings:
     staticcheck:
       checks:
@@ -22,24 +31,21 @@ linters:
     errcheck:
       check-type-assertions: true
       check-blank: true
-      exclude-functions:
-        - os.Setenv
-        - os.Unsetenv
-        - (*database/sql.DB).Close
+    unused:
+      parameters-are-used: false
 
 formatters:
   enable:
-    - gofmt
+    - gofumpt
     - goimports
   settings:
     goimports:
       local-prefixes:
-        - github.com/23prime/gokabot
+        - github.com/23prime/claude-launcher
 
 run:
   timeout: 5m
   modules-download-mode: readonly
-  tests: false
 
 issues:
   max-issues-per-linter: 0
