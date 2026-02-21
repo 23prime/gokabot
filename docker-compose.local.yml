@@ -83,22 +83,6 @@ services:
       retries: 30
       start_period: 10s
 
-  hurl:
-    image: ghcr.io/orange-opensource/hurl:7.1.0
-    container_name: gokabot-hurl
-    volumes:
-      - ./tests:/tests:ro
-    working_dir: /tests
-    command:
-      [
-        "--test",
-        "--glob",
-        "api/**/*.hurl",
-        "--variable",
-        "host=http://gokabot-core-local:8080",
-      ]
-    profiles:
-      - test
 
   runn-go:
     image: ghcr.io/k1low/runn:latest

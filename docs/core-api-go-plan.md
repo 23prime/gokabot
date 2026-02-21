@@ -14,7 +14,6 @@ Tools are managed via mise. Add to `.mise.toml` (repository root):
 [tools]
 go = "1.25"
 golangci-lint = "2"
-hurl = "latest"
 dbmate = "latest"
 ```
 
@@ -64,7 +63,7 @@ db/
 ├── migrations/
 ├── seeds/
 │   ├── development.sql   # Development data
-│   └── test.sql          # Minimal test data (for hurl tests)
+│   └── test.sql          # Minimal test data (for integration tests)
 └── schema.sql
 ```
 
@@ -99,7 +98,7 @@ alias = "dm-sd-test"
 run = """
 dbmate up
 psql $DATABASE_URL -f db/seeds/test.sql
-hurl --test --variable host=http://localhost:8080 tests/api/**/*.hurl
+runn run gokabot-api-go/tests/*.yaml --runner req:http://localhost:8081
 """
 alias = "ta"
 ```
@@ -195,27 +194,26 @@ type Answerer interface {
 go test ./...
 ```
 
-**E2E tests (minimal):** hurl で LINE 署名検証のみ確認
+**E2E tests (minimal):** runn で LINE 署名検証のみ確認
 
 ```
-tests/
-└── api/
-    └── line/
-        └── callback.hurl       # LINE webhook signature validation
+gokabot-api-go/tests/
+├── health-check.yaml           # Health check endpoint
+└── line-callback.yaml          # LINE webhook signature validation
 ```
 
 ```bash
-mise test-api
+mise integration-test
 ```
 
 ## Implementation Phases
 
 ### Phase 0: Setup (DONE)
 
-- [x] `.mise.toml` with Go, golangci-lint, hurl, dbmate
+- [x] `.mise.toml` with Go, golangci-lint, dbmate
 - [x] DB migrations (`db/migrations/`) for schema, animes, cities, gokabous
 - [x] DB seeds (`db/seeds/test.sql`) with mise tasks
-- [x] Hurl integration test framework (`tests/api/`)
+- [x] runn integration test framework (`gokabot-api-go/tests/`)
 
 ### Phase 1: Foundation (DONE)
 
