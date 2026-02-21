@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/23prime/gokabot-api/internal/config"
 	"github.com/23prime/gokabot-api/internal/database"
@@ -41,9 +42,13 @@ func main() {
 	slog.Info("Gokabot API started", "port", cfg.Port)
 
 	// Start the HTTP server
-	slog.Error(
-		"Failed to start server",
-		"error",
-		http.ListenAndServe(fmt.Sprintf(":%d", cfg.Port), nil),
-	)
+	srv := &http.Server{
+		Addr:         fmt.Sprintf(":%d", cfg.Port),
+		ReadTimeout:  30 * time.Second,
+		WriteTimeout: 30 * time.Second,
+		IdleTimeout:  120 * time.Second,
+	}
+	if err := srv.ListenAndServe(); err != nil {
+		slog.Error("Failed to start server", "error", err)
+	}
 }
