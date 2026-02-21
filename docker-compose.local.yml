@@ -71,6 +71,7 @@ services:
       PORT: 8081
       LOG_LEVEL: DEBUG
       LINE_CHANNEL_SECRET: test_channel_secret
+      LINE_CHANNEL_TOKEN: ${LINE_CHANNEL_TOKEN:-}
     build:
       context: gokabot-api-go
       dockerfile: Dockerfile.dev
@@ -90,6 +91,8 @@ services:
     volumes:
       - ./gokabot-api-go/tests:/tests:ro
     working_dir: /tests
+    environment:
+      LINE_PUSH_TARGET_ID: ${LINE_PUSH_TARGET_ID:-}
     command:
       [
         "run",

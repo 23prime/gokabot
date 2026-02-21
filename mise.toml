@@ -5,6 +5,7 @@ golangci-lint = "2"
 air = "latest"
 
 [env]
+_.file = ".env"
 DATABASE_URL = "postgres://postgres:password@localhost:5432/gokabot_db?sslmode=disable"
 LOG_LEVEL = "DEBUG"
 PORT = 8081

@@ -83,13 +83,25 @@ Add Gokabot to your friends from the QR code below, and invite to your groups.
     mise trust -q && mise install
     ```
 
-2. Run DB migration and seeding
+2. Copy `.env.example` to `.env` and fill in your credentials.
+
+    ```sh
+    cp .env.example .env
+    # Edit .env and set LINE_CHANNEL_TOKEN and LINE_PUSH_TARGET_ID
+    ```
+
+    | Variable | Required for | Description |
+    | --- | --- | --- |
+    | `LINE_CHANNEL_TOKEN` | Dev server, integration test | Channel access token from LINE Developers console |
+    | `LINE_PUSH_TARGET_ID` | Integration test only | LINE user ID to receive test push messages |
+
+3. Run DB migration and seeding
 
     ```sh
     mise setup-db
     ```
 
-3. Run development server with hot-reloading
+4. Run development server with hot-reloading
 
     ```sh
     mise dev

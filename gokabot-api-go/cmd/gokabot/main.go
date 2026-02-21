@@ -10,6 +10,7 @@ import (
 	"github.com/23prime/gokabot-api/internal/config"
 	"github.com/23prime/gokabot-api/internal/database"
 	"github.com/23prime/gokabot-api/internal/handler"
+	"github.com/23prime/gokabot-api/internal/line"
 	"github.com/23prime/gokabot-api/internal/logger"
 )
 
@@ -35,9 +36,17 @@ func main() {
 	}()
 	slog.Info("Connected to database")
 
+	// Initialize LINE client
+	lineClient, err := line.New(cfg.LineChannelSecret, cfg.LineChannelToken)
+	if err != nil {
+		slog.Error("Failed to initialize LINE client", "error", err)
+		os.Exit(1)
+	}
+
 	// Set up HTTP handlers
 	http.HandleFunc("/healthCheck", handler.RequestLog(handler.HealthCheck(db)))
-	http.HandleFunc("/line/callback", handler.RequestLog(handler.LineCallback(cfg.LineChannelSecret)))
+	http.HandleFunc("/line/callback", handler.RequestLog(handler.LineCallback(cfg.LineChannelSecret, lineClient)))
+	http.HandleFunc("/line/push", handler.RequestLog(handler.LinePush(lineClient)))
 
 	slog.Info("Gokabot API started", "port", cfg.Port)
 

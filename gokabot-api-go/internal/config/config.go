@@ -11,6 +11,7 @@ import (
 type Config struct {
 	DBURL             string
 	LineChannelSecret string
+	LineChannelToken  string
 	LogLevel          slog.Level
 	Port              int
 }
@@ -31,11 +32,17 @@ func Load() (*Config, error) {
 		return nil, fmt.Errorf("LINE_CHANNEL_SECRET must be set")
 	}
 
+	lineChannelToken := os.Getenv("LINE_CHANNEL_TOKEN")
+	if lineChannelToken == "" {
+		return nil, fmt.Errorf("LINE_CHANNEL_TOKEN must be set")
+	}
+
 	logLevel := parseLogLevel(os.Getenv("LOG_LEVEL"))
 
 	cfg := &Config{
 		DBURL:             dbURL,
 		LineChannelSecret: lineChannelSecret,
+		LineChannelToken:  lineChannelToken,
 		LogLevel:          logLevel,
 		Port:              parsePort(os.Getenv("PORT")),
 	}
