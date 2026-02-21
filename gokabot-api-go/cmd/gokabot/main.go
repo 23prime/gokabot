@@ -27,7 +27,11 @@ func main() {
 		slog.Error("Failed to connect to database", "error", err)
 		os.Exit(1)
 	}
-	defer db.Close()
+	defer func() {
+		if err := db.Close(); err != nil {
+			slog.Error("Failed to close database", "error", err)
+		}
+	}()
 	slog.Info("Connected to database")
 
 	// Set up HTTP handlers
