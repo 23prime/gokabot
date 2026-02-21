@@ -100,19 +100,19 @@ services:
     profiles:
       - test
 
-  hurl-go:
-    image: ghcr.io/orange-opensource/hurl:7.1.0
-    container_name: gokabot-hurl-go
+  runn-go:
+    image: ghcr.io/k1low/runn:latest
+    container_name: gokabot-runn-go
     volumes:
       - ./gokabot-api-go/tests:/tests:ro
     working_dir: /tests
     command:
       [
-        "--test",
-        "--glob",
-        "**/*.hurl",
-        "--variable",
-        "host=http://gokabot-api-go-local:8081",
+        "run",
+        "*.yaml",
+        "--runner",
+        "req:http://gokabot-api-go-local:8081",
+        "--verbose",
       ]
     profiles:
       - test-go

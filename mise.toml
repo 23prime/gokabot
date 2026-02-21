@@ -19,7 +19,7 @@ go_api_dir = "gokabot-api-go"
 # =============================================================================
 
 [tasks.dc-pull]
-run = "{{vars.dc}} pull postgres hurl hurl-go"
+run = "{{vars.dc}} pull postgres hurl runn-go"
 alias = "pl"
 
 [tasks.dc-build]
@@ -104,7 +104,7 @@ run = [{ tasks = ["dc-up-db", "go-watch"] }]
 run = [
   { task = "db-migrate" },
   { task = "db-seed-test" },
-  "{{vars.dc}} run --rm hurl-go",
+  "{{vars.dc}} run --rm runn-go",
 ]
 alias = "tg"
 

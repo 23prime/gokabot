@@ -1,0 +1,68 @@
+desc: LINE callback signature validation
+# Test channel secret: test_channel_secret
+# Signatures computed with: echo -n '<body>' | openssl dgst -sha256 -hmac 'test_channel_secret' -binary | base64
+# Note: runn serializes JSON map keys in alphabetical order
+runners:
+  req: http://localhost:8081
+steps:
+  validSignatureEmptyEvents:
+    desc: Valid signature with empty events should return 200
+    req:
+      /line/callback:
+        post:
+          headers:
+            Content-Type: application/json
+            X-Line-Signature: mDDIqkhmFK977Aoz/X61Z+SomnHnv9VmI2xzNyoGoXc=
+          body:
+            application/json:
+              events: []
+    test: current.res.status == 200
+
+  invalidSignature:
+    desc: Invalid signature should return 400
+    req:
+      /line/callback:
+        post:
+          headers:
+            Content-Type: application/json
+            X-Line-Signature: invalid_signature
+          body:
+            application/json:
+              events: []
+    test: current.res.status == 400
+
+  missingSignature:
+    desc: Missing signature header should return 400
+    req:
+      /line/callback:
+        post:
+          headers:
+            Content-Type: application/json
+          body:
+            application/json:
+              events: []
+    test: current.res.status == 400
+
+  validSignatureWithMessageEvent:
+    desc: Valid signature with message event should return 200
+    # Body serialized by runn (alphabetical key order):
+    # {"events":[{"message":{"id":"12345","text":"hello","type":"text"},"replyToken":"test_reply_token","source":{"type":"user","userId":"U1234567890"},"type":"message"}]}
+    req:
+      /line/callback:
+        post:
+          headers:
+            Content-Type: application/json
+            X-Line-Signature: yRHCnTQHQR+2RMEypk8GSEkBNyYuFwI/Qnz5uslF5V4=
+          body:
+            application/json:
+              events:
+                - message:
+                    id: "12345"
+                    text: hello
+                    type: text
+                  replyToken: test_reply_token
+                  source:
+                    type: user
+                    userId: U1234567890
+                  type: message
+    test: current.res.status == 200
