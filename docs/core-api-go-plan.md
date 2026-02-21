@@ -107,17 +107,14 @@ alias = "ta"
 
 golangci-lint is configured in `.golangci.yml`:
 
-- **Linters:** govet, staticcheck, errcheck, unparam, unused, ineffassign
-- **Formatters:** gofmt, goimports
+- **Linters:** govet, staticcheck, errcheck, unused, gosec, bidichk, errorlint, bodyclose, unconvert, usestdlibvars, modernize, exhaustive
+- **Formatters:** gofumpt, goimports
+- **Note:** `unused.parameters-are-used: false` — unused parameters are flagged; interface methods should omit parameter names, implementations should use parameters (e.g. pass `ctx` to `WithContext`)
 
 Commands:
 
 ```bash
-# Run linter
-golangci-lint run
-
-# Run with auto-fix
-golangci-lint run --fix
+mise go-lint
 ```
 
 ## Project Structure
@@ -127,11 +124,21 @@ gokabot-api-go/
 ├── .golangci.yml                 # Linter config
 ├── cmd/gokabot/main.go           # Entry point
 ├── internal/
-│   ├── answerer/
-│   │   ├── answerer.go           # Interface definition
-│   │   ├── answerer_test.go      # Unit tests
-│   │   └── registry.go           # Answerer chain (first non-nil wins)
-│   ├── answerers/                # All 10 answerers (each with *_test.go)
+│   ├── config/                   # Config loading from environment (DONE)
+│   ├── database/                 # PostgreSQL connection (DONE)
+│   │   └── db.go
+│   ├── handler/                  # HTTP handlers (DONE)
+│   │   ├── health.go
+│   │   ├── line_callback.go      # POST /line/callback (echo reply)
+│   │   ├── line_push.go          # POST /line/push
+│   │   └── middleware.go         # RequestLog
+│   ├── line/                     # LINE Bot client (DONE)
+│   │   └── client.go             # Client interface + LINE Bot SDK v8 impl
+│   ├── logger/                   # slog with emoji (DONE)
+│   ├── answerer/                 # (Phase 3) Interface + Registry
+│   │   ├── answerer.go
+│   │   └── registry.go
+│   ├── answerers/                # (Phase 4-7) All 10 answerers
 │   │   ├── nyokki/
 │   │   ├── gokabou/
 │   │   ├── anime/
@@ -142,30 +149,37 @@ gokabot-api-go/
 │   │   ├── pigeons/
 │   │   ├── dflsearch/
 │   │   └── baseballnews/
-│   ├── database/
-│   │   ├── db.go
-│   │   └── models/               # animes, cities, gokabous
-│   ├── handler/                  # HTTP handlers
-│   ├── line/                     # LINE Bot client (signature validation, reply/push)
-│   ├── markov/                   # Markov chain for Gokabou
-│   └── config/
+│   ├── database/models/          # (Phase 3) animes, cities, gokabous
+│   └── markov/                   # (Phase 7) Markov chain for Gokabou
+├── tests/
+│   ├── health-check.yaml
+│   ├── line-callback.yaml
+│   └── line-push.yaml            # (DONE)
 ├── go.mod
-└── Dockerfile
+└── Dockerfile.dev
 ```
 
 ## Dependencies
 
+Current (`go.mod`):
+
 ```go
 require (
+    github.com/DATA-DOG/go-sqlmock v1.5.2        // DB mock for tests
+    github.com/google/uuid v1.6.0                // Request ID generation
     github.com/lib/pq v1.10.9                    // PostgreSQL driver
-    github.com/PuerkitoBio/goquery v1.8.1       // HTML parsing (web scraping)
-    github.com/ikawaha/kagome/v2 v2.9.0         // Japanese tokenizer (MeCab alternative)
+    github.com/line/line-bot-sdk-go/v8 v8.19.0  // LINE Bot SDK
 )
 ```
 
-- `lib/pq`: PostgreSQL driver (standard database/sql interface)
-- `goquery`: HTML parsing for web scraping (WebDict, BaseballNews, DflSearch)
-- `kagome`: Pure Go Japanese tokenizer (Gokabou Markov chain)
+Planned additions:
+
+```go
+require (
+    github.com/PuerkitoBio/goquery v1.8.1        // HTML parsing (Phase 6: WebDict, BaseballNews, DflSearch)
+    github.com/ikawaha/kagome/v2 v2.9.0          // Japanese tokenizer (Phase 7: Gokabou Markov chain)
+)
+```
 
 ## Answerer Interface
 
@@ -194,12 +208,13 @@ type Answerer interface {
 go test ./...
 ```
 
-**E2E tests (minimal):** runn で LINE 署名検証のみ確認
+**E2E tests (minimal):** runn で HTTP レベルの動作を確認
 
 ```
 gokabot-api-go/tests/
 ├── health-check.yaml           # Health check endpoint
-└── line-callback.yaml          # LINE webhook signature validation
+├── line-callback.yaml          # LINE webhook signature validation
+└── line-push.yaml              # POST /line/push (LINE_PUSH_TARGET_ID が空の場合は実プッシュをスキップ)
 ```
 
 ```bash
@@ -226,13 +241,15 @@ mise integration-test
 - [x] Basic HTTP server with `net/http` + health check
 - [x] Database connection (`database/sql` + `lib/pq`)
 
-### Phase 2: LINE Integration
+### Phase 2: LINE Integration (DONE)
 
-- [ ] LINE webhook signature validation (HMAC-SHA256)
-- [ ] LINE reply message (HTTP client)
-- [ ] LINE push message (HTTP client)
-- [ ] `POST /line/callback` handler (signature validation + echo reply)
-- [ ] `POST /line/push` handler
+- [x] LINE webhook signature validation (HMAC-SHA256)
+- [x] LINE reply message (`internal/line` — LINE Bot SDK v8)
+- [x] LINE push message (`internal/line` — LINE Bot SDK v8)
+- [x] `POST /line/callback` handler (signature validation + echo reply)
+- [x] `POST /line/push` handler
+- [x] `LINE_CHANNEL_TOKEN` を必須環境変数として config に追加
+- [x] `.env` / `.env.example` セットアップ、CI workflow に Secrets 注入
 
 ### Phase 3: Core Framework
 
@@ -283,14 +300,24 @@ mise integration-test
 
 ## Environment Variables
 
+Required (server won't start without these):
+
 - `DATABASE_URL`
 - `LINE_CHANNEL_SECRET`
-- `LINE_CHANNEL_TOKEN`
-- `OPEN_WEATHER_API_KEY`
+- `LINE_CHANNEL_TOKEN` — copy `.env.example` to `.env` and fill in the value
+
+Optional:
+
+- `PORT` (default: 8080)
+- `LOG_LEVEL` (default: INFO)
+- `LINE_PUSH_TARGET_ID` — integration test only; push step is skipped if empty
+- `OPEN_WEATHER_API_KEY` — required for Weather answerer (Phase 5)
 
 ## Verification
 
-1. Run `golangci-lint run` - No lint errors
-2. Run `go build ./cmd/gokabot` - Build succeeds
-3. Run `go test ./...` - All unit tests pass
-4. Run `mise test-api` - LINE signature validation test passes
+```bash
+mise go-test    # Unit tests
+mise go-lint    # Lint
+mise go-build   # Build
+mise integration-test  # Integration tests (requires .env)
+```
