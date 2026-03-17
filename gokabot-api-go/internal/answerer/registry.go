@@ -1,6 +1,14 @@
 package answerer
 
-const maxResponseRunes = 2000
+import (
+	"log/slog"
+	"reflect"
+)
+
+const (
+	maxResponseRunes = 2000
+	maxLogRunes      = 100
+)
 
 // Registry holds the answerer chain and dispatches messages to them in order.
 type Registry struct {
@@ -27,8 +35,24 @@ func (r *Registry) Dispatch(data MessageData) *Response {
 			resp.Text = string(runes[:maxResponseRunes])
 		}
 
+		name := reflect.TypeOf(a).Elem().Name()
+		slog.Info("answerer matched",
+			"answerer", name,
+			"msg", truncate(data.Message),
+			"reply", truncate(resp.Text),
+			"replyType", resp.ReplyType,
+		)
 		return resp
 	}
 
+	slog.Info("answerer matched", "answerer", "none", "msg", truncate(data.Message))
 	return nil
+}
+
+func truncate(s string) string {
+	runes := []rune(s)
+	if len(runes) > maxLogRunes {
+		return string(runes[:maxLogRunes]) + "..."
+	}
+	return s
 }
