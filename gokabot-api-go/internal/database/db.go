@@ -1,12 +1,15 @@
 package database
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"time"
 
 	_ "github.com/lib/pq"
 )
+
+const pingTimeout = 5 * time.Second
 
 func Connect(dbURL string) (*sql.DB, error) {
 	db, err := sql.Open("postgres", dbURL)
@@ -18,7 +21,10 @@ func Connect(dbURL string) (*sql.DB, error) {
 	db.SetMaxIdleConns(5)
 	db.SetConnMaxLifetime(5 * time.Minute)
 
-	if pingErr := db.Ping(); pingErr != nil {
+	ctx, cancel := context.WithTimeout(context.Background(), pingTimeout)
+	defer cancel()
+
+	if pingErr := db.PingContext(ctx); pingErr != nil {
 		if closeErr := db.Close(); closeErr != nil {
 			return nil, errors.Join(pingErr, closeErr)
 		}
