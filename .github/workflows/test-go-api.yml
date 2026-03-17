@@ -1,4 +1,4 @@
-name: Test Go API
+name: Integration Test Go API
 
 on:
   push:
