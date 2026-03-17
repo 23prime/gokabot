@@ -91,6 +91,10 @@ mise go-watch
 
 # Integration test
 mise integration-test
+
+# Smoke test — exercises each answerer against real APIs/DB
+# Requires: DB running (mise dc-up-db-d), OPEN_WEATHER_API_KEY in .env (optional)
+mise go-smoke
 ```
 
 #### Testing Rules

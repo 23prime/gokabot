@@ -192,3 +192,9 @@ dir = "{{vars.go_api_dir}}"
 description = "Check for vulnerabilities in dependencies"
 run = "govulncheck ./..."
 dir = "{{vars.go_api_dir}}"
+
+[tasks.go-smoke]
+description = "Run smoke tests against real APIs and DB (requires DATABASE_URL and running DB)"
+run = "go run ./cmd/smoke/main.go"
+alias = "gs"
+dir = "{{vars.go_api_dir}}"
