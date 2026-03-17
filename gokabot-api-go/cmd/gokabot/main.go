@@ -8,10 +8,12 @@ import (
 	"time"
 
 	"github.com/23prime/gokabot-api/internal/answerer"
+	"github.com/23prime/gokabot-api/internal/answerers/anime"
 	"github.com/23prime/gokabot-api/internal/answerers/denippi"
 	"github.com/23prime/gokabot-api/internal/answerers/nyokki"
 	"github.com/23prime/gokabot-api/internal/answerers/pigeons"
 	"github.com/23prime/gokabot-api/internal/answerers/tex"
+	"github.com/23prime/gokabot-api/internal/answerers/weather"
 	"github.com/23prime/gokabot-api/internal/config"
 	"github.com/23prime/gokabot-api/internal/database"
 	"github.com/23prime/gokabot-api/internal/handler"
@@ -51,6 +53,8 @@ func main() {
 	// Set up answerer chain
 	registry := answerer.NewRegistry(
 		nyokki.New(),
+		anime.New(db),
+		weather.New(db, cfg.OpenWeatherAPIKey),
 		denippi.New(),
 		tex.New(),
 		pigeons.New(db),

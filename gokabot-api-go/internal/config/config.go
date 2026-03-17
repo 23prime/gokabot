@@ -12,6 +12,7 @@ type Config struct {
 	DBURL             string
 	LineChannelSecret string
 	LineChannelToken  string
+	OpenWeatherAPIKey string
 	LogLevel          slog.Level
 	Port              int
 }
@@ -43,6 +44,7 @@ func Load() (*Config, error) {
 		DBURL:             dbURL,
 		LineChannelSecret: lineChannelSecret,
 		LineChannelToken:  lineChannelToken,
+		OpenWeatherAPIKey: os.Getenv("OPEN_WEATHER_API_KEY"),
 		LogLevel:          logLevel,
 		Port:              parsePort(os.Getenv("PORT")),
 	}
