@@ -8,13 +8,13 @@ on:
       - "gokabot-api-go/**"
       - "db/migrations/**"
       - "gokabot-api-go/tests/**"
-      - "docker-compose.local.yml"
+      - "docker-compose.yml"
   pull_request:
     paths:
       - "gokabot-api-go/**"
       - "db/migrations/**"
       - "gokabot-api-go/tests/**"
-      - "docker-compose.local.yml"
+      - "docker-compose.yml"
 
 jobs:
   test:
@@ -68,8 +68,8 @@ jobs:
 
       - name: Show logs on failure
         if: failure()
-        run: docker compose -f docker-compose.local.yml logs gokabot-api-go-local
+        run: docker compose logs gokabot-api-go-local
 
       - name: Cleanup
         if: always()
-        run: docker compose -f docker-compose.local.yml down -v
+        run: docker compose down -v
