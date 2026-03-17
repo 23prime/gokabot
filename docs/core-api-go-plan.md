@@ -251,39 +251,40 @@ mise integration-test
 - [x] `LINE_CHANNEL_TOKEN` を必須環境変数として config に追加
 - [x] `.env` / `.env.example` セットアップ、CI workflow に Secrets 注入
 
-### Phase 3: Core Framework
+### Phase 3: Core Framework (DONE)
 
-- [ ] Answerer interface and Registry
-- [ ] 3 models: Anime, City, Gokabou
-- [ ] Wire answerer chain into `/line/callback`
+- [x] Answerer interface and Registry
+- [x] Wire answerer chain into `/line/callback`
 
-### Phase 4: Simple Answerers
+### Phase 4: Simple Answerers (DONE)
 
-- [ ] Nyokki - counting game
-- [ ] Denippi - word chain game
-- [ ] Tex - LaTeX URL builder
-- [ ] Pigeons - CSV random picker
+- [x] Nyokki - counting game
+- [x] Denippi - word chain game
+- [x] Tex - LaTeX URL builder
+- [x] Pigeons - yukarin_mails DB table
 
-### Phase 5: Database Answerers
+### Phase 5: Database Answerers (DONE)
 
-- [ ] Anime - schedule queries
-- [ ] Weather - OpenWeatherMap API + Cities DB
+- [x] Anime - schedule queries
+- [x] Weather - OpenWeatherMap API + Cities DB
 
-### Phase 6: Web Scraping Answerers
+### Phase 6: Web Scraping Answerers (DONE)
 
-- [ ] DflSearch - Wikiwiki CDN URL builder
-- [ ] WebDict - Niconico, Pixiv, Wikipedia scraping
-- [ ] BaseballNews - Yahoo Baseball scraping
+- [x] SearchDolls - Wikiwiki CDN URL builder (note: DflSearch renamed)
+- [x] WebDict - Niconico, Pixiv, Wikipedia scraping
+- [x] BaseballNews - npb.jp scraping (Yahoo Baseball was broken)
 
-### Phase 7: Markov Chain
+### Phase 7: Markov Chain (DONE)
 
-- [ ] Kagome tokenizer integration
-- [ ] Markov chain builder/generator
-- [ ] Gokabou answerer (patterns + Markov)
+- [x] Kagome tokenizer integration (kagome/v2 with IPA dict)
+- [x] Markov chain builder/generator (3-gram, sentinel boundaries)
+- [x] Gokabou answerer (fixed patterns + Markov)
 
-### Phase 8: Finalization
+### Phase 8: Finalization (DONE)
 
-- [ ] README
+- [x] README (`gokabot-api-go/README.md`)
+- [x] Smoke test runner (`cmd/smoke/main.go`, `mise go-smoke`)
+- [x] `.gitignore` cleanup
 
 ## API Endpoints
 
