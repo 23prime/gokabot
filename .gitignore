@@ -2,3 +2,19 @@
 bin/
 tmp/
 gokabot-api-go/main
+
+# Logs
+*.log
+
+# Terraform / Terragrunt
+**/.terraform/
+**/.terragrunt-cache/
+**/backend.tf
+**/provider.tf
+*.tfstate
+*.tfstate.backup
+*.tfplan
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json

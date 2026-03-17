@@ -7,6 +7,8 @@ go = "1.25"
 golangci-lint = "2"
 air = "latest"
 "go:golang.org/x/vuln/cmd/govulncheck" = "latest"
+terraform = "1"
+terragrunt = "latest"
 
 [env]
 _.file = ".env"
@@ -198,3 +200,24 @@ description = "Run smoke tests against real APIs and DB (requires DATABASE_URL a
 run = "go run ./cmd/smoke/main.go"
 alias = "gs"
 dir = "{{vars.go_api_dir}}"
+
+# Terraform / Terragrunt tasks (tg- prefix)
+[tasks.tg-init]
+description = "Run terragrunt init for all infrastructure modules"
+run = "terragrunt init --all"
+dir = "infrastructure"
+
+[tasks.tg-plan]
+description = "Run terragrunt plan for all infrastructure modules"
+run = "terragrunt plan --all"
+dir = "infrastructure"
+
+[tasks.tg-apply]
+description = "Run terragrunt apply for all infrastructure modules"
+run = "terragrunt apply --all --auto-approve --non-interactive"
+dir = "infrastructure"
+
+[tasks.tg-out]
+description = "Run terragrunt output for all infrastructure modules"
+run = "terragrunt output --all"
+dir = "infrastructure"
