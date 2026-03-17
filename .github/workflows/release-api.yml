@@ -7,6 +7,7 @@ on:
     paths:
       - "gokabot-api-go/**"
       - ".github/workflows/release-api.yml"
+  workflow_dispatch:
 
 jobs:
   release:
