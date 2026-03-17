@@ -1,8 +1,12 @@
+# ================================================================
+# Tools
+# ================================================================
 [tools]
 dbmate = "2"
 go = "1.25"
 golangci-lint = "2"
 air = "latest"
+"go:golang.org/x/vuln/cmd/govulncheck" = "latest"
 
 [env]
 _.file = ".env"
@@ -15,10 +19,34 @@ LINE_CHANNEL_SECRET = "test_channel_secret"
 dc = "docker compose -f docker-compose.local.yml"
 go_api_dir = "gokabot-api-go"
 
-# =============================================================================
-# Docker Compose tasks (dc- prefix)
-# =============================================================================
 
+# ================================================================
+# Tasks
+# See: https://mise.jdx.dev/tasks/toml-tasks.html
+# ================================================================
+
+# Global
+[tasks.setup]
+description = "Setup tools"
+run = ["mise trust -yq", "mise install"]
+alias = "s"
+
+[tasks.fix]
+description = "Fix all issues"
+depends = ["go-fix"]
+alias = "f"
+
+[tasks.check]
+description = "Check for all issues"
+depends = ["go-check"]
+alias = "c"
+
+[tasks.fix-and-check]
+run = [{ task = "fix" }, { task = "check" }]
+description = "Fix all issues and check for issues"
+alias = "fc"
+
+# Docker Compose tasks (dc- prefix)
 [tasks.dc-pull]
 run = "{{vars.dc}} pull postgres runn-go"
 alias = "pl"
@@ -58,10 +86,7 @@ run = "{{vars.dc}} up -d --wait gokabot-api-go-local"
 [tasks.dc-go-logs]
 run = "{{vars.dc}} logs gokabot-api-go-local"
 
-# =============================================================================
-# Database tasks
-# =============================================================================
-
+# Database
 [tasks.db-migrate-new]
 run = "dbmate new"
 alias = "dm-new"
@@ -94,10 +119,7 @@ run = [
   { task = "dc-down-db" },
 ]
 
-# =============================================================================
 # Composite tasks (dev, test, etc.)
-# =============================================================================
-
 [tasks.dev]
 run = [{ tasks = ["dc-up-db", "go-watch"] }]
 
@@ -119,36 +141,54 @@ run = [
 depends_post = ["dc-down"]
 alias = "it"
 
-# =============================================================================
 # Go local tasks
-# =============================================================================
-
 [tasks.go-build]
+description = "Build the Go API server binary"
 run = "go build -o bin/gokabot-api ./cmd/gokabot/main.go"
 alias = "gb"
 dir = "{{vars.go_api_dir}}"
 
 [tasks.go-run]
+description = "Run the Go API server"
 run = "go run ./cmd/gokabot/main.go"
 alias = "gr"
 dir = "{{vars.go_api_dir}}"
 
 [tasks.go-watch]
+description = "Run with live reload using Air"
 run = "air"
 alias = "gw"
 dir = "{{vars.go_api_dir}}"
 
-[tasks.go-lint]
-run = "golangci-lint run ./..."
-alias = "gl"
-dir = "{{vars.go_api_dir}}"
-
 [tasks.go-test]
+description = "Run tests"
 run = "go test -v ./..."
 alias = "gt"
 dir = "{{vars.go_api_dir}}"
 
 [tasks.go-clean]
+description = "Clean build artifacts"
 run = "go clean && rm -f bin/gokabot-api"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-lint]
+description = "Run golangci-lint"
+run = "golangci-lint run"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-fix]
+description = "Run golangci-lint auto-fix (formatting and lint fixes)"
+run = "golangci-lint run --fix"
+alias = "gf"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-check]
+description = "Run vulnerability scan, linter, and unit tests"
+run = [{ task = "go-vuln" }, { task = "go-lint" }, { task = "go-test" }]
 alias = "gc"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-vuln]
+description = "Check for vulnerabilities in dependencies"
+run = "govulncheck ./..."
 dir = "{{vars.go_api_dir}}"
