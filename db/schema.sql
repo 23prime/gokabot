@@ -1,6 +1,6 @@
 \restrict dbmate
 
--- Dumped from database version 16.11 (Debian 16.11-1.pgdg13+1)
+-- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
 
 SET statement_timeout = 0;
@@ -105,6 +105,15 @@ ALTER SEQUENCE gokabot.gokabous_id_seq OWNED BY gokabot.gokabous.id;
 
 
 --
+-- Name: schema_migrations; Type: TABLE; Schema: gokabot; Owner: -
+--
+
+CREATE TABLE gokabot.schema_migrations (
+    version character varying NOT NULL
+);
+
+
+--
 -- Name: yukarin_mails; Type: TABLE; Schema: gokabot; Owner: -
 --
 
@@ -199,6 +208,14 @@ ALTER TABLE ONLY gokabot.gokabous
 
 
 --
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: gokabot; Owner: -
+--
+
+ALTER TABLE ONLY gokabot.schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
 -- Name: yukarin_mails yukarin_mails_pkey; Type: CONSTRAINT; Schema: gokabot; Owner: -
 --
 
@@ -239,7 +256,7 @@ CREATE INDEX cities_name_idx ON gokabot.cities USING btree (name);
 -- Dbmate schema migrations
 --
 
-INSERT INTO public.schema_migrations (version) VALUES
+INSERT INTO gokabot.schema_migrations (version) VALUES
     ('20260121140511'),
     ('20260121233325'),
     ('20260121234520'),

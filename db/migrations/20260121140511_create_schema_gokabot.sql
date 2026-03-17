@@ -1,5 +1,5 @@
 -- migrate:up
-CREATE SCHEMA gokabot;
+CREATE SCHEMA IF NOT EXISTS gokabot;
 
 -- migrate:down
 DROP SCHEMA gokabot;
