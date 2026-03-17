@@ -16,6 +16,6 @@ FROM gcr.io/distroless/static-debian12:nonroot
 
 COPY --from=builder /gokabot-api /gokabot-api
 
-EXPOSE 8080
+EXPOSE 8081
 
 ENTRYPOINT ["/gokabot-api"]
