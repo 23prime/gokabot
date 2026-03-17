@@ -32,7 +32,7 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:23prime/gokabot:ref:refs/heads/main"]
+      values   = ["repo:23prime/gokabot:*"]
     }
   }
 }
@@ -49,15 +49,13 @@ resource "aws_iam_role" "github_actions" {
 data "aws_iam_policy_document" "lightsail_push" {
   statement {
     actions = [
-      "lightsail:PushContainerImage",
+      "lightsail:CreateContainerServiceRegistryLogin",
       "lightsail:RegisterContainerImage",
       "lightsail:GetContainerImages",
       "lightsail:GetContainerServiceDeployments",
       "lightsail:CreateContainerServiceDeployment",
     ]
-    resources = [
-      "arn:aws:lightsail:*:${data.aws_caller_identity.current.account_id}:ContainerService/gokabot-api",
-    ]
+    resources = ["*"]
   }
 }
 
