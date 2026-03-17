@@ -87,11 +87,12 @@ Add Gokabot to your friends from the QR code below, and invite to your groups.
 
     ```sh
     cp .env.example .env
-    # Edit .env and set LINE_CHANNEL_TOKEN and LINE_PUSH_TARGET_ID
+    # Edit .env and fill in your credentials
     ```
 
     | Variable | Required for | Description |
     | --- | --- | --- |
+    | `LINE_CHANNEL_SECRET` | Dev server, integration test | Channel secret from LINE Developers console |
     | `LINE_CHANNEL_TOKEN` | Dev server, integration test | Channel access token from LINE Developers console |
     | `LINE_PUSH_TARGET_ID` | Integration test only | LINE user ID to receive test push messages |
 
