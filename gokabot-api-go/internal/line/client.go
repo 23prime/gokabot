@@ -19,8 +19,11 @@ type lineClient struct {
 
 // New creates a new LINE Client. Returns an error if channelSecret or channelToken is empty.
 func New(channelSecret, channelToken string) (Client, error) {
-	if channelSecret == "" || channelToken == "" {
-		return nil, fmt.Errorf("channelSecret and channelToken must not be empty")
+	if channelSecret == "" {
+		return nil, fmt.Errorf("channelSecret must not be empty")
+	}
+	if channelToken == "" {
+		return nil, fmt.Errorf("channelToken must not be empty")
 	}
 
 	bot, err := linebot.New(channelSecret, channelToken)

@@ -1,7 +1,10 @@
 package handler
 
 import (
+	"bufio"
+	"io"
 	"log/slog"
+	"net"
 	"net/http"
 	"time"
 
@@ -20,6 +23,26 @@ type responseWriter struct {
 func (rw *responseWriter) WriteHeader(code int) {
 	rw.statusCode = code
 	rw.ResponseWriter.WriteHeader(code)
+}
+
+func (rw *responseWriter) Flush() {
+	if f, ok := rw.ResponseWriter.(http.Flusher); ok {
+		f.Flush()
+	}
+}
+
+func (rw *responseWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
+	if h, ok := rw.ResponseWriter.(http.Hijacker); ok {
+		return h.Hijack()
+	}
+	return nil, nil, http.ErrNotSupported
+}
+
+func (rw *responseWriter) ReadFrom(r io.Reader) (n int64, err error) {
+	if rf, ok := rw.ResponseWriter.(io.ReaderFrom); ok {
+		return rf.ReadFrom(r)
+	}
+	return io.Copy(rw.ResponseWriter, r)
 }
 
 func RequestLog(next http.HandlerFunc) http.HandlerFunc {
