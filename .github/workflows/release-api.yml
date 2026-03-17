@@ -7,13 +7,13 @@ on:
     paths:
       - "gokabot-api-go/**"
       - ".github/workflows/release-api.yml"
-  pull_request:
-    paths:
-      - "gokabot-api-go/**"
-      - ".github/workflows/release-api.yml"
+
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout
@@ -22,11 +22,26 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::678084882233:role/gokabot-github-actions
+          aws-region: ap-northeast-1
+
       - name: Build image
         uses: docker/build-push-action@v6
         with:
           context: gokabot-api-go
           push: false
+          load: true
           tags: gokabot-api:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Push to Lightsail registry
+        run: |
+          aws lightsail push-container-image \
+            --region ap-northeast-1 \
+            --service-name gokabot-api \
+            --label gokabot-api \
+            --image gokabot-api:${{ github.sha }}
