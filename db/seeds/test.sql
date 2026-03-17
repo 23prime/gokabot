@@ -1,7 +1,7 @@
 -- Test seed data for integration tests
 -- Run: psql $DATABASE_URL -f db/seeds/test.sql
 
-TRUNCATE gokabot.animes, gokabot.cities, gokabot.gokabous RESTART IDENTITY;
+TRUNCATE gokabot.animes, gokabot.cities, gokabot.gokabous, gokabot.yukarin_mails RESTART IDENTITY;
 
 -- =============================================================================
 -- Cities (Weather answerer)
@@ -92,3 +92,12 @@ INSERT INTO gokabot.gokabous (reg_date, sentence) VALUES
 ('2026-01-13', '嬉しいことがあると一日中幸せ'),
 ('2026-01-14', '幸せな気分で過ごしたい'),
 ('2026-01-15', '過ごしやすい季節になってきた');
+
+-- =============================================================================
+-- Yukarin Mails (Pigeons answerer)
+-- =============================================================================
+
+INSERT INTO gokabot.yukarin_mails (mail_date, subject, body) VALUES
+('2018-09-10', '9/10', 'とんこつラーメン食べたい…\nと検索しながら寝落ちてた。。\n\n田村ゆかり'),
+('2018-09-08', '9/8', 'お腹いっぱいぱーい。\nエンゼルパイたべぱい。\n\n田村ゆかり'),
+('2018-08-17', '8/17-2', '今日も日傘を忘れました。\n\n田村ゆかり');

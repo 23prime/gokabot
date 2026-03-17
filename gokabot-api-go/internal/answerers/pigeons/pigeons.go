@@ -1,42 +1,31 @@
 package pigeons
 
 import (
-	_ "embed"
-	"encoding/csv"
-	"math/rand/v2"
+	"context"
+	"database/sql"
+	"fmt"
+	"log/slog"
 	"regexp"
-	"strings"
 
 	"github.com/23prime/gokabot-api/internal/answerer"
 )
 
-//go:embed yukarinmails.csv
-var mailsCSV []byte
-
 var triggerRe = regexp.MustCompile(`鳩|ゆかり|はと`)
 
+const query = `
+SELECT subject, body
+FROM gokabot.yukarin_mails
+OFFSET FLOOR(RANDOM() * (SELECT COUNT(*) FROM gokabot.yukarin_mails))
+LIMIT 1`
+
 // Answerer responds to messages containing "鳩", "ゆかり", or "はと" with a
-// random mail from yukarinmails.csv (subject + newline + body).
+// random mail from the yukarin_mails table (subject + newline + body).
 type Answerer struct {
-	mails [][3]string // [date, subject, body]
+	db *sql.DB
 }
 
-func New() *Answerer {
-	r := csv.NewReader(strings.NewReader(string(mailsCSV)))
-	r.FieldsPerRecord = -1 // allow variable fields
-	records, err := r.ReadAll()
-	if err != nil {
-		panic("pigeons: failed to parse yukarinmails.csv: " + err.Error())
-	}
-
-	var mails [][3]string
-	for _, rec := range records {
-		if len(rec) >= 3 {
-			mails = append(mails, [3]string{rec[0], rec[1], rec[2]})
-		}
-	}
-
-	return &Answerer{mails: mails}
+func New(db *sql.DB) *Answerer {
+	return &Answerer{db: db}
 }
 
 func (a *Answerer) Answer(data answerer.MessageData) *answerer.Response {
@@ -44,9 +33,20 @@ func (a *Answerer) Answer(data answerer.MessageData) *answerer.Response {
 		return nil
 	}
 
-	mail := a.mails[rand.IntN(len(a.mails))] //nolint:gosec
+	subject, body, err := a.pickMail(context.Background())
+	if err != nil {
+		slog.Warn("pigeons: failed to pick mail", "error", err)
+		return nil
+	}
+
 	return &answerer.Response{
-		Text:      mail[1] + "\n" + mail[2],
+		Text:      fmt.Sprintf("%s\n%s", subject, body),
 		ReplyType: "text",
 	}
+}
+
+func (a *Answerer) pickMail(ctx context.Context) (subject, body string, err error) {
+	row := a.db.QueryRowContext(ctx, query)
+	err = row.Scan(&subject, &body)
+	return
 }
