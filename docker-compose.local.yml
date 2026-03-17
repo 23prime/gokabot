@@ -67,11 +67,14 @@ services:
       postgres:
         condition: service_healthy
     environment:
+      TZ: Asia/Tokyo
       DATABASE_URL: postgres://postgres:password@postgres:5432/gokabot_db?sslmode=disable
       PORT: 8081
       LOG_LEVEL: DEBUG
       LINE_CHANNEL_SECRET: test_channel_secret
       LINE_CHANNEL_TOKEN: ${LINE_CHANNEL_TOKEN:-}
+      OPEN_WEATHER_API_KEY: ${OPEN_WEATHER_API_KEY:-}
+      GOKABOU_USER_ID: ${GOKABOU_USER_ID:-}
     build:
       context: gokabot-api-go
       dockerfile: Dockerfile.dev
