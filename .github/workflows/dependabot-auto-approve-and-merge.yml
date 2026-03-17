@@ -1,0 +1,25 @@
+name: Dependabot Auto Approve and Merge
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  approve-and-merge:
+    runs-on: ubuntu-latest
+
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Dependabot Auto Approve and Merge
+        uses: 23prime/simple-dependabot-auto-approve-and-merge@v1
+        with:
+          pr-url: ${{ github.event.pull_request.html_url }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
