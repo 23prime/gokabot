@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/23prime/gokabot-api/internal/answerer"
 )
 
 func signBody(body []byte, secret string) string {
@@ -39,10 +41,18 @@ func (m *mockLineClient) PushText(ctx context.Context, to, text string) error {
 	return nil
 }
 
+// echoAnswerer returns the incoming message text as the response.
+type echoAnswerer struct{}
+
+func (e *echoAnswerer) Answer(data answerer.MessageData) *answerer.Response {
+	return &answerer.Response{Text: data.Message, ReplyType: "text"}
+}
+
 func TestLineCallback(t *testing.T) {
 	secret := "test-channel-secret"
 	mock := &mockLineClient{}
-	h := LineCallback(secret, mock)
+	registry := answerer.NewRegistry()
+	h := LineCallback(secret, mock, registry)
 
 	validBody := []byte(`{"events":[]}`)
 
@@ -100,10 +110,11 @@ func TestLineCallback(t *testing.T) {
 	}
 }
 
-func TestLineCallback_EchoReply(t *testing.T) {
+func TestLineCallback_DispatchReply(t *testing.T) {
 	secret := "test-channel-secret"
 	mock := &mockLineClient{}
-	h := LineCallback(secret, mock)
+	registry := answerer.NewRegistry(&echoAnswerer{})
+	h := LineCallback(secret, mock, registry)
 
 	body := []byte(`{
 		"events": [{
@@ -137,9 +148,45 @@ func TestLineCallback_EchoReply(t *testing.T) {
 	}
 }
 
+func TestLineCallback_NoReplyWhenRegistryReturnsNil(t *testing.T) {
+	secret := "test-channel-secret"
+	mock := &mockLineClient{}
+	registry := answerer.NewRegistry()
+	h := LineCallback(secret, mock, registry)
+
+	body := []byte(`{
+		"events": [{
+			"type": "message",
+			"replyToken": "reply-token-123",
+			"source": {"type": "user", "userId": "U123"},
+			"timestamp": 1704067200000,
+			"mode": "active",
+			"message": {
+				"type": "text",
+				"id": "msg-1",
+				"text": "hello"
+			}
+		}]
+	}`)
+
+	req := httptest.NewRequest(http.MethodPost, "/line/callback", bytes.NewReader(body))
+	req.Header.Set("X-Line-Signature", signBody(body, secret))
+	rec := httptest.NewRecorder()
+
+	h(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Errorf("status got %d, want %d", rec.Code, http.StatusOK)
+	}
+	if mock.replyToken != "" {
+		t.Errorf("ReplyText should not be called, got replyToken %q", mock.replyToken)
+	}
+}
+
 func TestLineCallback_NilClient(t *testing.T) {
 	secret := "test-channel-secret"
-	h := LineCallback(secret, nil)
+	registry := answerer.NewRegistry(&echoAnswerer{})
+	h := LineCallback(secret, nil, registry)
 
 	body := []byte(`{
 		"events": [{

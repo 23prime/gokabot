@@ -4,11 +4,12 @@ import (
 	"log/slog"
 	"net/http"
 
+	"github.com/23prime/gokabot-api/internal/answerer"
 	"github.com/23prime/gokabot-api/internal/line"
 	"github.com/line/line-bot-sdk-go/v8/linebot/webhook"
 )
 
-func LineCallback(channelSecret string, lineClient line.Client) http.HandlerFunc {
+func LineCallback(channelSecret string, lineClient line.Client, registry *answerer.Registry) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
@@ -37,16 +38,39 @@ func LineCallback(channelSecret string, lineClient line.Client) http.HandlerFunc
 				continue
 			}
 
+			data := answerer.MessageData{
+				Message: msg.Text,
+				UserID:  userIDFromSource(e.Source),
+			}
+
+			resp := registry.Dispatch(data)
+			if resp == nil {
+				continue
+			}
+
 			if lineClient == nil {
 				slog.WarnContext(ctx, "LINE client not initialized, skipping reply")
 				continue
 			}
 
-			if err := lineClient.ReplyText(ctx, e.ReplyToken, msg.Text); err != nil {
+			if err := lineClient.ReplyText(ctx, e.ReplyToken, resp.Text); err != nil {
 				slog.WarnContext(ctx, "Failed to reply", "error", err)
 			}
 		}
 
 		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func userIDFromSource(source webhook.SourceInterface) string {
+	switch s := source.(type) {
+	case webhook.UserSource:
+		return s.UserId
+	case webhook.GroupSource:
+		return s.UserId
+	case webhook.RoomSource:
+		return s.UserId
+	default:
+		return ""
 	}
 }

@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/23prime/gokabot-api/internal/answerer"
 	"github.com/23prime/gokabot-api/internal/config"
 	"github.com/23prime/gokabot-api/internal/database"
 	"github.com/23prime/gokabot-api/internal/handler"
@@ -43,9 +44,12 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Set up answerer chain (populated in later phases)
+	registry := answerer.NewRegistry()
+
 	// Set up HTTP handlers
 	http.HandleFunc("/healthCheck", handler.RequestLog(handler.HealthCheck(db)))
-	http.HandleFunc("/line/callback", handler.RequestLog(handler.LineCallback(cfg.LineChannelSecret, lineClient)))
+	http.HandleFunc("/line/callback", handler.RequestLog(handler.LineCallback(cfg.LineChannelSecret, lineClient, registry)))
 	http.HandleFunc("/line/push", handler.RequestLog(handler.LinePush(lineClient)))
 
 	slog.Info("Gokabot API started", "port", cfg.Port)
