@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feature/lets-go-api  # TODO: remove after merging to main
     paths:
       - "gokabot-api-go/**"
       - ".github/workflows/release-api.yml"
