@@ -12,13 +12,8 @@ terraform {
   }
 }
 
-resource "random_integer" "password_length" {
-  min = 32
-  max = 64
-}
-
 resource "random_password" "master" {
-  length           = random_integer.password_length.result
+  length           = 32
   special          = true
   override_special = "-._~" # URL-safe unreserved characters only
 }
