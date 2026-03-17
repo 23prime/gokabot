@@ -1,0 +1,13 @@
+desc: Health check endpoint
+runners:
+  req: http://localhost:8081
+steps:
+  healthCheck:
+    req:
+      /healthCheck:
+        get:
+          body: null
+    test: |
+      current.res.status == 200 &&
+      current.res.body.healthy == true &&
+      current.res.body.db == true

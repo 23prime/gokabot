@@ -1,11 +1,11 @@
 # Gokabot for LINE
 
-[![GitHub Actions Status - core-api](https://github.com/23prime/gokabot/workflows/core-api/badge.svg)](https://github.com/23prime/gokabot/actions/workflows/core-api.yml)
-[![GitHub Actions Status - gokabot-demo](https://github.com/23prime/gokabot/workflows/gokabot-demo/badge.svg)](https://github.com/23prime/gokabot/actions/workflows/gokabot-demo.yml)
+[![Check API](https://github.com/23prime/gokabot/workflows/Check%20API/badge.svg)](https://github.com/23prime/gokabot/actions/workflows/check-api.yml)
+[![Integration Test Go API](https://github.com/23prime/gokabot/workflows/Integration%20Test%20Go%20API/badge.svg)](https://github.com/23prime/gokabot/actions/workflows/test-go-api.yml)
 
 ## What
 
-LINE BOT with Ruby, using [line-bot-sdk-ruby](https://github.com/line/line-bot-sdk-ruby).
+LINE BOT written in Go, using [line-bot-sdk-go](https://github.com/line/line-bot-sdk-go).
 
 ## Usage
 
@@ -39,7 +39,7 @@ Add Gokabot to your friends from the QR code below, and invite to your groups.
   | Send examples | Response                       |
   | ------------- | ------------------------------ |
   | "天気", "今日の天気" | Today's weather in Default     |
-  | "明日の天気"       | Tomorrrow's weather in Default |
+  | "明日の天気"       | Tomorrow's weather in Default  |
   | "天気 東京"       | Today's weather in Tokyo       |
   | "明日の天気 東京"    | Tomorrow's weather in Tokyo    |
 
@@ -69,24 +69,79 @@ Add Gokabot to your friends from the QR code below, and invite to your groups.
 
 ## Development
 
-### At local
+### Pre-required
 
-Build image for local.
+- [mise](https://mise.jdx.dev): manage tools and tasks
+- [Docker](https://www.docker.com)
+- [Docker Compose](https://docs.docker.com/compose/)
 
-```console
-$ docker-compose -f docker-compose.local.yml build
-```
+### Setup and run development server
 
-Run.
+1. Trust project directory and install tools.
 
-```console
-$ docker-compose -f docker-compose.local.yml up
-```
+    ```sh
+    mise trust -q && mise install
+    ```
 
-### Push to ECR
+2. Copy `.env.example` to `.env` and fill in your credentials.
 
-Build image and push.
+    ```sh
+    cp .env.example .env
+    # Edit .env and fill in your credentials
+    ```
 
-```console
-$ ./deploy.sh
-```
+    | Variable | Required for | Description |
+    | --- | --- | --- |
+    | `LINE_CHANNEL_SECRET` | Dev server, integration test | Channel secret from LINE Developers console |
+    | `LINE_CHANNEL_TOKEN` | Dev server, integration test | Channel access token from LINE Developers console |
+    | `LINE_PUSH_TARGET_ID` | Integration test only | LINE user ID to receive test push messages |
+
+3. Run DB migration and seeding
+
+    ```sh
+    mise setup-db
+    ```
+
+4. Run development server with hot-reloading
+
+    ```sh
+    mise dev
+    ```
+
+### DB Migration
+
+Use [Dbmate](https://github.com/amacneil/dbmate) for DB schema migration.
+
+Dbmate is managed by mise.
+
+- Prepare: Up DB
+
+    ```sh
+    mise dc-up-db
+    ```
+
+- Generate a new migration file
+
+    ```sh
+    mise dm-new <migration-name>
+    ```
+
+- Run any pending migrations
+
+    ```sh
+    mise dm
+    ```
+
+- Roll back the most recent migration
+
+    ```sh
+    mise dm-rb
+    ```
+
+- Show the status of all migrations
+
+    ```sh
+    mise dm-st
+    ```
+
+For more commands, see [Commands](https://github.com/amacneil/dbmate?tab=readme-ov-file#commands).

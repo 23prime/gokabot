@@ -1,0 +1,216 @@
+# ================================================================
+# Tools
+# ================================================================
+[tools]
+dbmate = "2"
+go = "1.25"
+golangci-lint = "2"
+air = "latest"
+"go:golang.org/x/vuln/cmd/govulncheck" = "latest"
+terraform = "1"
+terragrunt = "latest"
+
+[env]
+_.file = ".env"
+DATABASE_URL = "postgres://postgres:password@localhost:5432/gokabot_db?sslmode=disable"
+LOG_LEVEL = "DEBUG"
+PORT = 8081
+LINE_CHANNEL_SECRET = "test_channel_secret"
+
+[vars]
+go_api_dir = "gokabot-api-go"
+
+
+# ================================================================
+# Tasks
+# See: https://mise.jdx.dev/tasks/toml-tasks.html
+# ================================================================
+
+# Global
+[tasks.setup]
+description = "Setup tools"
+run = ["mise trust -yq", "mise install"]
+alias = "s"
+
+[tasks.fix]
+description = "Fix all issues"
+depends = ["go-fix"]
+alias = "f"
+
+[tasks.check]
+description = "Check for all issues"
+depends = ["go-check"]
+alias = "c"
+
+[tasks.fix-and-check]
+run = [{ task = "fix" }, { task = "check" }]
+description = "Fix all issues and check for issues"
+alias = "fc"
+
+# Docker Compose tasks (dc- prefix)
+[tasks.dc-pull]
+run = "docker compose pull postgres runn-go"
+alias = "pl"
+
+[tasks.dc-build]
+run = "docker compose build"
+alias = "bd"
+
+[tasks.dc-up-db]
+run = "docker compose up postgres"
+
+[tasks.dc-up-db-d]
+run = "docker compose up -d --wait postgres"
+
+[tasks.dc-down-db]
+run = "docker compose down postgres"
+
+[tasks.dc-down]
+run = "docker compose down"
+
+[tasks.dc-psql]
+run = "docker compose exec postgres psql $DATABASE_URL"
+
+[tasks.dc-go-build]
+run = "docker compose build gokabot-api-go-local"
+alias = "gbd"
+
+[tasks.dc-go-up-d]
+run = "docker compose up -d --wait gokabot-api-go-local"
+
+[tasks.dc-go-logs]
+run = "docker compose logs gokabot-api-go-local"
+
+# Database
+[tasks.db-migrate-new]
+run = "dbmate new"
+alias = "dm-new"
+
+[tasks.db-migrate]
+run = "dbmate migrate"
+alias = "dm"
+
+[tasks.db-migrate-rollback]
+run = "dbmate rollback"
+alias = "dm-rb"
+
+[tasks.db-migrate-status]
+run = "dbmate status"
+alias = "dm-st"
+
+[tasks.db-seed]
+run = "docker compose exec -T postgres psql $DATABASE_URL < db/seeds/development.sql"
+alias = "dm-sd"
+
+[tasks.db-seed-test]
+run = "docker compose exec -T postgres psql $DATABASE_URL < db/seeds/test.sql"
+alias = "dm-sd-t"
+
+[tasks.setup-db]
+run = [
+  { task = "dc-up-db-d" },
+  { task = "db-migrate" },
+  { task = "db-seed" },
+  { task = "dc-down-db" },
+]
+
+# Composite tasks (dev, test, etc.)
+[tasks.dev]
+run = [{ tasks = ["dc-up-db", "go-watch"] }]
+
+[tasks.test-go-api]
+run = [
+  { task = "db-migrate" },
+  { task = "db-seed-test" },
+  "docker compose run --rm runn-go",
+]
+alias = "tg"
+
+[tasks.integration-test]
+run = [
+  { task = "dc-go-build" },
+  { task = "dc-up-db-d" },
+  { task = "dc-go-up-d" },
+  { task = "test-go-api" },
+]
+depends_post = ["dc-down"]
+alias = "it"
+
+# Go local tasks
+[tasks.go-build]
+description = "Build the Go API server binary"
+run = "go build -o bin/gokabot-api ./cmd/gokabot/main.go"
+alias = "gb"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-run]
+description = "Run the Go API server"
+run = "go run ./cmd/gokabot/main.go"
+alias = "gr"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-watch]
+description = "Run with live reload using Air"
+run = "air"
+alias = "gw"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-test]
+description = "Run tests"
+run = "go test -v ./..."
+alias = "gt"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-clean]
+description = "Clean build artifacts"
+run = "go clean && rm -f bin/gokabot-api"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-lint]
+description = "Run golangci-lint"
+run = "golangci-lint run"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-fix]
+description = "Run golangci-lint auto-fix (formatting and lint fixes)"
+run = "golangci-lint run --fix"
+alias = "gf"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-check]
+description = "Run vulnerability scan, linter, and unit tests"
+run = [{ task = "go-vuln" }, { task = "go-lint" }, { task = "go-test" }]
+alias = "gc"
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-vuln]
+description = "Check for vulnerabilities in dependencies"
+run = "govulncheck ./..."
+dir = "{{vars.go_api_dir}}"
+
+[tasks.go-smoke]
+description = "Run smoke tests against real APIs and DB (requires DATABASE_URL and running DB)"
+run = "go run ./cmd/smoke/main.go"
+alias = "gs"
+dir = "{{vars.go_api_dir}}"
+
+# Terraform / Terragrunt tasks (tg- prefix)
+[tasks.tg-init]
+description = "Run terragrunt init for all infrastructure modules"
+run = "terragrunt init --all"
+dir = "infrastructure"
+
+[tasks.tg-plan]
+description = "Run terragrunt plan for all infrastructure modules"
+run = "terragrunt plan --all"
+dir = "infrastructure"
+
+[tasks.tg-apply]
+description = "Run terragrunt apply for all infrastructure modules"
+run = "terragrunt apply --all --auto-approve --non-interactive"
+dir = "infrastructure"
+
+[tasks.tg-out]
+description = "Run terragrunt output for all infrastructure modules"
+run = "terragrunt output --all"
+dir = "infrastructure"

@@ -1,8 +1,82 @@
-version: "2.1"
-
 services:
-  gokabot-core:
-    image: gokabot-core
-    container_name: gokabot-core-api
+  postgres:
+    image: postgres:16
+    container_name: gokabot-postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      TZ: Asia/Tokyo
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: gokabot_db
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
+  gokabot-api-go-local:
+    image: gokabot-api-go-local
+    container_name: gokabot-api-go-local
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      TZ: Asia/Tokyo
+      DATABASE_URL: postgres://postgres:password@postgres:5432/gokabot_db?sslmode=disable
+      PORT: 8081
+      LOG_LEVEL: DEBUG
+      LINE_CHANNEL_SECRET: test_channel_secret
+      LINE_CHANNEL_TOKEN: ${LINE_CHANNEL_TOKEN:-}
+      OPEN_WEATHER_API_KEY: ${OPEN_WEATHER_API_KEY:-}
+      GOKABOU_USER_ID: ${GOKABOU_USER_ID:-}
     build:
-      context: core-api
+      context: gokabot-api-go
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8081/healthCheck"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+
+
+  runn-go:
+    image: ghcr.io/k1low/runn:latest
+    container_name: gokabot-runn-go
+    volumes:
+      - ./gokabot-api-go/tests:/tests:ro
+    working_dir: /tests
+    environment:
+      LINE_PUSH_TARGET_ID: ${LINE_PUSH_TARGET_ID:-}
+    command:
+      [
+        "run",
+        "*.yaml",
+        "--runner",
+        "req:http://gokabot-api-go-local:8081",
+        "--verbose",
+      ]
+    profiles:
+      - test-go
+
+  metabase:
+    # see: https://www.metabase.com/docs/latest/operations-guide/running-metabase-on-docker.html
+    image: metabase/metabase
+    container_name: gokabot-metabase
+    volumes:
+      - ~/.metabase:/metabase-data
+    environment:
+      TZ: Asia/Tokyo
+      MB_DB_FILE: /metabase-data/metabase.db
+    ports:
+      - "5000:3000"
+    profiles:
+      - metabase
+
+volumes:
+  postgres-data:

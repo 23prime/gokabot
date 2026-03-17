@@ -1,0 +1,52 @@
+desc: LINE push message
+# The pushToLineUser step is skipped when LINE_PUSH_TARGET_ID is not set.
+# Set LINE_PUSH_TARGET_ID in .env (see .env.example) to enable it.
+runners:
+  req: http://localhost:8081
+steps:
+  pushToLineUser:
+    desc: Push message to LINE user should return 200 (skipped if LINE_PUSH_TARGET_ID not set)
+    if: env.LINE_PUSH_TARGET_ID != ""
+    req:
+      /line/push:
+        post:
+          headers:
+            Content-Type: application/json
+          body:
+            application/json:
+              target_id: "{{ env.LINE_PUSH_TARGET_ID }}"
+              msg: "[integration test] gokabot-api-go /line/push"
+    test: current.res.status == 200
+
+  missingTargetID:
+    desc: Missing target_id should return 400
+    req:
+      /line/push:
+        post:
+          headers:
+            Content-Type: application/json
+          body:
+            application/json:
+              target_id: ""
+              msg: "hello"
+    test: current.res.status == 400
+
+  missingMsg:
+    desc: Missing msg should return 400
+    req:
+      /line/push:
+        post:
+          headers:
+            Content-Type: application/json
+          body:
+            application/json:
+              target_id: "dummy_user_id"
+              msg: ""
+    test: current.res.status == 400
+
+  wrongMethod:
+    desc: GET method should return 405
+    req:
+      /line/push:
+        get: {}
+    test: current.res.status == 405
