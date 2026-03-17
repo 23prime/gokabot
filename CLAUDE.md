@@ -107,9 +107,13 @@ mise go-smoke
 #### Project Structure
 
 - `cmd/gokabot/main.go` - Application entry point
+- `cmd/smoke/main.go` - Smoke test runner (real API/DB calls)
+- `internal/answerer/` - Answerer interface and chain-of-responsibility registry
+- `internal/answerers/` - All answerer implementations (nyokki, gokabou, anime, weather, webdict, denippi, tex, searchdolls, baseballnews, pigeons)
 - `internal/config/` - Configuration loading from environment
 - `internal/database/` - Database connection (PostgreSQL)
 - `internal/handler/` - HTTP handlers and middleware
+- `internal/line/` - LINE Bot client (SDK v8)
 - `internal/logger/` - Custom slog logger with emoji
 
 ## Architecture
