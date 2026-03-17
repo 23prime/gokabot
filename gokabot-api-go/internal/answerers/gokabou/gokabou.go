@@ -213,13 +213,18 @@ func (a *Answerer) rebuildDict(ctx context.Context) {
 	defer rows.Close() //nolint:errcheck
 
 	var dict []markovBlock
+	var sentenceCount, wordCount int
 	for rows.Next() {
 		var sentence string
 		if err := rows.Scan(&sentence); err != nil {
 			continue
 		}
-		dict = append(dict, buildBlocks(a.tokenize(sentence))...)
+		words := a.tokenize(sentence)
+		sentenceCount++
+		wordCount += len(words)
+		dict = append(dict, buildBlocks(words)...)
 	}
+	slog.Info("gokabou: dict built", "sentences", sentenceCount, "words", wordCount)
 
 	a.mu.Lock()
 	a.markovDict = dict
