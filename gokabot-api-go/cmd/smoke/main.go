@@ -25,6 +25,7 @@ import (
 	"github.com/23prime/gokabot-api/internal/answerers/anime"
 	"github.com/23prime/gokabot-api/internal/answerers/baseballnews"
 	"github.com/23prime/gokabot-api/internal/answerers/denippi"
+	"github.com/23prime/gokabot-api/internal/answerers/gokabou"
 	"github.com/23prime/gokabot-api/internal/answerers/nyokki"
 	"github.com/23prime/gokabot-api/internal/answerers/pigeons"
 	"github.com/23prime/gokabot-api/internal/answerers/tex"
@@ -63,6 +64,11 @@ func main() {
 			name:     "nyokki",
 			a:        nyokki.New(),
 			messages: []string{"1にょっき", "2にょっき", "にょっき"},
+		},
+		{
+			name:     "gokabou",
+			a:        gokabou.New(db),
+			messages: []string{"こん", "ぬるぽ", "おみくじ", "ごかぼう", "ヒゲ", "死ね"},
 		},
 		{
 			name:     "anime",

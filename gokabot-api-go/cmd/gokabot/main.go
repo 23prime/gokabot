@@ -11,6 +11,7 @@ import (
 	"github.com/23prime/gokabot-api/internal/answerers/anime"
 	"github.com/23prime/gokabot-api/internal/answerers/baseballnews"
 	"github.com/23prime/gokabot-api/internal/answerers/denippi"
+	"github.com/23prime/gokabot-api/internal/answerers/gokabou"
 	"github.com/23prime/gokabot-api/internal/answerers/nyokki"
 	"github.com/23prime/gokabot-api/internal/answerers/pigeons"
 	"github.com/23prime/gokabot-api/internal/answerers/tex"
@@ -55,6 +56,7 @@ func main() {
 	// Set up answerer chain
 	registry := answerer.NewRegistry(
 		nyokki.New(),
+		gokabou.New(db),
 		anime.New(db),
 		weather.New(db, cfg.OpenWeatherAPIKey),
 		webdict.New(),
