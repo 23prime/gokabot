@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - feature/lets-go-api  # TODO: remove after merging to main
+      - feature/lets-go-api # TODO: remove after merging to main
     paths:
       - "gokabot-api-go/**"
       - ".github/workflows/release-api.yml"
@@ -13,6 +13,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: production
     permissions:
       id-token: write
       contents: read
@@ -47,9 +48,38 @@ jobs:
           chmod +x /usr/local/bin/lightsailctl
 
       - name: Push to Lightsail registry
+        id: push
         run: |
-          aws lightsail push-container-image \
+          OUTPUT=$(aws lightsail push-container-image \
             --region ap-northeast-1 \
             --service-name gokabot-api \
             --label gokabot-api \
-            --image gokabot-api:${{ github.sha }}
+            --image gokabot-api:${{ github.sha }})
+          echo "$OUTPUT"
+          IMAGE=$(echo "$OUTPUT" | grep -oP '(?<=Refer to this image as "):.*(?=")')
+          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to Lightsail
+        run: |
+          aws lightsail create-container-service-deployment \
+            --region ap-northeast-1 \
+            --service-name gokabot-api \
+            --containers "{
+              \"gokabot-api\": {
+                \"image\": \"${{ steps.push.outputs.image }}\",
+                \"ports\": {\"8081\": \"HTTP\"},
+                \"environment\": {
+                  \"PORT\": \"8081\",
+                  \"LINE_CHANNEL_SECRET\": \"${{ secrets.LINE_CHANNEL_SECRET }}\",
+                  \"LINE_CHANNEL_TOKEN\": \"${{ secrets.LINE_CHANNEL_TOKEN }}\",
+                  \"DATABASE_URL\": \"${{ secrets.DATABASE_URL }}\",
+                  \"OPEN_WEATHER_API_KEY\": \"${{ secrets.OPEN_WEATHER_API_KEY }}\",
+                  \"GOKABOU_USER_ID\": \"${{ secrets.GOKABOU_USER_ID }}\"
+                }
+              }
+            }" \
+            --public-endpoint "{
+              \"containerName\": \"gokabot-api\",
+              \"containerPort\": 8081,
+              \"healthCheck\": {\"path\": \"/healthCheck\"}
+            }"
