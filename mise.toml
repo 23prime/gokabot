@@ -10,6 +10,9 @@ air = "latest"
 terraform = "1"
 terragrunt = "latest"
 
+# Other tools
+lefthook = "latest"
+
 [env]
 _.file = ".env"
 DATABASE_URL = "postgres://postgres:password@localhost:5432/gokabot_db?sslmode=disable"
@@ -29,17 +32,17 @@ go_api_dir = "gokabot-api-go"
 # Global
 [tasks.setup]
 description = "Setup tools"
-run = ["mise trust -yq", "mise install"]
+run = ["mise trust -yq", "mise install", "lefthook install"]
 alias = "s"
 
 [tasks.fix]
 description = "Fix all issues"
-depends = ["go-fix"]
+depends = ["go-fix", "tg-fix"]
 alias = "f"
 
 [tasks.check]
 description = "Check for all issues"
-depends = ["go-check"]
+depends = ["go-check", "tg-check"]
 alias = "c"
 
 [tasks.fix-and-check]
@@ -210,7 +213,22 @@ description = "Run terragrunt apply for all infrastructure modules"
 run = "terragrunt apply --all --auto-approve --non-interactive"
 dir = "infrastructure"
 
+[tasks.tg-apply-cert]
+description = "Step 1: Apply Lightsail certificate only (run tg-apply afterwards to create DNS validation records)"
+run = "terragrunt apply --auto-approve --non-interactive --target=aws_lightsail_certificate.api"
+dir = "infrastructure/lightsail"
+
 [tasks.tg-out]
 description = "Run terragrunt output for all infrastructure modules"
 run = "terragrunt output --all"
+dir = "infrastructure"
+
+[tasks.tg-fix]
+description = "Fix all Terraform/Terragrunt files"
+run = "terragrunt hcl format --all"
+dir = "infrastructure"
+
+[tasks.tg-check]
+description = "Check Terraform/Terragrunt formatting (validate is covered by tg-plan)"
+run = "terragrunt hcl format --all --check"
 dir = "infrastructure"

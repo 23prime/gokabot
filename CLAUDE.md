@@ -16,6 +16,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Always use `rm -f` (never bare `rm`)
 - Run `git` commands in the current directory (do not use the `-C` option)
 
+### Commit Rules
+
+- Always verify changes work before committing (e.g. run `tg-plan` for Terraform, `mise go-build` / `mise go-lint` for Go)
+- Never commit without the user's confirmation that the plan/build looks correct
+
 ## Project Overview
 
 Gokabot is a LINE chatbot written in Go. It responds to Japanese text messages with features like anime schedules, weather, dictionary lookups, omikuji, and more.
