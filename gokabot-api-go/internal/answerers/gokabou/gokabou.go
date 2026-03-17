@@ -11,9 +11,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/23prime/gokabot-api/internal/answerer"
 	"github.com/ikawaha/kagome-dict/ipa"
 	"github.com/ikawaha/kagome/v2/tokenizer"
+
+	"github.com/23prime/gokabot-api/internal/answerer"
 )
 
 const (

@@ -4,9 +4,10 @@ import (
 	"log/slog"
 	"net/http"
 
+	"github.com/line/line-bot-sdk-go/v8/linebot/webhook"
+
 	"github.com/23prime/gokabot-api/internal/answerer"
 	"github.com/23prime/gokabot-api/internal/line"
-	"github.com/line/line-bot-sdk-go/v8/linebot/webhook"
 )
 
 func LineCallback(channelSecret string, lineClient line.Client, registry *answerer.Registry) http.HandlerFunc {

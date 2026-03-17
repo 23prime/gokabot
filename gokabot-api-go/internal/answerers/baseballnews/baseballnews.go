@@ -9,8 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/23prime/gokabot-api/internal/answerer"
 	"github.com/PuerkitoBio/goquery"
+
+	"github.com/23prime/gokabot-api/internal/answerer"
 )
 
 const baseURL = "https://npb.jp"

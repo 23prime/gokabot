@@ -41,7 +41,7 @@ formatters:
   settings:
     goimports:
       local-prefixes:
-        - github.com/23prime/claude-launcher
+        - github.com/23prime/gokabot-api
 
 run:
   timeout: 5m

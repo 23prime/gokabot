@@ -4,8 +4,9 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/23prime/gokabot-api/internal/answerer"
 	"github.com/DATA-DOG/go-sqlmock"
+
+	"github.com/23prime/gokabot-api/internal/answerer"
 )
 
 func msg(s string) answerer.MessageData {
