@@ -1,11 +1,11 @@
 # Gokabot for LINE
 
-[![GitHub Actions Status - core-api](https://github.com/23prime/gokabot/workflows/core-api/badge.svg)](https://github.com/23prime/gokabot/actions/workflows/core-api.yml)
-[![GitHub Actions Status - gokabot-demo](https://github.com/23prime/gokabot/workflows/gokabot-demo/badge.svg)](https://github.com/23prime/gokabot/actions/workflows/gokabot-demo.yml)
+[![Check API](https://github.com/23prime/gokabot/workflows/Check%20API/badge.svg)](https://github.com/23prime/gokabot/actions/workflows/check-api.yml)
+[![Integration Test Go API](https://github.com/23prime/gokabot/workflows/Integration%20Test%20Go%20API/badge.svg)](https://github.com/23prime/gokabot/actions/workflows/test-go-api.yml)
 
 ## What
 
-LINE BOT with Ruby, using [line-bot-sdk-ruby](https://github.com/line/line-bot-sdk-ruby).
+LINE BOT written in Go, using [line-bot-sdk-go](https://github.com/line/line-bot-sdk-go).
 
 ## Usage
 
@@ -39,7 +39,7 @@ Add Gokabot to your friends from the QR code below, and invite to your groups.
   | Send examples | Response                       |
   | ------------- | ------------------------------ |
   | "天気", "今日の天気" | Today's weather in Default     |
-  | "明日の天気"       | Tomorrrow's weather in Default |
+  | "明日の天気"       | Tomorrow's weather in Default  |
   | "天気 東京"       | Today's weather in Tokyo       |
   | "明日の天気 東京"    | Tomorrow's weather in Tokyo    |
 

@@ -1,6 +1,0 @@
-services:
-  gokabot-core:
-    image: gokabot-core
-    container_name: gokabot-core-api
-    build:
-      context: core-api

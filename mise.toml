@@ -66,12 +66,6 @@ run = "{{vars.dc}} up -d --wait postgres"
 [tasks.dc-down-db]
 run = "{{vars.dc}} down postgres"
 
-[tasks.dc-up-api]
-run = "{{vars.dc}} up gokabot-core-local"
-
-[tasks.dc-up-api-d]
-run = "{{vars.dc}} up -d --wait gokabot-core-local"
-
 [tasks.dc-down]
 run = "{{vars.dc}} down"
 

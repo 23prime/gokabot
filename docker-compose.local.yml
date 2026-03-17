@@ -1,47 +1,4 @@
 services:
-  gokabot-core-local:
-    image: gokabot-core-local
-    container_name: gokabot-core-local
-    depends_on:
-      postgres:
-        condition: service_healthy
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-    environment:
-      TZ: Asia/Tokyo
-      RACK_ENV: development
-      DATABASE_URL: postgres://postgres:password@postgres:5432/gokabot_db
-      LINE_CHANNEL_TOKEN: test_channel_token
-      LINE_CHANNEL_SECRET: test_channel_secret
-      GOKABOU_USER_ID: test_gokabou_user
-      TAKENOKO_USER_ID: test_takenoko_user
-      NGA_GROUP_ID: test_nga_group
-      KMT_GROUP_ID: test_kmt_group
-      OPEN_WEATHER_API_KEY: test_api_key
-      DISCORD_TARGET_CHANNEL_ID: test_discord_channel
-      DISCORD_BOT_TOKEN: test_discord_token
-    build:
-      context: core-api
-    ports:
-      - "8080:8080"
-    command:
-      [
-        "bundle",
-        "exec",
-        "rackup",
-        "app/config.ru",
-        "-o",
-        "0.0.0.0",
-        "-p",
-        "8080",
-      ]
-    healthcheck:
-      test: ["CMD", "curl", "-sf", "http://localhost:8080/"]
-      interval: 2s
-      timeout: 5s
-      retries: 30
-      start_period: 10s
-
   postgres:
     image: postgres:16
     container_name: gokabot-postgres
@@ -106,19 +63,6 @@ services:
       ]
     profiles:
       - test-go
-
-  gokabot-demo:
-    image: gokabot-demo
-    container_name: gokabot-demo
-    environment:
-      TZ: Asia/Tokyo
-    build:
-      context: gokabot-demo
-    ports:
-      - "3000:3000"
-    command: ["yarn", "vite"]
-    profiles:
-      - demo
 
   metabase:
     # see: https://www.metabase.com/docs/latest/operations-guide/running-metabase-on-docker.html
