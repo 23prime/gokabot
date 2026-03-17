@@ -1,7 +1,7 @@
 \restrict dbmate
 
 -- Dumped from database version 16.11 (Debian 16.11-1.pgdg13+1)
--- Dumped by pg_dump version 18.2
+-- Dumped by pg_dump version 18.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -105,6 +105,38 @@ ALTER SEQUENCE gokabot.gokabous_id_seq OWNED BY gokabot.gokabous.id;
 
 
 --
+-- Name: yukarin_mails; Type: TABLE; Schema: gokabot; Owner: -
+--
+
+CREATE TABLE gokabot.yukarin_mails (
+    id integer NOT NULL,
+    mail_date date NOT NULL,
+    subject character varying(20) NOT NULL,
+    body text NOT NULL
+);
+
+
+--
+-- Name: yukarin_mails_id_seq; Type: SEQUENCE; Schema: gokabot; Owner: -
+--
+
+CREATE SEQUENCE gokabot.yukarin_mails_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: yukarin_mails_id_seq; Type: SEQUENCE OWNED BY; Schema: gokabot; Owner: -
+--
+
+ALTER SEQUENCE gokabot.yukarin_mails_id_seq OWNED BY gokabot.yukarin_mails.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -125,6 +157,13 @@ ALTER TABLE ONLY gokabot.animes ALTER COLUMN id SET DEFAULT nextval('gokabot.ani
 --
 
 ALTER TABLE ONLY gokabot.gokabous ALTER COLUMN id SET DEFAULT nextval('gokabot.gokabous_id_seq'::regclass);
+
+
+--
+-- Name: yukarin_mails id; Type: DEFAULT; Schema: gokabot; Owner: -
+--
+
+ALTER TABLE ONLY gokabot.yukarin_mails ALTER COLUMN id SET DEFAULT nextval('gokabot.yukarin_mails_id_seq'::regclass);
 
 
 --
@@ -157,6 +196,14 @@ ALTER TABLE ONLY gokabot.cities
 
 ALTER TABLE ONLY gokabot.gokabous
     ADD CONSTRAINT gokabous_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: yukarin_mails yukarin_mails_pkey; Type: CONSTRAINT; Schema: gokabot; Owner: -
+--
+
+ALTER TABLE ONLY gokabot.yukarin_mails
+    ADD CONSTRAINT yukarin_mails_pkey PRIMARY KEY (id);
 
 
 --
@@ -196,4 +243,5 @@ INSERT INTO public.schema_migrations (version) VALUES
     ('20260121140511'),
     ('20260121233325'),
     ('20260121234520'),
-    ('20260121234833');
+    ('20260121234833'),
+    ('20260317000000');
