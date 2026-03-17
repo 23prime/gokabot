@@ -31,7 +31,7 @@ func HealthCheck(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		slog.InfoContext(ctx, "Database is healthy")
+		slog.DebugContext(ctx, "Database is healthy")
 
 		if err := json.NewEncoder(w).Encode(resp); err != nil {
 			slog.ErrorContext(ctx, "Failed to encode health status", "error", err)
