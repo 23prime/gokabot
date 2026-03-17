@@ -14,6 +14,7 @@ import (
 	"github.com/23prime/gokabot-api/internal/answerers/gokabou"
 	"github.com/23prime/gokabot-api/internal/answerers/nyokki"
 	"github.com/23prime/gokabot-api/internal/answerers/pigeons"
+	"github.com/23prime/gokabot-api/internal/answerers/searchdolls"
 	"github.com/23prime/gokabot-api/internal/answerers/tex"
 	"github.com/23prime/gokabot-api/internal/answerers/weather"
 	"github.com/23prime/gokabot-api/internal/answerers/webdict"
@@ -62,6 +63,7 @@ func main() {
 		webdict.New(),
 		denippi.New(),
 		tex.New(),
+		searchdolls.New(),
 		baseballnews.New(),
 		pigeons.New(db),
 	)
