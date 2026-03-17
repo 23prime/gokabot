@@ -30,7 +30,7 @@ jobs:
           echo "LINE_PUSH_TARGET_ID=${{ secrets.LINE_PUSH_TARGET_ID }}" >> .env
 
       - name: Set up mise
-        uses: jdx/mise-action@v3
+        uses: jdx/mise-action@v4
         with:
           install_args: "dbmate"
           cache: true
