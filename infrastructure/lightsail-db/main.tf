@@ -15,7 +15,7 @@ terraform {
 resource "random_password" "master" {
   length           = 32
   special          = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
+  override_special = "-._~" # URL-safe unreserved characters only
 }
 
 resource "aws_lightsail_database" "gokabot" {
