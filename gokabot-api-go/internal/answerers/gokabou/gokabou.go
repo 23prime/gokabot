@@ -79,7 +79,6 @@ var newYears = []string{
 	"Happy New Year でござるｗｗ",
 	"は？",
 	"ことよろチクビｗ",
-	"あけおまんこｗｗｗｗｗｗ開帳くぱぁｗｗｗｗｗｗ",
 	"今年はヒゲを剃りたい",
 }
 
@@ -259,11 +258,11 @@ func buildBlocks(words []string) []markovBlock {
 		if i == 0 {
 			blocks[i][0] = sentinel
 		} else {
-			blocks[i][0] = words[i-1]
+			blocks[i][0] = words[i-1] //nolint:gosec
 		}
-		blocks[i][1] = words[i]
+		blocks[i][1] = words[i] //nolint:gosec
 		if i+1 < n {
-			blocks[i][2] = words[i+1]
+			blocks[i][2] = words[i+1] //nolint:gosec
 		} else {
 			blocks[i][2] = sentinel
 		}

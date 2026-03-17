@@ -197,7 +197,7 @@ WHERE year = $1 AND season = $2`
 	n := 3
 
 	if day != "" {
-		q += fmt.Sprintf(` AND day = $%d`, n)
+		q += fmt.Sprintf(` AND day = $%d`, n) //nolint:gosec
 		args = append(args, day)
 		n++
 	}
