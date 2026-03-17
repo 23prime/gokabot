@@ -14,6 +14,7 @@ import (
 	"github.com/23prime/gokabot-api/internal/answerers/pigeons"
 	"github.com/23prime/gokabot-api/internal/answerers/tex"
 	"github.com/23prime/gokabot-api/internal/answerers/weather"
+	"github.com/23prime/gokabot-api/internal/answerers/webdict"
 	"github.com/23prime/gokabot-api/internal/config"
 	"github.com/23prime/gokabot-api/internal/database"
 	"github.com/23prime/gokabot-api/internal/handler"
@@ -55,6 +56,7 @@ func main() {
 		nyokki.New(),
 		anime.New(db),
 		weather.New(db, cfg.OpenWeatherAPIKey),
+		webdict.New(),
 		denippi.New(),
 		tex.New(),
 		pigeons.New(db),
