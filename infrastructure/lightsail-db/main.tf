@@ -16,6 +16,10 @@ resource "random_password" "master" {
   length           = 32
   special          = true
   override_special = "-._~" # URL-safe unreserved characters only
+
+  lifecycle {
+    ignore_changes = [length, special, override_special]
+  }
 }
 
 resource "aws_lightsail_database" "gokabot" {
