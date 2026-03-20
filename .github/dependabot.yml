@@ -12,6 +12,17 @@ updates:
       prefix: "deps"
       include: "scope"
 
+  - package-ecosystem: "docker"
+    directory: "/gokabot-api-go"
+    schedule:
+      interval: "daily"
+    cooldown:
+      default-days: 3
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+
   - package-ecosystem: "gomod"
     directory: "/gokabot-api-go"
     schedule:
