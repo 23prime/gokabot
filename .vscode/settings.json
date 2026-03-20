@@ -1,27 +1,14 @@
 {
-  // JSON
-  "[json]": {
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2
-  },
-
-  // YAML
-  "[yaml]": {
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2,
-    "editor.defaultFormatter": "redhat.vscode-yaml"
-  },
-
   // Go
   "[go]": {
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "golang.Go"
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "golang.Go"
   },
   "go.lintTool": "golangci-lint",
   "go.lintFlags": ["--path-mode=abs", "--fast-only"],
   "go.formatTool": "custom",
   "go.alternateTools": {
-  "customFormatter": "golangci-lint"
+    "customFormatter": "golangci-lint"
   },
   "go.formatFlags": ["fmt", "--stdin"]
 }
