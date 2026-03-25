@@ -16,10 +16,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Dependabot Auto Approve and Merge
-        uses: 23prime/simple-dependabot-auto-approve-and-merge@v1
+        uses: 23prime/simple-dependabot-auto-approve-and-merge@1f3c00f396e7b680c81e3503aa6ecd3bef811cd6 # v1.0.0
         with:
           pr-url: ${{ github.event.pull_request.html_url }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
