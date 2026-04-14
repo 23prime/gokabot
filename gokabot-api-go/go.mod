@@ -9,7 +9,7 @@ require (
 	github.com/ikawaha/kagome-dict/ipa v1.2.6
 	github.com/ikawaha/kagome/v2 v2.11.0
 	github.com/lib/pq v1.12.3
-	github.com/line/line-bot-sdk-go/v8 v8.19.1
+	github.com/line/line-bot-sdk-go/v8 v8.20.0
 )
 
 require (
