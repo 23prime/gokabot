@@ -1,0 +1,23 @@
+name: Empty checking
+
+# Note:
+# A convenient workflow for making status checks pass.
+# Your GitHub repository settings require status checks to pass, but other checks may not be triggered due to the change path.
+# In that case, the merge will be blocked even though the necessary checks are missing.
+# If other checks fail, merging will be blocked even if this workflow succeeds.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions: {}
+
+    steps:
+      - name: Exit successfully
+        run: exit 0

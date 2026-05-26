@@ -225,10 +225,10 @@ dir = "infrastructure"
 
 [tasks.tg-fix]
 description = "Fix all Terraform/Terragrunt files"
-run = "terragrunt hcl format --all"
+run = "terragrunt hcl format"
 dir = "infrastructure"
 
 [tasks.tg-check]
 description = "Check Terraform/Terragrunt formatting (validate is covered by tg-plan)"
-run = "terragrunt hcl format --all --check"
+run = "terragrunt hcl format --check"
 dir = "infrastructure"
