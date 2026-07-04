@@ -3,7 +3,7 @@ services:
     image: postgres:18
     container_name: gokabot-postgres
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql
     environment:
       TZ: Asia/Tokyo
       POSTGRES_USER: postgres
