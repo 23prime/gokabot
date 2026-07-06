@@ -20,6 +20,8 @@ github.com/line/line-bot-sdk-go/v8 v8.20.0 h1:Jv22DV3JuQ5qZvniqUbg504bJrVzffXs2C
 github.com/line/line-bot-sdk-go/v8 v8.20.0/go.mod h1:QMXJwPka2ysSeVQKWXkBp8DzBFs+CFAXFNo75KJtWho=
 github.com/line/line-bot-sdk-go/v8 v8.20.1 h1:OE7qwJbuZPz9MGOHHNI0E6rQNtIU7ENHyFXpvbVLwII=
 github.com/line/line-bot-sdk-go/v8 v8.20.1/go.mod h1:QMXJwPka2ysSeVQKWXkBp8DzBFs+CFAXFNo75KJtWho=
+github.com/line/line-bot-sdk-go/v8 v8.21.0 h1:VbCJVbeLcps5QJ/Swm3Uxp7tyYSLXajo8y4E06NcEUg=
+github.com/line/line-bot-sdk-go/v8 v8.21.0/go.mod h1:QMXJwPka2ysSeVQKWXkBp8DzBFs+CFAXFNo75KJtWho=
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20210921155107-089bfa567519/go.mod h1:GvvjBRRGRdwPK5ydBHafDWAxML/pGHZbMvKqRZ5+Abc=
