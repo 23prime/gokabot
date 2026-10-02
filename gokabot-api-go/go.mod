@@ -1,6 +1,6 @@
 module github.com/23prime/gokabot-api
 
-go 1.25.6
+go 1.26
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
@@ -9,7 +9,7 @@ require (
 	github.com/ikawaha/kagome-dict/ipa v1.2.6
 	github.com/ikawaha/kagome/v2 v2.11.0
 	github.com/lib/pq v1.12.3
-	github.com/line/line-bot-sdk-go/v8 v8.22.0
+	github.com/line/line-bot-sdk-go/v8 v8.23.0
 )
 
 require (
