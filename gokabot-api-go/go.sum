@@ -17,6 +17,8 @@ github.com/ikawaha/kagome-dict/ipa v1.2.6 h1:Bcvm4jgxAAnTIKb6ckqUKBiFDN0wuanFfyc
 github.com/ikawaha/kagome-dict/ipa v1.2.6/go.mod h1:ONdTMUAKMCq9yx4s69QRtPcJLEMVM0BNNYQrMCJLWb0=
 github.com/ikawaha/kagome/v2 v2.11.0 h1:R914EkRzay9qtUbsFzEbcdZ3wHwwSPvbPkuBI1oIf78=
 github.com/ikawaha/kagome/v2 v2.11.0/go.mod h1:6mYPezBou+iNVnX9uNa00Sfu6S6t2zcM8Nv1EW9Y9so=
+github.com/ikawaha/kagome/v2 v2.11.1 h1:7NQ2QyzNcbKD3/3EVA959fcvo1PhXx8CpUChqjYmi0Y=
+github.com/ikawaha/kagome/v2 v2.11.1/go.mod h1:6mYPezBou+iNVnX9uNa00Sfu6S6t2zcM8Nv1EW9Y9so=
 github.com/kisielk/sqlstruct v0.0.0-20201105191214-5f3e10d3ab46/go.mod h1:yyMNCyc/Ib3bDTKd379tNMpB/7/H5TjM2Y9QJ5THLbE=
 github.com/lib/pq v1.12.3 h1:tTWxr2YLKwIvK90ZXEw8GP7UFHtcbTtty8zsI+YjrfQ=
 github.com/lib/pq v1.12.3/go.mod h1:/p+8NSbOcwzAEI7wiMXFlgydTwcgTr3OSKMsD2BitpA=

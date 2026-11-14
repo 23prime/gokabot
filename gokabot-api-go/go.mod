@@ -7,7 +7,7 @@ require (
 	github.com/PuerkitoBio/goquery v1.13.0
 	github.com/google/uuid v1.6.0
 	github.com/ikawaha/kagome-dict/ipa v1.2.6
-	github.com/ikawaha/kagome/v2 v2.11.0
+	github.com/ikawaha/kagome/v2 v2.11.1
 	github.com/lib/pq v1.12.3
 	github.com/line/line-bot-sdk-go/v8 v8.23.0
 )
